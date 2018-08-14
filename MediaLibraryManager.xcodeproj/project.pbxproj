@@ -10,6 +10,7 @@
 		D3161D2420D748F800EC97E8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2320D748F800EC97E8 /* main.swift */; };
 		D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2C20D749BD00EC97E8 /* protocols.swift */; };
 		D3CB3A9D20DB264200AF519E /* cli.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CB3A9C20DB264200AF519E /* cli.swift */; };
+		ED5FC43A212283AF007D034A /* MMMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5FC439212283AF007D034A /* MMMetaData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,7 @@
 		D3161D2320D748F800EC97E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D3161D2C20D749BD00EC97E8 /* protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = protocols.swift; sourceTree = "<group>"; };
 		D3CB3A9C20DB264200AF519E /* cli.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cli.swift; sourceTree = "<group>"; };
+		ED5FC439212283AF007D034A /* MMMetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMetaData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +47,7 @@
 		D3161D1720D748F800EC97E8 = {
 			isa = PBXGroup;
 			children = (
+				ED5FC43821228375007D034A /* Scripts */,
 				D3161D2220D748F800EC97E8 /* MediaLibraryManager */,
 				D3161D2120D748F800EC97E8 /* Products */,
 			);
@@ -66,6 +69,14 @@
 				D3CB3A9C20DB264200AF519E /* cli.swift */,
 			);
 			path = MediaLibraryManager;
+			sourceTree = "<group>";
+		};
+		ED5FC43821228375007D034A /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				ED5FC439212283AF007D034A /* MMMetaData.swift */,
+			);
+			path = Scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +138,7 @@
 			files = (
 				D3CB3A9D20DB264200AF519E /* cli.swift in Sources */,
 				D3161D2420D748F800EC97E8 /* main.swift in Sources */,
+				ED5FC43A212283AF007D034A /* MMMetaData.swift in Sources */,
 				D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
