@@ -13,7 +13,7 @@ class MM_File: MMFile {
     var metadata: [MMMetadata]
     var filename: String
     var path: String
-    
+    var description: String
     
     /**
         Default initialiser
@@ -23,10 +23,11 @@ class MM_File: MMFile {
             - filename: The name of the file
             - path:     The filepath to the file
      */
-    init(metadata: [MMMetaData], filename: String, path: String) {
+    init(metadata: [MMMetaData], filename: String, path: String, description: String) {
         self.metadata = metadata
         self.filename = filename
         self.path = path
+        self.description = description
     }
     
     
