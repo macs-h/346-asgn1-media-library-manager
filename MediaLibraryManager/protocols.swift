@@ -36,7 +36,7 @@ protocol MMFile: CustomStringConvertible{
 ///
 /// Protocol to represent metadata for a media file
 ///
-/// In this protocol we define three properties and that it must confrm to the
+/// In this protocol we define three properties and that it must conform to the
 /// CustomStringConvertable protocol (i.e. it also needs to have a description
 /// property).
 ///
