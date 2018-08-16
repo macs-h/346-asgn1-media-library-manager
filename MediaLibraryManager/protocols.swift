@@ -31,6 +31,13 @@ protocol MMFile: CustomStringConvertible{
     var metadata: [MMMetadata] {get set}
     var filename: String {get set}
     var path: String {get set}
+    
+    ///
+    /// Searches all the meta data for a keyword
+    ///
+    /// - Parameters:
+    ///     -keyword: The file and associated metadata to add to the collection
+    func metadataContains(keyword: String) -> Bool
 }
 
 ///

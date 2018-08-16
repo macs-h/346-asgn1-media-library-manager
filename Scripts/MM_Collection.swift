@@ -17,7 +17,6 @@ class MM_Collection : MMCollection {
                             collection.
      */
     func add(file: MMFile) {
-        // Code
         self.collection?.append(file)
     }
     
@@ -97,7 +96,7 @@ class MM_Collection : MMCollection {
         if let coll = collection{
             var results: [MMFile] = []
             for file in coll{
-                if(file.metaDataContains(item.keyword)){
+                if(file.metadataContains(keyword: item.keyword)){
                     results.append(file)
                 }
             }
