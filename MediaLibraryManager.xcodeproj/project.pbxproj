@@ -8,10 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		60A0D48D21228D6500CA8125 /* MM_File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A0D48C21228D6500CA8125 /* MM_File.swift */; };
+		60C9AE6121251363008F404A /* MM_Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C9AE6021251363008F404A /* MM_Collection.swift */; };
+		60C9AE63212515E8008F404A /* MM_FileImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C9AE62212515E8008F404A /* MM_FileImport.swift */; };
+		60C9AE6521251684008F404A /* MM_FileExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C9AE6421251684008F404A /* MM_FileExport.swift */; };
 		D3161D2420D748F800EC97E8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2320D748F800EC97E8 /* main.swift */; };
 		D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2C20D749BD00EC97E8 /* protocols.swift */; };
 		D3CB3A9D20DB264200AF519E /* cli.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CB3A9C20DB264200AF519E /* cli.swift */; };
-		ED5FC43A212283AF007D034A /* MMMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5FC439212283AF007D034A /* MMMetaData.swift */; };
+		ED5FC43A212283AF007D034A /* MM_Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5FC439212283AF007D034A /* MM_Metadata.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,11 +31,14 @@
 
 /* Begin PBXFileReference section */
 		60A0D48C21228D6500CA8125 /* MM_File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MM_File.swift; sourceTree = "<group>"; };
+		60C9AE6021251363008F404A /* MM_Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MM_Collection.swift; sourceTree = "<group>"; };
+		60C9AE62212515E8008F404A /* MM_FileImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MM_FileImport.swift; sourceTree = "<group>"; };
+		60C9AE6421251684008F404A /* MM_FileExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MM_FileExport.swift; sourceTree = "<group>"; };
 		D3161D2020D748F800EC97E8 /* MediaLibraryManager */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MediaLibraryManager; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3161D2320D748F800EC97E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D3161D2C20D749BD00EC97E8 /* protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = protocols.swift; sourceTree = "<group>"; };
 		D3CB3A9C20DB264200AF519E /* cli.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cli.swift; sourceTree = "<group>"; };
-		ED5FC439212283AF007D034A /* MMMetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMMetaData.swift; sourceTree = "<group>"; };
+		ED5FC439212283AF007D034A /* MM_Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MM_Metadata.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +83,10 @@
 			isa = PBXGroup;
 			children = (
 				60A0D48C21228D6500CA8125 /* MM_File.swift */,
-				ED5FC439212283AF007D034A /* MMMetaData.swift */,
+				60C9AE6021251363008F404A /* MM_Collection.swift */,
+				60C9AE62212515E8008F404A /* MM_FileImport.swift */,
+				60C9AE6421251684008F404A /* MM_FileExport.swift */,
+				ED5FC439212283AF007D034A /* MM_Metadata.swift */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -139,11 +148,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60C9AE63212515E8008F404A /* MM_FileImport.swift in Sources */,
+				60C9AE6521251684008F404A /* MM_FileExport.swift in Sources */,
 				D3CB3A9D20DB264200AF519E /* cli.swift in Sources */,
 				60A0D48D21228D6500CA8125 /* MM_File.swift in Sources */,
 				D3161D2420D748F800EC97E8 /* main.swift in Sources */,
-				ED5FC43A212283AF007D034A /* MMMetaData.swift in Sources */,
+				ED5FC43A212283AF007D034A /* MM_Metadata.swift in Sources */,
 				D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */,
+				60C9AE6121251363008F404A /* MM_Collection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

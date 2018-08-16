@@ -1,5 +1,5 @@
 //
-//  MMMetaData.swift
+//  MM_Metadata.swift
 //  MediaLibraryManager
 //
 //  Created by Sam Paterson and Max Huang on 14/08/18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MMMetaData: MMMetadata{
+class MM_Metadata: MMMetadata{
 //    var keyword: String
     
     var keyword: String
