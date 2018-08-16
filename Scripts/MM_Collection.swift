@@ -9,7 +9,7 @@
 import Foundation
 
 class MM_Collection : MMCollection {
-    
+    var collection: [MMFile]?
     /**
         Adds a file's metadata to the media metadata collection.
      
@@ -18,6 +18,7 @@ class MM_Collection : MMCollection {
      */
     func add(file: MMFile) {
         // Code
+        self.collection?.append(file)
     }
     
     
@@ -29,7 +30,12 @@ class MM_Collection : MMCollection {
             - file:     The file to add the metadata to.
      */
     func add(metadata: MMMetadata, file: MMFile) {
-        // Code
+        //find the instance in the collection where the name == file name (use search)
+        var file = search(term: file.filename)
+        
+        //add the mmetadata to that file
+        //remove the old one???
+        
     }
     
     
@@ -52,8 +58,12 @@ class MM_Collection : MMCollection {
                     possibly an empty list.
      */
     func search(term: String) -> [MMFile] {
-        // Code
-        return []
+        var results: [MMFile] = []
+        // for each file in the collection
+        // check all the feilds in the files to see if term matches
+        // also check array of mmetadata to see if the term is there too??
+        //if found append to the result array
+        return results
     }
     
     
@@ -63,8 +73,15 @@ class MM_Collection : MMCollection {
         - returns:  A list of all the files in the index, possibly an empty list
      */
     func all() -> [MMFile] {
-        // Code
-        return []
+        if let coll = collection{
+            var results: [MMFile] = []
+            for file in coll{
+                results.append(file)
+            }
+            return results
+        }else{
+            return []
+        }
     }
     
     
@@ -77,8 +94,17 @@ class MM_Collection : MMCollection {
                     keyword, possibly an empty list.
      */
     func search(item: MMMetadata) -> [MMFile] {
-        // Code
-        return []
+        if let coll = collection{
+            var results: [MMFile] = []
+            for file in coll{
+                if(file.metaDataContains(item.keyword)){
+                    results.append(file)
+                }
+            }
+            return results
+        }else{
+            return []
+        }
     }
     
     var description: String = ""

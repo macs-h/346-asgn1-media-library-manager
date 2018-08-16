@@ -30,6 +30,18 @@ class MM_File: MMFile {
         self.description = description
     }
     
+    convenience init(){
+        self.init(metadata: [MM_Metadata()], filename: "", path: "", description: "")
+    }
     
+    
+    public func metaDataContains(keyword: String) -> Bool {
+        for item in self.metadata{
+            if item.keyword == keyword{
+                return true
+            }
+        }
+        return false
+    }
     
 }
