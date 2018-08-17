@@ -14,6 +14,7 @@ class MM_File: MMFile {
     var filename: String
     var path: String
     var description: String
+    var collectionPos = 0
     
     /**
         Default initialiser
@@ -43,5 +44,19 @@ class MM_File: MMFile {
         }
         return false
     }
+    
+    func getAttributes() -> [String]{
+        var results: [String] = []
+        results.append(filename)
+        results.append(path)
+        results.append(description)
+        for data in metadata{
+            results.append(data.keyword)
+        }
+        return results
+    }
+    
+    
+    
     
 }

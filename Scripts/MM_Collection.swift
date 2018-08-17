@@ -17,6 +17,8 @@ class MM_Collection : MMCollection {
                             collection.
      */
     func add(file: MMFile) {
+        var tempFile = file
+        tempFile.collectionPos = (collection != nil) ? collection!.count-1 : 0
         self.collection?.append(file)
     }
     
@@ -29,11 +31,11 @@ class MM_Collection : MMCollection {
             - file:     The file to add the metadata to.
      */
     func add(metadata: MMMetadata, file: MMFile) {
-        //find the instance in the collection where the name == file name (use search)
-        var file = search(term: file.filename)
-        
-        //add the mmetadata to that file
-        //remove the old one???
+        var files = search(term: file.filename)
+        for i in 0..<files.count{
+            collection![files[i].collectionPos].metadata.append(metadata)
+            
+        }
         
     }
     
@@ -44,7 +46,11 @@ class MM_Collection : MMCollection {
         - parameter metadata:   The item to remove from the collection.
      */
     func remove(metadata: MMMetadata) {
-        // Code
+        let files = search(item: metadata)
+        for file in files{
+            collection?.remove(at: file.collectionPos)
+        }
+        
     }
     
     
@@ -57,12 +63,18 @@ class MM_Collection : MMCollection {
                     possibly an empty list.
      */
     func search(term: String) -> [MMFile] {
-        var results: [MMFile] = []
-        // for each file in the collection
-        // check all the feilds in the files to see if term matches
-        // also check array of mmetadata to see if the term is there too??
-        //if found append to the result array
-        return results
+        if let coll = collection{
+            var results: [MMFile] = []
+            for file in coll{
+                //search each feild
+                if(file.getAttributes().contains(term)){
+                    results.append(file)
+                }
+            }
+            return results
+        }else{
+            return []
+        }
     }
     
     
