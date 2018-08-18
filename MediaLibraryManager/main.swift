@@ -12,7 +12,6 @@ import Foundation
 var library:MMCollection? = nil
 var last = MMResultSet()
 
-
 /// Generate a friendly prompt and wait for the user to enter a line of input
 /// - parameter prompt: The prompt to use
 /// - parameter strippingNewline: Strip the newline from the end of the line of

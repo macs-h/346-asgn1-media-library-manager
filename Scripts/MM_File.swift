@@ -13,7 +13,17 @@ class MM_File: MMFile {
 //    var metadata: [MMMetadata]
     var filename: String = ""
     var path: String = ""
-    var description: String = ""
+    var description: String{
+        if metadata.count > 0 {
+            var results: [String] = []
+            for data in metadata{
+                results.append(data.description)
+            }
+            return "Data {" + results.joined(separator: "} {")+"}"
+        }else{
+            return "Data{}"
+        }
+    }
     var collectionPos = 0
     
     // here we're actually keeping track of the concrete instances
@@ -48,15 +58,14 @@ class MM_File: MMFile {
             - filename: The name of the file
             - path:     The filepath to the file
      */
-    init(metadata: [MM_Metadata], filename: String, path: String, description: String) {
+    init(metadata: [MM_Metadata], filename: String, path: String) {
         self.metadata = metadata
         self.filename = filename
         self.path = path
-        self.description = description
     }
     
     convenience init(){
-        self.init(metadata: [MM_Metadata()], filename: "", path: "", description: "")
+        self.init(metadata: [MM_Metadata()], filename: "", path: "")
     }
     
     
