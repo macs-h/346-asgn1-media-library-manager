@@ -5,8 +5,10 @@ import Cocoa
 //
 // The third chunk of code I showed was how to read data from a file supplied as a path:
 //
-let filename = "/path/to/people.json"
-let url = URL(fileURLWithPath: filename)
+//let filename = "/path/to/people.json"
+let filename = "test.json"
+//let url = URL(fileURLWithPath: filename)
+let url = URL(fileURLWithPath: filename, relativeTo: URL(fileURLWithPath: "/Users/mhuang/346/asgn1/"))
 let data = try Data(contentsOf: url)
 
 // the struct mirrors the JSON data
@@ -17,6 +19,12 @@ struct Person: Codable {
 }
 let decoder = JSONDecoder()
 let people = try! decoder.decode([Person].self, from: data)
+
+for p in people{
+    print(p)
+}
+
+//print( filename[String.index] )
 
 //
 // In the people.json data file I’ve copy/pasted the example data from the

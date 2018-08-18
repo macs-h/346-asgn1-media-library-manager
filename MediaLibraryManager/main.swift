@@ -49,6 +49,8 @@ while let line = prompt("> "){
     var parts = line.split(separator: " ").map({String($0)})
     var command: MMCommand
     
+    let file = MM_FileImport()
+    
     do{
         guard parts.count > 0 else {
             throw MMCliError.unknownCommand
@@ -56,8 +58,23 @@ while let line = prompt("> "){
         
         commandString = parts.removeFirst();
         
+//        print("CS: \(commandString)\nParts:\(parts)")
+        
         switch(commandString){
-        case "load", "list", "add", "set", "del", "save-search", "save":
+        case "list", "add", "set", "del", "save-search", "save":
+            command = UnimplementedCommand()
+            break
+        case "load":
+//            print("LOAD")
+            
+            do {
+                try file.read(filename: parts.removeFirst())
+            } catch {
+//                print("Invalid filename. Please try again.")
+//                command = MMCliError.invalidParameters as! MMCommand
+            }
+            
+            
             command = UnimplementedCommand()
             break
         case "help":
@@ -75,6 +92,7 @@ while let line = prompt("> "){
         
         // if there are any results from the command, print them out here
         if let results = command.results {
+            print(results)
             results.show()
             last = results
         }

@@ -21,7 +21,26 @@ class MM_FileImport : MMFileImport {
         - returns:  A list of all the files in the file.
      */
     func read(filename: String) throws -> [MMFile] {
-        // Code
+
+        let url = URL(fileURLWithPath: filename, relativeTo: URL(fileURLWithPath: "/Users/mhuang/346/asgn1/"))
+        let data = try Data(contentsOf: url)
+        
+        // the struct mirrors the JSON data
+        struct Person: Codable {
+            var name: String
+            var office: String
+            var languages: [String]
+        }
+        let decoder = JSONDecoder()
+        let people = try! decoder.decode([Person].self, from: data)
+        
+
+        for p in people{
+            print(p)
+        }
+        
+        
+        
         return []
     }
     
