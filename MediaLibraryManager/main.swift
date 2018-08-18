@@ -46,7 +46,7 @@ func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
 while let line = prompt("> "){
     var commandString : String = ""
     var parts = line.split(separator: " ").map({String($0)})
-    var command: MMCommand
+    var command: MMCommand?
     
     let file = MM_FileImport()
     
@@ -58,24 +58,42 @@ while let line = prompt("> "){
         commandString = parts.removeFirst();
         
         switch(commandString){
-        case "list", "add", "set", "del", "save-search", "save":
+        case "list":
+            var searchResults: [MMFile] = []
+            if parts.isEmpty {
+                searchResults = library.all()
+            } else {
+                let keyword = parts.removeFirst()
+                searchResults = library.search(term: keyword)
+            }
+            for result in searchResults {
+                print(result)
+            }
+            break
+        case "add":
+//            let start = filename.startIndex
+//            let end = filename.index(filename.startIndex, offsetBy: filename._bridgeToObjectiveC().range(of: ".").location)
+//            print(filename[start..<end])
+            break
+        case "set":
+            break
+        case "del":
+            break
+        case "save-search":
+            break
+        case "save":
             command = UnimplementedCommand()
             break
         case "load":
-            
             do {
                 let files = try file.read(filename: parts.removeFirst())
                 for element in files {
                     library.add(file: element)
                 }
-                
-//                print(library)
             } catch {
                 throw MMCliError.invalidParameters
             }
-            
-            
-            command = UnimplementedCommand()
+//            command = UnimplementedCommand()
             break
         case "help":
             command = HelpCommand()
@@ -87,14 +105,16 @@ while let line = prompt("> "){
             throw MMCliError.unknownCommand
         }
         
-        // try execute the command and catch any thrown errors below
-        try command.execute()
-        
-        // if there are any results from the command, print them out here
-        if let results = command.results {
-            print(results)
-            results.show()
-            last = results
+        if command != nil {
+            // try execute the command and catch any thrown errors below
+            try command!.execute()
+            
+            // if there are any results from the command, print them out here
+            if let results = command!.results {
+                print(results)
+                results.show()
+                last = results
+            }
         }
         
     }catch MMCliError.unknownCommand {

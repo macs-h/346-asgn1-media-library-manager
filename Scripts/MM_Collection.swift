@@ -44,7 +44,7 @@ class MM_Collection : MMCollection {
      */
     func add(file: MMFile) {
         var tempFile = file
-        tempFile.collectionPos = (collection != nil) ? collection!.count-1 : 0
+        tempFile.collectionPos = (collection != nil) ? collection!.count : 0
         self.collection?.append(file)
     }
     

@@ -14,15 +14,18 @@ class MM_File: MMFile {
     var filename: String = ""
     var path: String = ""
     var description: String{
-        if metadata.count > 0 {
-            var results: [String] = []
-            for data in metadata{
-                results.append(data.description)
-            }
-            return "Data {" + results.joined(separator: "} {")+"}"
-        }else{
-            return "Data{}"
-        }
+//        if metadata.count > 0 {
+//            var results: [String] = []
+//            for data in metadata{
+//                results.append(data.description)
+//            }
+//            return "Data {" + results.joined(separator: "} {")+"}"
+//        }else{
+//            return "Data{}"
+//        }
+        
+        return filename
+        
     }
     var collectionPos = 0
     
@@ -85,6 +88,7 @@ class MM_File: MMFile {
         results.append(description)
         for data in metadata{
             results.append(data.keyword)
+            results.append(data.value) // Waiting on clarification from Paul about search implementation.
         }
         return results
     }

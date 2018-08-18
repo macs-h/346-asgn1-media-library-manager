@@ -39,7 +39,10 @@ class MM_FileImport : MMFileImport {
         for attribute in jsonData {
             let f = MM_File()
             
-            f.filename = filename
+            let start = filename.startIndex
+            let end = filename.index(filename.startIndex, offsetBy: filename._bridgeToObjectiveC().range(of: ".").location)
+            
+            f.filename = String(filename[start..<end])
             f.path = attribute.fullpath
             
             for metadata in attribute.metadata {
