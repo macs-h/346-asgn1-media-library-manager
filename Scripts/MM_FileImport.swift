@@ -39,11 +39,14 @@ class MM_FileImport : MMFileImport {
         for attribute in jsonData {
             let f = MM_File()
             
-            let start = filename.startIndex
-            let end = filename.index(filename.startIndex, offsetBy: filename._bridgeToObjectiveC().range(of: ".").location)
-            
-            f.filename = String(filename[start..<end])
             f.path = attribute.fullpath
+            
+            let path_reversed = String(f.path.reversed())
+            
+            let start = path_reversed.startIndex
+            let end = path_reversed.index(path_reversed.startIndex, offsetBy: path_reversed._bridgeToObjectiveC().range(of: "/").location)
+            
+            f.filename = String( String( path_reversed[start..<end].reversed()) )
             
             for metadata in attribute.metadata {
                 let data = MM_Metadata(keyword: metadata.key, value: metadata.value)

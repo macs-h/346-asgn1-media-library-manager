@@ -59,21 +59,27 @@ while let line = prompt("> "){
         
         switch(commandString){
         case "list":
-            var searchResults: [MMFile] = []
             if parts.isEmpty {
-                searchResults = library.all()
+                last = MMResultSet(library.all())
             } else {
                 let keyword = parts.removeFirst()
-                searchResults = library.search(term: keyword)
+                last = MMResultSet(library.search(term: keyword))
             }
-            for result in searchResults {
-                print(result)
-            }
+            last.show()
             break
         case "add":
-//            let start = filename.startIndex
-//            let end = filename.index(filename.startIndex, offsetBy: filename._bridgeToObjectiveC().range(of: ".").location)
-//            print(filename[start..<end])
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let index = Int(parts.removeFirst())
+                let file = try last.get(index: index!)
+                let metadata = MM_Metadata(keyword: parts.removeFirst(), value: parts.removeFirst())
+                print("file:", file)
+                print("index:", index)
+                print("metadata:", metadata)
+                library.add(metadata: metadata, file: file)
+            }
+//            try print(last.get(index: ))
             break
         case "set":
             break

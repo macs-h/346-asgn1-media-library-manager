@@ -1,0 +1,18 @@
+[
+  {
+    "fullpath": "/path/to/foo.png",
+    "type": "image",
+    "metadata": {
+        "key5": "value5",
+        "key6": "value6",
+    }
+  },
+  {
+    "fullpath": "/path/to/bar.mp4",
+    "type": "video",
+    "metadata": {
+        "key7": "value7",
+        "key8": "value8",
+    }
+  }
+]
