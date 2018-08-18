@@ -10,6 +10,22 @@ import Foundation
 
 class MM_Collection : MMCollection {
     var collection: [MMFile]?
+    
+    
+    var description: String{
+        let coll = self.all()
+        if coll.count > 0 {
+            var results: [String] = []
+            for file in coll{
+                results.append(file.description)
+            }
+            return "Collection [" + results.joined(separator: "] [")+"]"
+        }else{
+            return "Collection []"
+        }
+    }
+    
+    
     /**
         Adds a file's metadata to the media metadata collection.
      
@@ -28,7 +44,7 @@ class MM_Collection : MMCollection {
      
         - parameters:
             - metadata: The item to add to the collection.
-            - file:     The file to add the metadata to.
+            - file:     The file to add the metadata to within the collection.
      */
     func add(metadata: MMMetadata, file: MMFile) {
         var files = search(term: file.filename)
@@ -118,7 +134,7 @@ class MM_Collection : MMCollection {
         }
     }
     
-    var description: String = ""
+    
     
     
     

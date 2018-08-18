@@ -13,7 +13,9 @@ class MM_Metadata: MMMetadata{
     
     var keyword: String
     var value: String
-    var description: String
+    var description: String{
+        return keyword + " = " + value
+    }
     
     
     /**
@@ -22,12 +24,10 @@ class MM_Metadata: MMMetadata{
         - Parameters:
             - keyword:      The keyword for the metadata
             - value:        The value the metadata should be initialised to
-            - description:  The description of the metadata
      */
-    init(keyword: String, value: String, description: String) {
+    init(keyword: String, value: String) {
         self.keyword = keyword
         self.value = value
-        self.description = description
     }
     
     /**
@@ -36,7 +36,7 @@ class MM_Metadata: MMMetadata{
         Currently sets variables to an emtpy `String`
      */
     convenience init(){
-        self.init(keyword: "", value: "", description: "")
+        self.init(keyword: "", value: "")
     }
 }
 
