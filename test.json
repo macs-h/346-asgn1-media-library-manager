@@ -1,12 +1,18 @@
 [
   {
-    "name": "Paul", 
-    "office": "2.51", 
-    "languages":["python","swift"]
+    "fullpath": "/path/to/foo.png",
+    "type": "image",
+    "metadata": {
+        "key1": "value1",
+        "key2": "value2",
+    }
   },
   {
-    "name": "Hamza",
-    "office": "2.50", 
-    "languages":["java","swift"]
+    "fullpath": "/path/to/bar.mp4",
+    "type": "video",
+    "metadata": {
+        "key3": "value3",
+        "key4": "value4",
+    }
   }
 ]

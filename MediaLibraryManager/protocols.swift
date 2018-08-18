@@ -125,6 +125,7 @@ protocol MMCollection:CustomStringConvertible {
     /// A list of all the metadata associated with the item's keyword, possibly
     /// an empty list.
     func search(item: MMMetadata) -> [MMFile]
+    
 }
 
 ///

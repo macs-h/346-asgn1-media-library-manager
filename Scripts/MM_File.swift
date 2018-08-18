@@ -65,7 +65,7 @@ class MM_File: MMFile {
     }
     
     convenience init(){
-        self.init(metadata: [MM_Metadata()], filename: "", path: "")
+        self.init(metadata: [], filename: "", path: "")
     }
     
     

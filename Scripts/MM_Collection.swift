@@ -26,6 +26,16 @@ class MM_Collection : MMCollection {
     }
     
     
+    convenience init () {
+        self.init(collection: [])
+    }
+    
+    
+    init(collection: [MMFile]) {
+        self.collection = collection
+    }
+    
+    
     /**
         Adds a file's metadata to the media metadata collection.
      

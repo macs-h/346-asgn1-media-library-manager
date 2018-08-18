@@ -21,27 +21,35 @@ class MM_FileImport : MMFileImport {
         - returns:  A list of all the files in the file.
      */
     func read(filename: String) throws -> [MMFile] {
+        
+        var files: [MM_File] = []
 
         let url = URL(fileURLWithPath: filename, relativeTo: URL(fileURLWithPath: "/Users/mhuang/346/asgn1/"))
-        let data = try Data(contentsOf: url)
+        let encodedJsonData = try Data(contentsOf: url)
         
         // the struct mirrors the JSON data
-        struct Person: Codable {
-            var name: String
-            var office: String
-            var languages: [String]
+        struct JSON: Codable {
+            var fullpath: String
+            var type: String
+            var metadata: [String : String]
         }
         let decoder = JSONDecoder()
-        let people = try! decoder.decode([Person].self, from: data)
+        let jsonData = try! decoder.decode([JSON].self, from: encodedJsonData)
         
-
-        for p in people{
-            print(p)
+        for attribute in jsonData {
+            let f = MM_File()
+            
+            f.filename = filename
+            f.path = attribute.fullpath
+            
+            for metadata in attribute.metadata {
+                let data = MM_Metadata(keyword: metadata.key, value: metadata.value)
+                f.metadata.append(data)
+            }
+            files.append(f)
         }
-        
-        
-        
-        return []
+
+        return files
     }
     
 }

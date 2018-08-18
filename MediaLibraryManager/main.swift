@@ -9,7 +9,7 @@
 import Foundation
 
 // TODO create your instance of your library here
-var library:MMCollection? = nil
+var library:MMCollection = MM_Collection()
 var last = MMResultSet()
 
 /// Generate a friendly prompt and wait for the user to enter a line of input
@@ -57,20 +57,21 @@ while let line = prompt("> "){
         
         commandString = parts.removeFirst();
         
-//        print("CS: \(commandString)\nParts:\(parts)")
-        
         switch(commandString){
         case "list", "add", "set", "del", "save-search", "save":
             command = UnimplementedCommand()
             break
         case "load":
-//            print("LOAD")
             
             do {
-                try file.read(filename: parts.removeFirst())
+                let files = try file.read(filename: parts.removeFirst())
+                for element in files {
+                    library.add(file: element)
+                }
+                
+//                print(library)
             } catch {
-//                print("Invalid filename. Please try again.")
-//                command = MMCliError.invalidParameters as! MMCommand
+                throw MMCliError.invalidParameters
             }
             
             
