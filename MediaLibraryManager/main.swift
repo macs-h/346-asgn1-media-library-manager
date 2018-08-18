@@ -12,6 +12,19 @@ import Foundation
 var library:MMCollection? = nil
 var last = MMResultSet()
 
+
+/// Generate a friendly prompt and wait for the user to enter a line of input
+/// - parameter prompt: The prompt to use
+/// - parameter strippingNewline: Strip the newline from the end of the line of
+///   input (true by default)
+/// - return: The result of `readLine`.
+/// - seealso: readLine
+func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
+    print(prompt, terminator:"")
+    return readLine(strippingNewline: strippingNewline)
+}
+
+
 // The while-loop below implements a basic command line interface. Some
 // examples of the (intended) commands are as follows:
 //
@@ -32,39 +45,47 @@ var last = MMResultSet()
 //
 // Feel free to extend these commands/errors as you need to.
 while let line = prompt("> "){
-    var command : String = ""
+    var commandString : String = ""
     var parts = line.split(separator: " ").map({String($0)})
+    var command: MMCommand
     
     do{
         guard parts.count > 0 else {
-            throw MMCliError.noCommand
+            throw MMCliError.unknownCommand
         }
-        command = parts.removeFirst();
-        switch(command){
+        
+        commandString = parts.removeFirst();
+        
+        switch(commandString){
         case "load", "list", "add", "set", "del", "save-search", "save":
-            last = try UnimplementedCommandHandler.handle(parts, last:last)
+            command = UnimplementedCommand()
             break
         case "help":
-            last = try HelpCommandHandler.handle(parts, last:last)
+            command = HelpCommand()
             break
         case "quit":
-            last = try QuitCommandHandler.handle(parts, last:last)
-            // so we don't show the results of the previous command
-            // (before the quit), we'll continue here instead of breaking
-            continue
+            command = QuitCommand()
+            break
         default:
             throw MMCliError.unknownCommand
         }
-        last.showResults();
-    }catch MMCliError.noCommand {
-        print("No command given -- see \"help\" for details.")
+        
+        // try execute the command and catch any thrown errors below
+        try command.execute()
+        
+        // if there are any results from the command, print them out here
+        if let results = command.results {
+            results.show()
+            last = results
+        }
+        
     }catch MMCliError.unknownCommand {
-        print("Command \"\(command)\" not found -- see \"help\" for details.")
+        print("command \"\(commandString)\" not found -- see \"help\" for list")
     }catch MMCliError.invalidParameters {
-        print("Invalid parameters for \"\(command)\" -- see \"help\" for details.")
+        print("invalid parameters for \"\(commandString)\" -- see \"help\" for list")
     }catch MMCliError.unimplementedCommand {
-        print("The \"\(command)\" command is not implemented.")
+        print("\"\(commandString)\" is unimplemented")
     }catch MMCliError.missingResultSet {
-        print("No previous results to work from.")
+        print("no previous results to work from... ")
     }
 }

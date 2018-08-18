@@ -25,30 +25,15 @@ enum MMCliError: Error {
     /// Thrown if the command has yet to be implemented
     case unimplementedCommand
     
-    /// Thrown if there is no command given
-    case noCommand
-    
     // feel free to add more errors as you need them
 }
 
-/// Generate a friendly prompt and wait for the user to enter a line of input
-/// - parameter prompt: The prompt to use
-/// - parameter strippingNewline: Strip the newline from the end of the line of
-///   input (true by default)
-/// - return: The result of `readLine`.
-/// - seealso: readLine
-func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
-    // the following terminator specifies *not* to put a newline at the
-    // end of the printed line
-    print(prompt, terminator:"")
-    return readLine(strippingNewline: strippingNewline)
-}
 
 /// This class representes a set of results.
 class MMResultSet{
     
     /// The list of files produced by the command
-    private var results: [MMFile]
+    fileprivate var results: [MMFile]
     
     /// Constructs a new result set.
     /// - parameter results: the list of files produced by the executed
@@ -64,7 +49,7 @@ class MMResultSet{
     /// If there are some results to show, enumerate them and print them out.
     /// - note: this enumeration is used to identify the files in subsequent
     /// commands.
-    func showResults(){
+    func show(){
         guard self.results.count > 0 else{
             return
         }
@@ -75,35 +60,56 @@ class MMResultSet{
     
     /// Determines if the result set has some results.
     /// - returns: True iff there are results in this set
-    func hasResults() -> Bool{
-        return self.results.count > 0
+    func get(index: Int) throws -> MMFile{
+        return self.results[index]
     }
 }
 
-/// The interface for the command handler.
-protocol MMCommandHandler{
-    
-    /// The handle function executes the command.
-    ///
-    /// - parameter params: The list of parameters to the command. For example,
-    /// typing 'load foo.json' at the prompt will result in params containing
-    /// *just* the foo.json part.
-    ///
-    /// - parameter last: The previous result set, used to give context to some
-    /// of the commands that add/set/del the metadata associated with a file.
-    ///
-    /// - Throws: one of the `MMCliError` exceptions
-    ///
-    /// - returns: an instance of `MMResultSet`
-    static func handle(_ params: [String], last: MMResultSet) throws -> MMResultSet;
-    
+
+/// This protocol specifies the new 'Command' pattern, and is more
+/// Object Oriented.
+protocol MMCommand{
+    var results: MMResultSet? {get}
+    func execute() throws
 }
+
+
+// The main difference between this and the previous style is that to use this
+// style you first create an instance of the command:
+//
+//      var command = ListCommand(library, terms)
+//
+// then you call execute on that instance:
+//
+//      command.execute()
+//
+// and finally, the results are stored within the command object:
+//
+//      command.results?
+//
+//
+// This means that the execute function doesn't need to know about all the
+// possible combinations of parameters, libraries, previous result sets. This
+// is the problem with the previous implementation. Previously, if *any*
+// command needed to have previous result sets, then they *all* needed to know
+// about it.
+
+/// Handle unimplemented commands by throwing an exception when trying to
+/// execute this command.
+class UnimplementedCommand: MMCommand{
+    var results: MMResultSet? = nil
+    func execute() throws{
+        throw MMCliError.unimplementedCommand
+    }
+}
+
 
 /// Handles the 'help' command -- prints usage information
 /// - Attention: There are some examples of the commands in the source code
 /// comments
-class HelpCommandHandler: MMCommandHandler{
-    static func handle(_ params: [String], last: MMResultSet) throws -> MMResultSet{
+class HelpCommand: MMCommand{
+    var results: MMResultSet? = nil
+    func execute() throws{
         print("""
 \thelp                              - this text
 \tload <filename> ...               - load file into the collection
@@ -114,23 +120,32 @@ class HelpCommandHandler: MMCommandHandler{
 \tdel <number> <key> ...            - removes a metadata item from a file
 \tsave-search <filename>            - saves the last list results to a file
 \tsave <filename>                   - saves the whole collection to a file
-\tquit                              - quit the program
+\tquit                              - exit the program (without prompts)
 """)
-        return MMResultSet()
+        // for example:
+        
+        // load foo.json bar.json
+        //      from the current directory load both foo.json and bar.json and
+        //      merge the results
+        
+        // list foo bar baz
+        //      results in a set of files with metadata containing foo OR bar OR baz
+        
+        // add 3 foo bar
+        //      using the results of the previous list, add foo=bar to the file
+        //      at index 3 in the list
+        
+        // add 3 foo bar baz qux
+        //      using the results of the previous list, add foo=bar and baz=qux
+        //      to the file at index 3 in the list
     }
 }
 
-/// Handle the 'quit' command
-class QuitCommandHandler : MMCommandHandler{
-    static func handle(_ params: [String], last: MMResultSet) throws -> MMResultSet {
-        // you may want to prompt if the previous result set hasn't been saved...
+/// Handle the quit command. Exits the program (with exit code 0) without
+/// checking if there is anything to save.
+class QuitCommand : MMCommand{
+    var results: MMResultSet? = nil
+    func execute() throws{
         exit(0)
-    }
-}
-
-// All the other commands are unimplemented
-class UnimplementedCommandHandler: MMCommandHandler{
-    static func handle(_ params: [String], last: MMResultSet) throws -> MMResultSet {
-        throw MMCliError.unimplementedCommand
     }
 }

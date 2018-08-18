@@ -39,3 +39,16 @@ class MM_Metadata: MMMetadata{
         self.init(keyword: "", value: "", description: "")
     }
 }
+
+
+extension MMMetadata {
+    
+    // note the 'self' in here
+    static func == (lhs: Self, rhs: MMMetadata) -> Bool {
+        return lhs.keyword == rhs.keyword && lhs.value == rhs.value
+    }
+    
+    static func !=(lhs: Self, rhs: MMMetadata) -> Bool{
+        return !(lhs == rhs)
+    }
+}
