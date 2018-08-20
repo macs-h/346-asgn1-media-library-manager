@@ -61,12 +61,6 @@ class MM_Collection : MMCollection {
         for i in 0..<files.count{
             collection![files[i].collectionPos].metadata.append(metadata)
         }
-        
-        //remove
-        for i in 0..<files.count{
-            collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
-        }
-        
     }
     
     
@@ -78,9 +72,7 @@ class MM_Collection : MMCollection {
     func remove(metadata: MMMetadata) {
         let files = search(item: metadata)
         for file in files{
-            print("before del", collection)
             collection?.remove(at: file.collectionPos)
-            print("after del", collection)
         }
         
     }
@@ -95,8 +87,8 @@ class MM_Collection : MMCollection {
      */
     func remove(metadata: MMMetadata, file: MMFile) {
         let files = search(term: file.filename)
-        for file in files{
-            collection?.remove(at: file.collectionPos)
+        for i in 0..<files.count{
+            collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
         }
         
     }
