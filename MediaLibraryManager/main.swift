@@ -69,6 +69,7 @@ while let line = prompt("> "){
             break
             
         case "search":
+            // CLARIFY WITH PAUL
             break
             
         case "add":
@@ -83,7 +84,18 @@ while let line = prompt("> "){
             break
             
         case "set":
-            // remove then add
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let index = Int(parts.removeFirst())
+                let file = try last.get(index: index!)
+                let keyword = parts.removeFirst()
+                let value = parts.removeFirst()
+                var metadata = MM_Metadata(keyword: keyword, value: "")
+                library.remove(metadata: metadata, file: file)
+                metadata = MM_Metadata(keyword: keyword, value: value)
+                library.add(metadata: metadata, file: file)
+            }
             break
             
         case "del":
