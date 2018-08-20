@@ -32,6 +32,7 @@ protocol MMFile: CustomStringConvertible{
     var filename: String {get set}
     var path: String {get set}
     var collectionPos: Int {get set}
+    var fileType: String {get set}
     
     ///
     /// Searches all the meta data for a keyword
@@ -125,6 +126,16 @@ protocol MMCollection:CustomStringConvertible {
     /// A list of all the metadata associated with the item's keyword, possibly
     /// an empty list.
     func search(item: MMMetadata) -> [MMFile]
+    
+    
+    /**
+        Removes a specific instance of a metadata from a specific file.
+     
+        - parameters:
+            - metadata: The item to remove from the file.
+            - file:     The file to remove the metadata from.
+     */
+    func remove(metadata: MMMetadata, file: MMFile)
     
 }
 

@@ -74,6 +74,24 @@ class MM_Collection : MMCollection {
     func remove(metadata: MMMetadata) {
         let files = search(item: metadata)
         for file in files{
+            print("before del", collection)
+            collection?.remove(at: file.collectionPos)
+            print("after del", collection)
+        }
+        
+    }
+    
+    
+    /**
+        Removes a specific instance of a metadata from a specific file.
+
+        - parameters:
+            - metadata: The item to remove from the file.
+            - file:     The file to remove the metadata from.
+     */
+    func remove(metadata: MMMetadata, file: MMFile) {
+        let files = search(term: file.filename)
+        for file in files{
             collection?.remove(at: file.collectionPos)
         }
         

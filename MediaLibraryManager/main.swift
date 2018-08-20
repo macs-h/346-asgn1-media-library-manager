@@ -67,6 +67,10 @@ while let line = prompt("> "){
             }
             last.show()
             break
+            
+        case "search":
+            break
+            
         case "add":
             if parts.isEmpty {
                 throw MMCliError.invalidParameters
@@ -74,22 +78,38 @@ while let line = prompt("> "){
                 let index = Int(parts.removeFirst())
                 let file = try last.get(index: index!)
                 let metadata = MM_Metadata(keyword: parts.removeFirst(), value: parts.removeFirst())
-                print("file:", file)
-                print("index:", index)
-                print("metadata:", metadata)
                 library.add(metadata: metadata, file: file)
             }
-//            try print(last.get(index: ))
             break
+            
         case "set":
+            // remove then add
             break
+            
         case "del":
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let index = Int(parts.removeFirst())
+                let file = try last.get(index: index!)
+                let metadata = MM_Metadata(keyword: parts.removeFirst(), value: "")
+                library.remove(metadata: metadata, file: file)
+            }
             break
+            
         case "save-search":
             break
+            
         case "save":
-            command = UnimplementedCommand()
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let filename = parts.removeFirst()
+                let file = MM_FileExport()
+                try file.write(filename: filename, items: library.all())
+            }
             break
+            
         case "load":
             do {
                 let files = try file.read(filename: parts.removeFirst())
@@ -101,6 +121,7 @@ while let line = prompt("> "){
             }
 //            command = UnimplementedCommand()
             break
+            
         case "help":
             command = HelpCommand()
             break

@@ -2,15 +2,18 @@
 
 import Cocoa
 
-//
-// The third chunk of code I showed was how to read data from a file supplied as a path:
-//
-//let filename = "/path/to/people.json"
-var filename = "/path/to/foo.png"
+let THIS_FILES_PATH:String = #file
+print(THIS_FILES_PATH)
 
-let filename_rev = String(filename.reversed())
+// As an array
+let THIS_FILES_PATH_AS_ARRAY:[String] = #file.split(separator: "/").map({String($0)})
+print(THIS_FILES_PATH_AS_ARRAY.last)
 
-let start = filename_rev.startIndex
-let end = filename_rev.index(filename_rev.startIndex, offsetBy: filename_rev._bridgeToObjectiveC().range(of: "/").location)
+let path = "/Users/mhuang/346/asgn1/Scripts/MM_FileExport.swift"
+var filepath:[String] = path.split(separator: "/").map({String($0)})
+filepath.removeLast(2)
+print(filepath.joined(separator: "/"))
 
-print( String( filename_rev[start..<end].reversed()))
+
+let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+print( paths[0])

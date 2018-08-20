@@ -13,6 +13,7 @@ class MM_File: MMFile {
 //    var metadata: [MMMetadata]
     var filename: String = ""
     var path: String = ""
+    var fileType: String = ""
     var description: String{
 //        if metadata.count > 0 {
 //            var results: [String] = []
@@ -75,6 +76,7 @@ class MM_File: MMFile {
     func metadataContains(keyword: String) -> Bool {
         for item in self.metadata{
             if item.keyword == keyword{
+                print("found metadata in", filename)
                 return true
             }
         }
@@ -97,3 +99,5 @@ class MM_File: MMFile {
     
     
 }
+
+
