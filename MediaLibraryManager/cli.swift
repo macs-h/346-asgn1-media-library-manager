@@ -63,6 +63,16 @@ class MMResultSet{
     func get(index: Int) throws -> MMFile{
         return self.results[index]
     }
+    
+    
+    /**
+        Returns the files listed on the last `list` or `search` command.
+     
+        - returns: An array of `MMFile`
+     */
+    func all() -> [MMFile] {
+        return self.results
+    }
 }
 
 

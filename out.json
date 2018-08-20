@@ -8,11 +8,11 @@
     }
   },
   {
-    "type" : "video",
-    "fullpath" : "/path/to/bar.mp4",
+    "type" : "image",
+    "fullpath" : "/path/to/foo.png",
     "metadata" : {
-      "key4" : "value4",
-      "key3" : "value3"
+      "key1" : "value1",
+      "key2" : "value2"
     }
   }
 ]

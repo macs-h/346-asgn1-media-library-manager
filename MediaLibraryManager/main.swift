@@ -110,6 +110,13 @@ while let line = prompt("> "){
             break
             
         case "save-search":
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let filename = parts.removeFirst()
+                let file = MM_FileExport()
+                try file.write(filename: filename, items: last.all())
+            }
             break
             
         case "save":
