@@ -41,7 +41,7 @@ protocol MMFile: CustomStringConvertible{
     ///     -keyword: The file and associated metadata to add to the collection
     /// - Returns:
     ///     -bool describing whether the keyword was found
-    func metadataContains(keyword: String) -> Bool
+    func searchMetadata(keyword: String) -> Int
     
     
     ///
