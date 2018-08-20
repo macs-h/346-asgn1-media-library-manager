@@ -60,7 +60,11 @@ class MM_Collection : MMCollection {
         var files = search(term: file.filename)
         for i in 0..<files.count{
             collection![files[i].collectionPos].metadata.append(metadata)
-            
+        }
+        
+        //remove
+        for i in 0..<files.count{
+            collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
         }
         
     }
@@ -134,7 +138,7 @@ class MM_Collection : MMCollection {
         if let coll = collection{
             var results: [MMFile] = []
             for file in coll{
-                if(file.metadataContains(keyword: item.keyword)){
+                if(file.searchMetadata(keyword: item.keyword) != -1){
                     results.append(file)
                 }
             }

@@ -72,13 +72,15 @@ class MM_File: MMFile {
     }
     
     
-    func metadataContains(keyword: String) -> Bool {
+    func searchMetadata(keyword: String) -> Int {
+        var i = 0
         for item in self.metadata{
             if item.keyword == keyword{
-                return true
+                return i
             }
+            i += 1
         }
-        return false
+        return -1
     }
     
     func getAttributes() -> [String]{
