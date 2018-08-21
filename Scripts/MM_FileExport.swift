@@ -3,13 +3,13 @@
 //  MediaLibraryManager
 //
 //  Created by Max Huang and Sam Paterson on 16/08/18.
-//  Copyright © 2018 Paul Crane. All rights reserved.
+//  Copyright © 2018 SMAX. All rights reserved.
 //
 
 import Foundation
 
 /**
-    Exports the media collection to a file.
+    Exports the media collection to a file (by name)
  */
 class MM_FileExport : MMFileExport {
     

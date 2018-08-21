@@ -3,14 +3,17 @@
 //  MediaLibraryManager
 //
 //  Created by Max Huang and Sam Paterson on 16/08/18.
-//  Copyright © 2018 Paul Crane. All rights reserved.
+//  Copyright © 2018 SMAX. All rights reserved.
 //
 
 import Foundation
 
+/**
+    The main functions of the media metadata collection
+ */
 class MM_Collection : MMCollection {
-    var collection: [MMFile]?
     
+    var collection: [MMFile]?
     
     var description: String{
         let coll = self.all()
@@ -26,13 +29,24 @@ class MM_Collection : MMCollection {
     }
     
     
-    convenience init () {
-        self.init(collection: [])
+    /**
+        Default initialiser
+     
+        - parameter collection: An array containing the files and associated
+                                metadata to initialise the collection with
+     */
+    init(collection: [MMFile]) {
+        self.collection = collection
     }
     
     
-    init(collection: [MMFile]) {
-        self.collection = collection
+    /**
+        Convenience initialiser
+     
+        Initialises the collection as an empty array.
+     */
+    convenience init () {
+        self.init(collection: [])
     }
     
     
@@ -157,9 +171,6 @@ class MM_Collection : MMCollection {
             return []
         }
     }
-    
-    
-    
     
     
 }

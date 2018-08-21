@@ -4,51 +4,61 @@
 //  COSC346 S2 2018 Assignment 1
 //
 //  Created by Paul Crane on 21/06/18.
+//  Modified by Max Huang and Sam Paterson on 16/08/18.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 import Foundation
 
-/// The list of exceptions that can be thrown by the CLI command handlers
+// The list of exceptions that can be thrown by the CLI command handlers
 enum MMCliError: Error {
     
-    /// Thrown if there is something wrong with the input parameters for the
-    /// command
+    // Thrown if there is something wrong with the input parameters for the
+    // command
     case invalidParameters
     
-    /// Thrown if there is no result set to work with (and this command depends
-    /// on the previous command)
+    // Thrown if there is no result set to work with (and this command depends
+    // on the previous command)
     case missingResultSet
     
-    /// Thrown when the command is not understood
+    // Thrown when the command is not understood
     case unknownCommand
     
-    /// Thrown if the command has yet to be implemented
+    // Thrown if the command has yet to be implemented
     case unimplementedCommand
     
     // feel free to add more errors as you need them
 }
 
 
-/// This class representes a set of results.
+// This class representes a set of results.
 class MMResultSet{
     
-    /// The list of files produced by the command
+    // The list of files produced by the command
     fileprivate var results: [MMFile]
     
-    /// Constructs a new result set.
-    /// - parameter results: the list of files produced by the executed
-    /// command, could be empty.
+    /**
+        Constructs a new result set.
+     
+        - parameter results:    The list of files produced by the executed
+                                command, could be empty.
+     */
     init(_ results:[MMFile]){
         self.results = results
     }
-    /// Constructs a new result set with an empty list.
+    
+    
+    /**
+        Constructs a new result set with an empty list.
+     */
     convenience init(){
         self.init([MMFile]())
     }
     
-    /// If there are some results to show, enumerate them and print them out.
-    /// - note: this enumeration is used to identify the files in subsequent
-    /// commands.
+    /**
+        If there are some results to show, enumerate them and print them out.
+        - note: this enumeration is used to identify the files in subsequent
+                commands.
+     */
     func show(){
         guard self.results.count > 0 else{
             return
@@ -58,8 +68,11 @@ class MMResultSet{
         }
     }
     
-    /// Determines if the result set has some results.
-    /// - returns: True iff there are results in this set
+    /**
+        Determines if the result set has some results.
+     
+        - returns: True iff there are results in this set
+     */
     func get(index: Int) throws -> MMFile{
         return self.results[index]
     }
@@ -76,36 +89,42 @@ class MMResultSet{
 }
 
 
-/// This protocol specifies the new 'Command' pattern, and is more
-/// Object Oriented.
+/**
+    This protocol specifies the new 'Command' pattern, and is more Object
+    Oriented.
+ */
 protocol MMCommand{
     var results: MMResultSet? {get}
     func execute() throws
 }
 
 
-// The main difference between this and the previous style is that to use this
-// style you first create an instance of the command:
-//
-//      var command = ListCommand(library, terms)
-//
-// then you call execute on that instance:
-//
-//      command.execute()
-//
-// and finally, the results are stored within the command object:
-//
-//      command.results?
-//
-//
-// This means that the execute function doesn't need to know about all the
-// possible combinations of parameters, libraries, previous result sets. This
-// is the problem with the previous implementation. Previously, if *any*
-// command needed to have previous result sets, then they *all* needed to know
-// about it.
+/**
+    The main difference between this and the previous style is that to use this
+    style you first create an instance of the command:
 
-/// Handle unimplemented commands by throwing an exception when trying to
-/// execute this command.
+        var command = ListCommand(library, terms)
+
+    then you call execute on that instance:
+
+        command.execute()
+
+    and finally, the results are stored within the command object:
+
+        command.results?
+
+ 
+    This means that the execute function doesn't need to know about all the
+    possible combinations of parameters, libraries, previous result sets. This
+    is the problem with the previous implementation. Previously, if *any*
+    command needed to have previous result sets, then they *all* needed to know
+    about it.
+ */
+
+/**
+    Handle unimplemented commands by throwing an exception when trying to
+    execute this command.
+ */
 class UnimplementedCommand: MMCommand{
     var results: MMResultSet? = nil
     func execute() throws{
@@ -114,9 +133,12 @@ class UnimplementedCommand: MMCommand{
 }
 
 
-/// Handles the 'help' command -- prints usage information
-/// - Attention: There are some examples of the commands in the source code
-/// comments
+/**
+    Handles the 'help' command -- prints usage information
+ 
+    - Attention:    There are some examples of the commands in the source code
+                    comments
+ */
 class HelpCommand: MMCommand{
     var results: MMResultSet? = nil
     func execute() throws{
@@ -151,8 +173,10 @@ class HelpCommand: MMCommand{
     }
 }
 
-/// Handle the quit command. Exits the program (with exit code 0) without
-/// checking if there is anything to save.
+/**
+    Handle the quit command. Exits the program (with exit code 0) without
+    checking if there is anything to save.
+ */
 class QuitCommand : MMCommand{
     var results: MMResultSet? = nil
     func execute() throws{

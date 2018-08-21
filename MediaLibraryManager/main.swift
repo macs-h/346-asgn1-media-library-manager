@@ -3,6 +3,7 @@
 //  MediaLibraryManager
 //
 //  Created by Paul Crane on 18/06/18.
+//  Modified by Max Huang and Sam Paterson on 16/08/18.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 

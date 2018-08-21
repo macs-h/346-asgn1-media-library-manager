@@ -3,11 +3,14 @@
 //  MediaLibraryManager
 //
 //  Created by Sam Paterson and Max Huang on 14/08/18.
-//  Copyright © 2018 Paul Crane. All rights reserved.
+//  Copyright © 2018 SMAX. All rights reserved.
 //
 
 import Foundation
 
+/**
+    Represents metadata for a media file
+ */
 class MM_Metadata: MMMetadata{
 //    var keyword: String
     
