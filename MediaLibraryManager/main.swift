@@ -35,13 +35,13 @@ func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
         - metadata:    A new metadata instance
         - file:        A new file instance
  */
-func makeMetadataAndFile(let_parts: [String], last: MMResultSet)-> (metadata: MMMetadata, file: MMFile){
+func makeMetadataAndFile(let_parts: [String], last: MMResultSet)throws -> (metadata: MMMetadata, file: MMFile){
     var parts = let_parts
     let index = Int(parts.removeFirst())
     let file = try last.get(index: index!)
     let keyword = parts.removeFirst()
     let value = parts.removeFirst()
-    var metadata = MM_Metadata(keyword: keyword, value: value)
+    let metadata = MM_Metadata(keyword: keyword, value: value)
     return(metadata: metadata, file: file)
 }
 
@@ -97,10 +97,11 @@ while let line = prompt("> "){
             if parts.isEmpty {
                 throw MMCliError.invalidParameters
             } else {
-                let index = Int(parts.removeFirst())
-                let file = try last.get(index: index!)
-                let metadata = MM_Metadata(keyword: parts.removeFirst(), value: parts.removeFirst())
-                library.add(metadata: metadata, file: file)
+//                let index = Int(parts.removeFirst())
+//                let file = try last.get(index: index!)
+//                let metadata = MM_Metadata(keyword: parts.removeFirst(), value: parts.removeFirst())
+                let data = try makeMetadataAndFile(let_parts: parts, last: last)
+                library.add(metadata: data.metadata, file: data.file)
             }
             break
             
@@ -108,14 +109,16 @@ while let line = prompt("> "){
             if parts.isEmpty {
                 throw MMCliError.invalidParameters
             } else {
-                let index = Int(parts.removeFirst())
-                let file = try last.get(index: index!)
-                let keyword = parts.removeFirst()
-                let value = parts.removeFirst()
-                var metadata = MM_Metadata(keyword: keyword, value: "")
-                library.remove(metadata: metadata, file: file)
-                metadata = MM_Metadata(keyword: keyword, value: value)
-                library.add(metadata: metadata, file: file)
+//                let index = Int(parts.removeFirst())
+//                let file = try last.get(index: index!)
+//                let keyword = parts.removeFirst()
+//                let value = parts.removeFirst()
+//                var metadata = MM_Metadata(keyword: keyword, value: "")
+                
+               // metadata = MM_Metadata(keyword: keyword, value: value)
+                let data = try makeMetadataAndFile(let_parts: parts, last: last)
+                library.remove(metadata: data.metadata, file: data.file)
+                library.add(metadata: data.metadata, file: data.file)
             }
             break
             
@@ -123,10 +126,12 @@ while let line = prompt("> "){
             if parts.isEmpty {
                 throw MMCliError.invalidParameters
             } else {
-                let index = Int(parts.removeFirst())
-                let file = try last.get(index: index!)
-                let metadata = MM_Metadata(keyword: parts.removeFirst(), value: "")
-                library.remove(metadata: metadata, file: file)
+//                let index = Int(parts.removeFirst())
+//                let file = try last.get(index: index!)
+//                let metadata = MM_Metadata(keyword: parts.removeFirst(), value: "")
+//                library.remove(metadata: metadata, file: file)
+                let data = try makeMetadataAndFile(let_parts: parts, last: last)
+                library.remove(metadata: data.metadata, file: data.file)
             }
             break
             
