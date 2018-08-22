@@ -4,7 +4,16 @@
     "fullpath" : "/path/to/foo.png",
     "metadata" : {
       "1" : "2",
+      "key1" : "value1",
       "key2" : "value2"
+    }
+  },
+  {
+    "type" : "video",
+    "fullpath" : "/path/to/bar.mp4",
+    "metadata" : {
+      "key4" : "value4",
+      "key3" : "value3"
     }
   }
 ]

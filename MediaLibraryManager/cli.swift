@@ -99,50 +99,34 @@ protocol MMCommand{
 }
 
 
-/**
-    The main difference between this and the previous style is that to use this
-    style you first create an instance of the command:
 
-        var command = ListCommand(library, terms)
+fileprivate class FileHelper {
+    static let instance = FileHelper()
+    
+    /**
+     Finds all the files associated with the keyword.
+     
+     - parameters:
+     - parts:   The commandline arguments
+     - last:    The list of last listed items
+     
+     - returns:
+     - metadata:    A new metadata instance
+     - file:        A new file instance
+     */
+    func makeMetadataAndFile(let_parts: [String], last: MMResultSet)throws -> (metadata: MMMetadata, file: MMFile){
+        var parts = let_parts
+        let index = Int(parts.removeFirst())
+        let file = try last.get(index: index!)
+        let keyword = parts.removeFirst()
+        let value = parts.removeFirst()
+        let metadata = MM_Metadata(keyword: keyword, value: value)
+        return(metadata: metadata, file: file)
+    }
+    
 
-    then you call execute on that instance:
+}
 
-        command.execute()
-
-    and finally, the results are stored within the command object:
-
-        command.results?
-
- 
-    This means that the execute function doesn't need to know about all the
-    possible combinations of parameters, libraries, previous result sets. This
-    is the problem with the previous implementation. Previously, if *any*
-    command needed to have previous result sets, then they *all* needed to know
-    about it.
- */
-
-
-//class ListCommand: MMCommand {
-//    var results: MMResultSet?
-//    var library: MMCollection
-//    var parts: [String]
-//
-//    init(_ library: MMCollection, _ parts: [String]) {
-//        self.library = library
-//        self.parts = parts
-//    }
-//
-//    func execute() throws {
-//        if self.parts.isEmpty {
-//            self.results = MMResultSet(self.library.all())
-//        } else if self.parts.count > 1 {
-//            throw MMCliError.invalidParameters
-//        } else {
-//            let keyword = self.parts.removeFirst()
-//            self.results = MMResultSet(self.library.search(term: keyword))
-//        }
-//    }
-//}
 
 
 class SearchCommand: MMCommand {
@@ -188,11 +172,8 @@ class AddCommand: MMCommand {
         } else if self.last.all().isEmpty {
             throw MMCliError.missingResultSet
         } else {
-            // Need to type check `index`
-            let index = Int(self.parts.removeFirst())
-            let file = try self.last.get(index: index!)
-            let metadata = MM_Metadata(keyword: self.parts.removeFirst(), value: self.parts.removeFirst())
-            self.library.add(metadata: metadata, file: file)
+            let data = try FileHelper.instance.makeMetadataAndFile(let_parts: self.parts, last: self.last)
+            self.library.add(metadata: data.metadata, file: data.file)
         }
     }
 }
@@ -216,15 +197,9 @@ class SetCommand: MMCommand {
         } else if self.last.all().isEmpty {
             throw MMCliError.missingResultSet
         } else {
-            // Need to type check `index`
-            let index = Int(self.parts.removeFirst())
-            let file = try self.last.get(index: index!)
-            let keyword = self.parts.removeFirst()
-            let value = self.parts.removeFirst()
-            var metadata = MM_Metadata(keyword: keyword, value: "")
-            self.library.remove(metadata: metadata, file: file)
-            metadata = MM_Metadata(keyword: keyword, value: value)
-            self.library.add(metadata: metadata, file: file)
+            let data = try FileHelper.instance.makeMetadataAndFile(let_parts: self.parts, last: self.last)
+            self.library.remove(metadata: data.metadata, file: data.file)
+            self.library.add(metadata: data.metadata, file: data.file)
         }
     }
 }
@@ -248,11 +223,8 @@ class DeleteCommand: MMCommand {
         } else if self.last.all().isEmpty {
             throw MMCliError.missingResultSet
         } else {
-            // Need to type check `index`
-            let index = Int(self.parts.removeFirst())
-            let file = try self.last.get(index: index!)
-            let metadata = MM_Metadata(keyword: self.parts.removeFirst(), value: "")
-            self.library.remove(metadata: metadata, file: file)
+            let data = try FileHelper.instance.makeMetadataAndFile(let_parts: self.parts, last: last)
+            self.library.remove(metadata: data.metadata, file: data.file)
         }
     }
 }
