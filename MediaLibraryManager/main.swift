@@ -24,6 +24,26 @@ func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
     return readLine(strippingNewline: strippingNewline)
 }
 
+/**
+    Finds all the files associated with the keyword.
+ 
+    - parameters:
+        - parts:   The commandline arguments
+        - last:    The list of last listed items
+
+    - returns:
+        - metadata:    A new metadata instance
+        - file:        A new file instance
+ */
+func makeMetadataAndFile(let_parts: [String], last: MMResultSet)throws -> (metadata: MMMetadata, file: MMFile){
+    var parts = let_parts
+    let index = Int(parts.removeFirst())
+    let file = try last.get(index: index!)
+    let keyword = parts.removeFirst()
+    let value = parts.removeFirst()
+    let metadata = MM_Metadata(keyword: keyword, value: value)
+    return(metadata: metadata, file: file)
+}
 
 // The while-loop below implements a basic command line interface. Some
 // examples of the (intended) commands are as follows:
