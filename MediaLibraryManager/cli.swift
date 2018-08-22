@@ -121,6 +121,205 @@ protocol MMCommand{
     about it.
  */
 
+
+//class ListCommand: MMCommand {
+//    var results: MMResultSet?
+//    var library: MMCollection
+//    var parts: [String]
+//
+//    init(_ library: MMCollection, _ parts: [String]) {
+//        self.library = library
+//        self.parts = parts
+//    }
+//
+//    func execute() throws {
+//        if self.parts.isEmpty {
+//            self.results = MMResultSet(self.library.all())
+//        } else if self.parts.count > 1 {
+//            throw MMCliError.invalidParameters
+//        } else {
+//            let keyword = self.parts.removeFirst()
+//            self.results = MMResultSet(self.library.search(term: keyword))
+//        }
+//    }
+//}
+
+
+class SearchCommand: MMCommand {
+    var results: MMResultSet?
+    var library: MMCollection
+    var parts: [String]
+    var toList: Bool
+    
+    init(_ library: MMCollection, _ parts: [String], toList: Bool = false) {
+        self.library = library
+        self.parts = parts
+        self.toList = toList
+    }
+    
+    func execute() throws {
+        if self.parts.isEmpty && toList {
+            self.results = MMResultSet(self.library.all())
+        } else if self.parts.count != 1 {
+            throw MMCliError.invalidParameters
+        } else {
+            let keyword = self.parts.removeFirst()
+            self.results = MMResultSet(self.library.search(term: keyword))
+        }
+    }
+}
+
+
+class AddCommand: MMCommand {
+    var results: MMResultSet?
+    var library: MMCollection
+    var parts: [String]
+    var last: MMResultSet
+    
+    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet) {
+        self.library = library
+        self.parts = parts
+        self.last = last
+    }
+    
+    func execute() throws {
+        if self.parts.count != 3 {
+            throw MMCliError.invalidParameters
+        } else if self.last.all().isEmpty {
+            throw MMCliError.missingResultSet
+        } else {
+            // Need to type check `index`
+            let index = Int(self.parts.removeFirst())
+            let file = try self.last.get(index: index!)
+            let metadata = MM_Metadata(keyword: self.parts.removeFirst(), value: self.parts.removeFirst())
+            self.library.add(metadata: metadata, file: file)
+        }
+    }
+}
+
+
+class SetCommand: MMCommand {
+    var results: MMResultSet?
+    var library: MMCollection
+    var parts: [String]
+    var last: MMResultSet
+    
+    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet) {
+        self.library = library
+        self.parts = parts
+        self.last = last
+    }
+    
+    func execute() throws {
+        if self.parts.count != 3 {
+            throw MMCliError.invalidParameters
+        } else if self.last.all().isEmpty {
+            throw MMCliError.missingResultSet
+        } else {
+            // Need to type check `index`
+            let index = Int(self.parts.removeFirst())
+            let file = try self.last.get(index: index!)
+            let keyword = self.parts.removeFirst()
+            let value = self.parts.removeFirst()
+            var metadata = MM_Metadata(keyword: keyword, value: "")
+            self.library.remove(metadata: metadata, file: file)
+            metadata = MM_Metadata(keyword: keyword, value: value)
+            self.library.add(metadata: metadata, file: file)
+        }
+    }
+}
+
+
+class DeleteCommand: MMCommand {
+    var results: MMResultSet?
+    var library: MMCollection
+    var parts: [String]
+    var last: MMResultSet
+    
+    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet) {
+        self.library = library
+        self.parts = parts
+        self.last = last
+    }
+    
+    func execute() throws {
+        if self.parts.count != 2 {
+            throw MMCliError.invalidParameters
+        } else if self.last.all().isEmpty {
+            throw MMCliError.missingResultSet
+        } else {
+            // Need to type check `index`
+            let index = Int(self.parts.removeFirst())
+            let file = try self.last.get(index: index!)
+            let metadata = MM_Metadata(keyword: self.parts.removeFirst(), value: "")
+            self.library.remove(metadata: metadata, file: file)
+        }
+    }
+}
+
+
+class SaveCommand: MMCommand {
+    var results: MMResultSet?
+    var library: MMCollection
+    var parts: [String]
+    var last: MMResultSet
+    var saveSearch: Bool
+    
+    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet, saveSearch: Bool = false) {
+        self.library = library
+        self.parts = parts
+        self.last = last
+        self.saveSearch = saveSearch
+    }
+    
+    func execute() throws {
+        if self.parts.count != 1 {
+            throw MMCliError.invalidParameters
+        } else if self.last.all().isEmpty && saveSearch {
+            throw MMCliError.missingResultSet
+        } else {
+            // Need to type check `index`
+            let filename = self.parts.removeFirst()
+            let file = MM_FileExport()
+            if saveSearch {
+                try file.write(filename: filename, items: self.last.all())
+            } else {
+                try file.write(filename: filename, items: self.library.all())
+            }
+        }
+    }
+}
+
+
+class LoadCommand: MMCommand {
+    var results: MMResultSet?
+    var library: MMCollection
+    var parts: [String]
+    var fileImport = MM_FileImport()
+    
+    init(_ library: MMCollection, _ parts: [String]) {
+        self.library = library
+        self.parts = parts
+    }
+    
+    func execute() throws {
+        if self.parts.count != 1 {
+            throw MMCliError.invalidParameters
+        } else {
+            do {
+                let files = try self.fileImport.read(filename: self.parts.removeFirst())
+                for element in files {
+                    self.library.add(file: element)
+                }
+            } catch {
+                throw MMCliError.invalidParameters
+            }
+        }
+    }
+}
+
+
+
 /**
     Handle unimplemented commands by throwing an exception when trying to
     execute this command.
