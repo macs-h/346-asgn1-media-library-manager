@@ -3,13 +3,13 @@
 //  MediaLibraryManager
 //
 //  Created by Max Huang and Sam Paterson on 16/08/18.
-//  Copyright © 2018 Paul Crane. All rights reserved.
+//  Copyright © 2018 SMAX. All rights reserved.
 //
 
 import Foundation
 
 /**
-    Imports the media collection from a file.
+    Imports the media collection from a file (by name)
  */
 class MM_FileImport : MMFileImport {
     
@@ -23,8 +23,19 @@ class MM_FileImport : MMFileImport {
     func read(filename: String) throws -> [MMFile] {
         
         var files: [MM_File] = []
+        var filepath: String = ""
+        
+        if filename.contains("~") {
+            filepath = NSString(string: filename).expandingTildeInPath
+        } else if filename.contains("/") {
+            filepath = filename
+        } else {
+            var path:[String] = #file.split(separator: "/").map({String($0)})
+            path.removeLast(2)
+            filepath = "/" + path.joined(separator: "/") + "/" + filename
+        }
+        let url = URL(fileURLWithPath: filepath)
 
-        let url = URL(fileURLWithPath: filename, relativeTo: URL(fileURLWithPath: "/Users/mhuang/346/asgn1/"))
         let encodedJsonData = try Data(contentsOf: url)
         
         // the struct mirrors the JSON data
@@ -39,8 +50,15 @@ class MM_FileImport : MMFileImport {
         for attribute in jsonData {
             let f = MM_File()
             
-            f.filename = filename
             f.path = attribute.fullpath
+            f.fileType = attribute.type
+            
+            let path_reversed = String(f.path.reversed())
+            
+            let start = path_reversed.startIndex
+            let end = path_reversed.index(path_reversed.startIndex, offsetBy: path_reversed._bridgeToObjectiveC().range(of: "/").location)
+            
+            f.filename = String( String( path_reversed[start..<end].reversed()) )
             
             for metadata in attribute.metadata {
                 let data = MM_Metadata(keyword: metadata.key, value: metadata.value)

@@ -3,6 +3,7 @@
 //  MediaLibraryManager
 //
 //  Created by Paul Crane on 18/06/18.
+//  Modified by Max Huang and Sam Paterson on 16/08/18.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 
@@ -66,7 +67,7 @@ func makeMetadataAndFile(let_parts: [String], last: MMResultSet)-> (metadata: MM
 while let line = prompt("> "){
     var commandString : String = ""
     var parts = line.split(separator: " ").map({String($0)})
-    var command: MMCommand
+    var command: MMCommand?
     
     let file = MM_FileImport()
     
@@ -78,25 +79,89 @@ while let line = prompt("> "){
         commandString = parts.removeFirst();
         
         switch(commandString){
-        case "list", "add", "set", "del", "save-search", "save":
-            command = UnimplementedCommand()
+        case "list":
+            if parts.isEmpty {
+                last = MMResultSet(library.all())
+            } else {
+                let keyword = parts.removeFirst()
+                last = MMResultSet(library.search(term: keyword))
+            }
+            last.show()
             break
-        case "load":
             
+        case "search":
+            // CLARIFY WITH PAUL
+            break
+            
+        case "add":
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let index = Int(parts.removeFirst())
+                let file = try last.get(index: index!)
+                let metadata = MM_Metadata(keyword: parts.removeFirst(), value: parts.removeFirst())
+                library.add(metadata: metadata, file: file)
+            }
+            break
+            
+        case "set":
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let index = Int(parts.removeFirst())
+                let file = try last.get(index: index!)
+                let keyword = parts.removeFirst()
+                let value = parts.removeFirst()
+                var metadata = MM_Metadata(keyword: keyword, value: "")
+                library.remove(metadata: metadata, file: file)
+                metadata = MM_Metadata(keyword: keyword, value: value)
+                library.add(metadata: metadata, file: file)
+            }
+            break
+            
+        case "del":
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let index = Int(parts.removeFirst())
+                let file = try last.get(index: index!)
+                let metadata = MM_Metadata(keyword: parts.removeFirst(), value: "")
+                library.remove(metadata: metadata, file: file)
+            }
+            break
+            
+        case "save-search":
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let filename = parts.removeFirst()
+                let file = MM_FileExport()
+                try file.write(filename: filename, items: last.all())
+            }
+            break
+            
+        case "save":
+            if parts.isEmpty {
+                throw MMCliError.invalidParameters
+            } else {
+                let filename = parts.removeFirst()
+                let file = MM_FileExport()
+                try file.write(filename: filename, items: library.all())
+            }
+            break
+            
+        case "load":
             do {
                 let files = try file.read(filename: parts.removeFirst())
                 for element in files {
                     library.add(file: element)
                 }
-                
-//                print(library)
             } catch {
                 throw MMCliError.invalidParameters
             }
-            
-            
-            command = UnimplementedCommand()
+//            command = UnimplementedCommand()
             break
+            
         case "help":
             command = HelpCommand()
             break
@@ -107,14 +172,16 @@ while let line = prompt("> "){
             throw MMCliError.unknownCommand
         }
         
-        // try execute the command and catch any thrown errors below
-        try command.execute()
-        
-        // if there are any results from the command, print them out here
-        if let results = command.results {
-            print(results)
-            results.show()
-            last = results
+        if command != nil {
+            // try execute the command and catch any thrown errors below
+            try command!.execute()
+            
+            // if there are any results from the command, print them out here
+            if let results = command!.results {
+                print(results)
+                results.show()
+                last = results
+            }
         }
         
     }catch MMCliError.unknownCommand {

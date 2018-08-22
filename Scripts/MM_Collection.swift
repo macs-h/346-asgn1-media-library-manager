@@ -3,14 +3,17 @@
 //  MediaLibraryManager
 //
 //  Created by Max Huang and Sam Paterson on 16/08/18.
-//  Copyright © 2018 Paul Crane. All rights reserved.
+//  Copyright © 2018 SMAX. All rights reserved.
 //
 
 import Foundation
 
+/**
+    The main functions of the media metadata collection
+ */
 class MM_Collection : MMCollection {
-    var collection: [MMFile]?
     
+    var collection: [MMFile]?
     
     var description: String{
         let coll = self.all()
@@ -26,13 +29,24 @@ class MM_Collection : MMCollection {
     }
     
     
-    convenience init () {
-        self.init(collection: [])
+    /**
+        Default initialiser
+     
+        - parameter collection: An array containing the files and associated
+                                metadata to initialise the collection with
+     */
+    init(collection: [MMFile]) {
+        self.collection = collection
     }
     
     
-    init(collection: [MMFile]) {
-        self.collection = collection
+    /**
+        Convenience initialiser
+     
+        Initialises the collection as an empty array.
+     */
+    convenience init () {
+        self.init(collection: [])
     }
     
     
@@ -44,7 +58,7 @@ class MM_Collection : MMCollection {
      */
     func add(file: MMFile) {
         var tempFile = file
-        tempFile.collectionPos = (collection != nil) ? collection!.count-1 : 0
+        tempFile.collectionPos = (collection != nil) ? collection!.count : 0
         self.collection?.append(file)
     }
     
@@ -60,9 +74,7 @@ class MM_Collection : MMCollection {
         var files = search(term: file.filename)
         for i in 0..<files.count{
             collection![files[i].collectionPos].metadata.append(metadata)
-            
         }
-        
     }
     
     
@@ -75,6 +87,22 @@ class MM_Collection : MMCollection {
         let files = search(item: metadata)
         for file in files{
             collection?.remove(at: file.collectionPos)
+        }
+        
+    }
+    
+    
+    /**
+        Removes a specific instance of a metadata from a specific file.
+
+        - parameters:
+            - metadata: The item to remove from the file.
+            - file:     The file to remove the metadata from.
+     */
+    func remove(metadata: MMMetadata, file: MMFile) {
+        let files = search(term: file.filename)
+        for i in 0..<files.count{
+            collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
         }
         
     }
@@ -134,7 +162,7 @@ class MM_Collection : MMCollection {
         if let coll = collection{
             var results: [MMFile] = []
             for file in coll{
-                if(file.metadataContains(keyword: item.keyword)){
+                if(file.searchMetadata(keyword: item.keyword) != -1){
                     results.append(file)
                 }
             }
@@ -143,9 +171,6 @@ class MM_Collection : MMCollection {
             return []
         }
     }
-    
-    
-    
     
     
 }

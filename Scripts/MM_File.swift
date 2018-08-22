@@ -3,34 +3,39 @@
 //  MediaLibraryManager
 //
 //  Created by Max Huang and Sam Paterson on 14/08/18.
-//  Copyright © 2018 Paul Crane. All rights reserved.
+//  Copyright © 2018 SMAX. All rights reserved.
 //
 
 import Foundation
 
+/**
+    Represents a file with metadata (a key/value store)
+ */
 class MM_File: MMFile {
     
-//    var metadata: [MMMetadata]
     var filename: String = ""
     var path: String = ""
+    var fileType: String = ""
     var description: String{
-        if metadata.count > 0 {
-            var results: [String] = []
-            for data in metadata{
-                results.append(data.description)
-            }
-            return "Data {" + results.joined(separator: "} {")+"}"
-        }else{
-            return "Data{}"
-        }
+//        if metadata.count > 0 {
+//            var results: [String] = []
+//            for data in metadata{
+//                results.append(data.description)
+//            }
+//            return "Data {" + results.joined(separator: "} {")+"}"
+//        }else{
+//            return "Data{}"
+//        }
+        
+        return filename
+        
     }
     var collectionPos = 0
     
-    // here we're actually keeping track of the concrete instances
+    // Keeping track of the concrete instances
     private var _metadata: [MM_Metadata] = []
     
-    // here we're converting the instances so that we can obey the
-    // MMFile protocol
+    // Converting the instances to obey the MMFile protocol
     var metadata: [MMMetadata] {
         get{
             var result: [MMMetadata] = []
@@ -50,6 +55,7 @@ class MM_File: MMFile {
         }
     }
     
+    
     /**
         Default initialiser
      
@@ -64,20 +70,42 @@ class MM_File: MMFile {
         self.path = path
     }
     
+    
+    /**
+        Convenience initialiser
+     
+        Initialises all fields to empty.
+     */
     convenience init(){
         self.init(metadata: [], filename: "", path: "")
     }
     
     
-    func metadataContains(keyword: String) -> Bool {
+    /**
+        Searches all the metadata for a keyword
+
+        - parameter keyword:    The file and associated metadata to add to the
+                                collection
+        - returns:  Bool - describing whether the keyword was found
+     */
+    func searchMetadata(keyword: String) -> Int {
+        var i = 0
         for item in self.metadata{
             if item.keyword == keyword{
-                return true
+                return i
             }
+            i += 1
         }
-        return false
+        return -1
     }
     
+    
+    /**
+        Accumulates all attributes into a single string array so that a term can
+        be found
+
+        - returns:  results - the array of string to `.contains` acted upon
+     */
     func getAttributes() -> [String]{
         var results: [String] = []
         results.append(filename)
@@ -85,11 +113,9 @@ class MM_File: MMFile {
         results.append(description)
         for data in metadata{
             results.append(data.keyword)
+            results.append(data.value) // Waiting on clarification from Paul about search implementation.
         }
         return results
     }
-    
-    
-    
     
 }
