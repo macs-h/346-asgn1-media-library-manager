@@ -101,6 +101,8 @@ protocol MMCommand{
 
 
 fileprivate class FileHelper {
+    
+    // Creating a singleton.
     static let instance = FileHelper()
     
     /**
@@ -123,8 +125,6 @@ fileprivate class FileHelper {
         let metadata = MM_Metadata(keyword: keyword, value: value)
         return(metadata: metadata, file: file)
     }
-    
-
 }
 
 
@@ -144,9 +144,20 @@ class SearchCommand: MMCommand {
     func execute() throws {
         if self.parts.isEmpty && toList {
             self.results = MMResultSet(self.library.all())
-        } else if self.parts.count != 1 {
+        } else if self.parts.count < 1 {
             throw MMCliError.invalidParameters
         } else {
+//            var searchResults = [MMFile]()
+//            var usedKeywords = [String]()
+//            for keyword in parts {
+//                if !usedKeywords.contains(keyword) {
+//                    searchResults += self.library.search(term: keyword)
+//                    usedKeywords.append(keyword)
+//                }
+//            }
+//            self.results = MMResultSet(searchResults)
+            
+            // Sam's code.
             let keyword = self.parts.removeFirst()
             self.results = MMResultSet(self.library.search(term: keyword))
         }
@@ -167,6 +178,7 @@ class AddCommand: MMCommand {
     }
     
     func execute() throws {
+//        if !(self.parts.count % 3 == 0) {
         if self.parts.count != 3 {
             throw MMCliError.invalidParameters
         } else if self.last.all().isEmpty {
@@ -275,14 +287,24 @@ class LoadCommand: MMCommand {
     }
     
     func execute() throws {
-        if self.parts.count != 1 {
+        if self.parts.count < 1 {
             throw MMCliError.invalidParameters
         } else {
             do {
-                let files = try self.fileImport.read(filename: self.parts.removeFirst())
-                for element in files {
-                    self.library.add(file: element)
+                // Sam's code.
+//                let files = try self.fileImport.read(filename: self.parts.removeFirst())
+//                for element in files {
+//                    self.library.add(file: element)
+//                }
+                
+                // Can load as many consecutive files as need be.
+                for filename in parts {
+                    let files = try self.fileImport.read(filename: filename)
+                    for file in files {
+                        self.library.add(file: file)
+                    }
                 }
+                
             } catch {
                 throw MMCliError.invalidParameters
             }

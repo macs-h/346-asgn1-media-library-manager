@@ -3,7 +3,6 @@
     "type" : "image",
     "fullpath" : "/path/to/foo.png",
     "metadata" : {
-      "1" : "2",
       "key1" : "value1",
       "key2" : "value2"
     }
@@ -14,6 +13,22 @@
     "metadata" : {
       "key4" : "value4",
       "key3" : "value3"
+    }
+  },
+  {
+    "type" : "image",
+    "fullpath" : "/path/to/foo.png",
+    "metadata" : {
+      "key6" : "value6",
+      "key5" : "value5"
+    }
+  },
+  {
+    "type" : "video",
+    "fullpath" : "/path/to/bar.mp4",
+    "metadata" : {
+      "key7" : "value7",
+      "key8" : "value8"
     }
   }
 ]

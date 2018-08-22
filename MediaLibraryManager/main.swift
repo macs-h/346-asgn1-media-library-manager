@@ -9,16 +9,24 @@
 
 import Foundation
 
-// TODO create your instance of your library here
+// Creating a library instance.
 var library:MMCollection = MM_Collection()
+
+// A variable to hold the results shown by the last `search`/`list` command.
 var last = MMResultSet()
 
-/// Generate a friendly prompt and wait for the user to enter a line of input
-/// - parameter prompt: The prompt to use
-/// - parameter strippingNewline: Strip the newline from the end of the line of
-///   input (true by default)
-/// - return: The result of `readLine`.
-/// - seealso: readLine
+
+/**
+    Generate a friendly prompt and wait for the user to enter a line of input
+ 
+    - parameters:
+        - prompt:           The prompt to use
+        - strippingNewline: Strip the newline from the end of the line of
+                            input (true by default)
+ 
+    - returns:  The result of `readLine`.
+    - seealso:  readLine
+ */
 func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
     print(prompt, terminator:"")
     return readLine(strippingNewline: strippingNewline)
@@ -60,35 +68,27 @@ while let line = prompt("> "){
         case "list":
             command = SearchCommand(library, parts, toList: true)
             break
-            
         case "search":
             command = SearchCommand(library, parts)
             break
-            
         case "add":
             command = AddCommand(library, parts, last)
             break
-            
         case "set":
             command = SetCommand(library, parts, last)
             break
-            
         case "del":
             command = DeleteCommand(library, parts, last)
             break
-            
         case "save-search":
             command = SaveCommand(library, parts, last, saveSearch: true)
             break
-            
         case "save":
             command = SaveCommand(library, parts, last)
             break
-            
         case "load":
             command = LoadCommand(library, parts)
             break
-            
         case "help":
             command = HelpCommand()
             break
@@ -98,7 +98,6 @@ while let line = prompt("> "){
         default:
             throw MMCliError.unknownCommand
         }
-        
         
         // try execute the command and catch any thrown errors below
         try command.execute()
