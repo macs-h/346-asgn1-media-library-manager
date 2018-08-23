@@ -14,7 +14,7 @@ import Foundation
 class MM_Collection : MMCollection {
     
     var collection: [MMFile]?
-    var metaDic = [String: String]() //keyword: file, file
+    var metaDic = [String: [String]]() //keyword: file, file
     
     var description: String{
         let coll = self.all()
@@ -68,7 +68,7 @@ class MM_Collection : MMCollection {
             if(metaDic[data.keyword] != nil){
                 metaDic[data.keyword]!.append(tempFile.filename)
             }else{
-                metaDic[data.keyword] = tempFile.filename
+                metaDic[data.keyword] = [tempFile.filename]
             }
         }
         
@@ -88,9 +88,11 @@ class MM_Collection : MMCollection {
             collection![files[i].collectionPos].metadata.append(metadata)
             //metadata dic stuff
             if(metaDic[metadata.keyword] != nil){
-                metaDic[metadata.keyword]! += (collection![files[i].collectionPos].filename)
+                metaDic[metadata.keyword]!.append(collection![files[i].collectionPos].filename)
+                
             }else{
-                metaDic[metadata.keyword] = collection![files[i].collectionPos].filename
+                metaDic[metadata.keyword] = [collection![files[i].collectionPos].filename]
+                
             }
             
             print("dictonary",metaDic)
@@ -107,12 +109,11 @@ class MM_Collection : MMCollection {
         let files = search(item: metadata)
         for file in files{
             collection?.remove(at: file.collectionPos)
-        }
-        if let value = metaDic.removeValue(forKey: metadata.keyword) {
-            print("The value \(value) was removed.")
+            let keyIndex = metaDic[metadata.keyword]?.index(of: file.filename)
+            metaDic[metadata.keyword]?.remove(at: keyIndex!)
+            //will this work with mutiple files?????
         }
         
-        print("dictonary",metaDic)
     }
     
     
@@ -124,15 +125,14 @@ class MM_Collection : MMCollection {
             - file:     The file to remove the metadata from.
      */
     func remove(metadata: MMMetadata, file: MMFile) {
+        //need to check that key exists
         let files = search(term: file.filename)
         for i in 0..<files.count{
             collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
+            
         }
-        if let value = metaDic.removeValue(forKey: metadata.keyword) {
-            print("The value \(value) was removed.")
-        }
-        
-        print("dictonary",metaDic)
+        let keyIndex = metaDic[metadata.keyword]?.index(of: file.filename)
+        metaDic[metadata.keyword]?.remove(at: keyIndex!)
     }
     
     
