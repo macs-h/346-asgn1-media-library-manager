@@ -99,22 +99,25 @@ protocol MMCommand{
 }
 
 
-
+/**
+    A helper class which supports the creationg of a file and metadata
+    instance.
+ */
 fileprivate class FileHelper {
     
     // Creating a singleton.
     static let instance = FileHelper()
     
     /**
-     Finds all the files associated with the keyword.
-     
-     - parameters:
-     - parts:   The commandline arguments
-     - last:    The list of last listed items
-     
-     - returns:
-     - metadata:    A new metadata instance
-     - file:        A new file instance
+        Creates a new file and metadata instance.
+
+        - parameters:
+            - parts:   The commandline arguments
+            - last:    The list of last listed items
+
+        - returns:
+            - metadata:    A new metadata instance
+            - file:        A new file instance
      */
     func makeMetadataAndFile(let_parts: [String], last: MMResultSet)throws -> (metadata: MMMetadata, file: MMFile){
         var parts = let_parts
@@ -128,17 +131,49 @@ fileprivate class FileHelper {
 }
 
 
-
-class SearchCommand: MMCommand {
-    var results: MMResultSet?
+/**
+    Initialises all the main commands using inheritance because each command
+    pretty much initialises the same variables each time.
+ */
+class CommandInitialiser {
     var library: MMCollection
     var parts: [String]
+    var last: MMResultSet
+    
+    /**
+        Default initialiser
+     
+        - parameters:
+            - library:  The collection to be used.
+            - parts:    The input parameters following the command.
+            - last:     The results from the last `list` or `search` command.
+     */
+    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet = MMResultSet()) {
+        self.library = library
+        self.parts = parts
+        self.last = last
+    }
+}
+
+
+/**
+    Handles the `list` and `search` command.
+ 
+    If no parameters are provided then the command operates as a `list` and
+    shows all the file instances held in collection.
+    If one or more keywords are specified, the command searches and returns any
+    file instances which hold that keyword.
+ 
+    Example usage: `list foo bar baz`
+        Lists the set of files with metadata containing `foo` OR `bar` OR `baz`
+ */
+class SearchCommand: CommandInitialiser, MMCommand {
+    var results: MMResultSet?
     var toList: Bool
     
     init(_ library: MMCollection, _ parts: [String], toList: Bool = false) {
-        self.library = library
-        self.parts = parts
         self.toList = toList
+        super.init(library, parts)
     }
     
     func execute() throws {
@@ -165,17 +200,18 @@ class SearchCommand: MMCommand {
 }
 
 
-class AddCommand: MMCommand {
+/**
+    Handles the `add` command.
+ 
+    Adds key/value pairs to a file based on the index of the previous `list` or
+    `search` command.
+
+    Example usage: `add 0 foo bar baz qux`
+        Using the results of the previous list, adds `foo=bar` and `baz=qux` to
+        the file at index `0`.
+ */
+class AddCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
-    var library: MMCollection
-    var parts: [String]
-    var last: MMResultSet
-    
-    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet) {
-        self.library = library
-        self.parts = parts
-        self.last = last
-    }
     
     func execute() throws {
 //        if !(self.parts.count % 3 == 0) {
@@ -190,18 +226,18 @@ class AddCommand: MMCommand {
     }
 }
 
+/**
+    Handles the `set` command.
 
-class SetCommand: MMCommand {
+    Sets the value of a specific key for a file based on the index of the
+    previous `list` or `search` command.
+
+    Example usage: `set 0 foo bar baz qux`
+        Using the results of the previous list, sets `foo=bar` and `baz=qux` for
+        the file at index `0`.
+ */
+class SetCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
-    var library: MMCollection
-    var parts: [String]
-    var last: MMResultSet
-    
-    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet) {
-        self.library = library
-        self.parts = parts
-        self.last = last
-    }
     
     func execute() throws {
         if self.parts.count != 3 {
@@ -217,17 +253,18 @@ class SetCommand: MMCommand {
 }
 
 
-class DeleteCommand: MMCommand {
+/**
+    Handles the `del` command.
+
+    Deletes the specified keys in a file based on the index of the previous
+    `list` or `search` command.
+
+    Example usage: `del 0 foo bar`
+        Using the results of the previous list, del metadata where the key is
+        equal to `foo` OR `bar` from the file at index `0`.
+ */
+class DeleteCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
-    var library: MMCollection
-    var parts: [String]
-    var last: MMResultSet
-    
-    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet) {
-        self.library = library
-        self.parts = parts
-        self.last = last
-    }
     
     func execute() throws {
         if self.parts.count != 2 {
@@ -242,18 +279,25 @@ class DeleteCommand: MMCommand {
 }
 
 
-class SaveCommand: MMCommand {
+/**
+    Handles the `save` and `save-search` command.
+ 
+    The `save` command exports the entire library collection to an output file.
+    The `save-search` command only exports the results from the last `list` or
+    `search` command to an output file.
+
+    Example usage: `save output.json` or `save-search output.json`
+        Exports the entire collection to `output.json` or exports the results
+        of the previous `list` or `search` to `output.json` in the current
+        directory, respectively.
+ */
+class SaveCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
-    var library: MMCollection
-    var parts: [String]
-    var last: MMResultSet
     var saveSearch: Bool
     
     init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet, saveSearch: Bool = false) {
-        self.library = library
-        self.parts = parts
-        self.last = last
         self.saveSearch = saveSearch
+        super.init(library, parts, last)
     }
     
     func execute() throws {
@@ -275,28 +319,25 @@ class SaveCommand: MMCommand {
 }
 
 
-class LoadCommand: MMCommand {
+/**
+    Handles the `load` command.
+ 
+    The `load` command imports file(s) from the current directory into the
+    library collection.
+
+    Example usage: `load foo.json bar.json`
+        From the current directory, load both `foo.json` and `bar.json` and
+        merge the results.
+ */
+class LoadCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
-    var library: MMCollection
-    var parts: [String]
     var fileImport = MM_FileImport()
-    
-    init(_ library: MMCollection, _ parts: [String]) {
-        self.library = library
-        self.parts = parts
-    }
     
     func execute() throws {
         if self.parts.count < 1 {
             throw MMCliError.invalidParameters
         } else {
             do {
-                // Sam's code.
-//                let files = try self.fileImport.read(filename: self.parts.removeFirst())
-//                for element in files {
-//                    self.library.add(file: element)
-//                }
-                
                 // Can load as many consecutive files as need be.
                 for filename in parts {
                     let files = try self.fileImport.read(filename: filename)
@@ -304,7 +345,6 @@ class LoadCommand: MMCommand {
                         self.library.add(file: file)
                     }
                 }
-                
             } catch {
                 throw MMCliError.invalidParameters
             }
