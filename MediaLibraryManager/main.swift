@@ -84,7 +84,7 @@ while let line = prompt("> "){
             command = SaveCommand(library, parts, last, saveSearch: true)
             break
         case "save":
-            command = SaveCommand(library, parts, last)
+            command = SaveCommand(library, parts)
             break
         case "load":
             command = LoadCommand(library, parts)
@@ -116,5 +116,7 @@ while let line = prompt("> "){
         print("\"\(commandString)\" is unimplemented")
     }catch MMCliError.missingResultSet {
         print("no previous results to work from... ")
+    }catch MMCliError.invalidFilepath {
+        print("invalid filepath provided. Please check and try again")
     }
 }

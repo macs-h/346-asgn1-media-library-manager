@@ -26,6 +26,9 @@ enum MMCliError: Error {
     // Thrown if the command has yet to be implemented
     case unimplementedCommand
     
+    // Thrown if an unknown filepath is given.
+    case invalidFilepath
+    
     // feel free to add more errors as you need them
 }
 
@@ -318,7 +321,7 @@ class SaveCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
     var saveSearch: Bool
     
-    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet, saveSearch: Bool = false) {
+    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet = MMResultSet(), saveSearch: Bool = false) {
         self.saveSearch = saveSearch
         super.init(library, parts, last)
     }
@@ -369,12 +372,11 @@ class LoadCommand: CommandInitialiser, MMCommand {
                     }
                 }
             } catch {
-                throw MMCliError.invalidParameters
+                throw MMCliError.invalidFilepath
             }
         }
     }
 }
-
 
 
 /**
