@@ -121,7 +121,11 @@ fileprivate class FileHelper {
         let index = Int(parts.removeFirst())
         let file = try last.get(index: index!)
         let keyword = parts.removeFirst()
-        let value = parts.removeFirst()
+        var value = ""
+        if parts.count == 1{
+            //key value pair
+            value = parts.removeFirst()
+        }
         let metadata = MM_Metadata(keyword: keyword, value: value)
         return(metadata: metadata, file: file)
     }

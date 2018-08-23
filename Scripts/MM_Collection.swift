@@ -14,6 +14,7 @@ import Foundation
 class MM_Collection : MMCollection {
     
     var collection: [MMFile]?
+    var metaDic = [String: String]() //keyword: file, file
     
     var description: String{
         let coll = self.all()
@@ -59,7 +60,18 @@ class MM_Collection : MMCollection {
     func add(file: MMFile) {
         var tempFile = file
         tempFile.collectionPos = (collection != nil) ? collection!.count : 0
-        self.collection?.append(file)
+        self.collection?.append(tempFile)
+        
+        
+        //metadata dic stuff
+        for data in tempFile.metadata{
+            if(metaDic[data.keyword] != nil){
+                metaDic[data.keyword]!.append(tempFile.filename)
+            }else{
+                metaDic[data.keyword] = tempFile.filename
+            }
+        }
+        
     }
     
     
@@ -74,6 +86,14 @@ class MM_Collection : MMCollection {
         var files = search(term: file.filename)
         for i in 0..<files.count{
             collection![files[i].collectionPos].metadata.append(metadata)
+            //metadata dic stuff
+            if(metaDic[metadata.keyword] != nil){
+                metaDic[metadata.keyword]! += (collection![files[i].collectionPos].filename)
+            }else{
+                metaDic[metadata.keyword] = collection![files[i].collectionPos].filename
+            }
+            
+            print("dictonary",metaDic)
         }
     }
     
@@ -88,7 +108,11 @@ class MM_Collection : MMCollection {
         for file in files{
             collection?.remove(at: file.collectionPos)
         }
+        if let value = metaDic.removeValue(forKey: metadata.keyword) {
+            print("The value \(value) was removed.")
+        }
         
+        print("dictonary",metaDic)
     }
     
     
@@ -104,7 +128,11 @@ class MM_Collection : MMCollection {
         for i in 0..<files.count{
             collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
         }
+        if let value = metaDic.removeValue(forKey: metadata.keyword) {
+            print("The value \(value) was removed.")
+        }
         
+        print("dictonary",metaDic)
     }
     
     
