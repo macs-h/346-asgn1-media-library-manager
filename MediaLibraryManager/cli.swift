@@ -119,10 +119,9 @@ fileprivate class FileHelper {
             - metadata:    A new metadata instance
             - file:        A new file instance
      */
-    func makeMetadataAndFile(let_parts: [String], last: MMResultSet)throws -> (metadata: MMMetadata, file: MMFile){
+    func makeMetadataAndFile(index: Int, let_parts: [String], last: MMResultSet)throws -> (metadata: MMMetadata, file: MMFile){
         var parts = let_parts
-        let index = Int(parts.removeFirst())
-        let file = try last.get(index: index!)
+        let file = try last.get(index: index)
         let keyword = parts.removeFirst()
         var value = ""
         if parts.count == 1{
@@ -218,17 +217,24 @@ class AddCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-//        if !(self.parts.count % 3 == 0) {
-        if self.parts.count != 3 {
+        if self.parts.count < 3 || !((self.parts.count - 1) % 2 == 0) {
             throw MMCliError.invalidParameters
         } else if self.last.all().isEmpty {
             throw MMCliError.missingResultSet
         } else {
-            let data = try FileHelper.instance.makeMetadataAndFile(let_parts: self.parts, last: self.last)
-            self.library.add(metadata: data.metadata, file: data.file)
+            if let index = Int(self.parts.removeFirst()) {
+                for _ in 0..<(parts.count/2) {
+                    let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
+                    let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
+                    self.library.add(metadata: data.metadata, file: data.file)
+                }
+            } else {
+                throw MMCliError.invalidParameters
+            }
         }
     }
 }
+
 
 /**
     Handles the `set` command.
@@ -244,14 +250,21 @@ class SetCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        if self.parts.count != 3 {
+        if self.parts.count < 3 || !((self.parts.count - 1) % 2 == 0) {
             throw MMCliError.invalidParameters
         } else if self.last.all().isEmpty {
             throw MMCliError.missingResultSet
         } else {
-            let data = try FileHelper.instance.makeMetadataAndFile(let_parts: self.parts, last: self.last)
-            self.library.remove(metadata: data.metadata, file: data.file)
-            self.library.add(metadata: data.metadata, file: data.file)
+            if let index = Int(self.parts.removeFirst()) {
+                for _ in 0..<(parts.count/2) {
+                    let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
+                    let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
+                    self.library.remove(metadata: data.metadata, file: data.file)
+                    self.library.add(metadata: data.metadata, file: data.file)
+                }
+            } else {
+                throw MMCliError.invalidParameters
+            }
         }
     }
 }
@@ -271,13 +284,19 @@ class DeleteCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        if self.parts.count != 2 {
+        if self.parts.count < 2 {
             throw MMCliError.invalidParameters
         } else if self.last.all().isEmpty {
             throw MMCliError.missingResultSet
         } else {
-            let data = try FileHelper.instance.makeMetadataAndFile(let_parts: self.parts, last: last)
-            self.library.remove(metadata: data.metadata, file: data.file)
+            if let index = Int(self.parts.removeFirst()) {
+                for key in parts {
+                    let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: [key], last: last)
+                    self.library.remove(metadata: data.metadata, file: data.file)
+                }
+            } else {
+                throw MMCliError.invalidParameters
+            }
         }
     }
 }
