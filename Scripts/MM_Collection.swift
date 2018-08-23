@@ -65,10 +65,10 @@ class MM_Collection : MMCollection {
         
         //metadata dic stuff
         for data in tempFile.metadata{
-            if(metaDic[data.keyword] != nil){
-                metaDic[data.keyword]!.append(tempFile)
+            if(metaDic[data.value] != nil){
+                metaDic[data.value]!.append(tempFile)
             }else{
-                metaDic[data.keyword] = [tempFile]
+                metaDic[data.value] = [tempFile]
             }
         }
         
@@ -87,11 +87,11 @@ class MM_Collection : MMCollection {
         for i in 0..<files.count{
             collection![files[i].collectionPos].metadata.append(metadata)
             //metadata dic stuff
-            if(metaDic[metadata.keyword] != nil){
-                metaDic[metadata.keyword]!.append(collection![files[i].collectionPos])
+            if(metaDic[metadata.value] != nil){
+                metaDic[metadata.value]!.append(collection![files[i].collectionPos])
                 
             }else{
-                metaDic[metadata.keyword] = [collection![files[i].collectionPos]]
+                metaDic[metadata.value] = [collection![files[i].collectionPos]]
                 
             }
             
@@ -110,9 +110,9 @@ class MM_Collection : MMCollection {
         for file in files{
             collection?.remove(at: file.collectionPos)
             //removing file from dic
-            for i in 0...metaDic[metadata.keyword]!.count{
-                if metaDic[metadata.keyword]![i].filename == file.filename{
-                    metaDic[metadata.keyword]?.remove(at: i)
+            for i in 0...metaDic[metadata.value]!.count{
+                if metaDic[metadata.value]![i].filename == file.filename{
+                    metaDic[metadata.value]?.remove(at: i)
                 }
             }
             //will this work with mutiple files?????
@@ -136,9 +136,9 @@ class MM_Collection : MMCollection {
             
         }
         //removes files from dic
-        for i in 0..<metaDic[metadata.keyword]!.count{
-            if metaDic[metadata.keyword]![i].filename == file.filename{
-                metaDic[metadata.keyword]?.remove(at: i)
+        for i in 0..<metaDic[metadata.value]!.count{
+            if metaDic[metadata.value]![i].filename == file.filename{
+                metaDic[metadata.value]?.remove(at: i)
             }
         }
         print("dict", metaDic)
@@ -154,6 +154,11 @@ class MM_Collection : MMCollection {
                     possibly an empty list.
      */
     func search(term: String) -> [MMFile] {
+        if let r = metaDic[term]{
+            print("returned r:", r)
+            return r
+        }
+        
         if let coll = collection{
             var results: [MMFile] = []
             for file in coll{
@@ -166,6 +171,7 @@ class MM_Collection : MMCollection {
         }else{
             return []
         }
+        
     }
     
     
@@ -207,7 +213,7 @@ class MM_Collection : MMCollection {
 //        }else{
 //            return []
 //        }
-        return metaDic[item.keyword]!
+        return metaDic[item.value]!
     }
     
     
