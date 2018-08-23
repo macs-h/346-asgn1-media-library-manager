@@ -14,7 +14,6 @@ import Foundation
 class MM_Collection : MMCollection {
     
     var collection: [MMFile]?
-    var metaDic = [String: [MMFile]]() //keyword: file, file
     
     var description: String{
         let coll = self.all()
@@ -62,16 +61,6 @@ class MM_Collection : MMCollection {
         tempFile.collectionPos = (collection != nil) ? collection!.count : 0
         self.collection?.append(tempFile)
         
-        
-        //metadata dic stuff
-        for data in tempFile.metadata{
-            if(metaDic[data.value] != nil){
-                metaDic[data.value]!.append(tempFile)
-            }else{
-                metaDic[data.value] = [tempFile]
-            }
-        }
-        
     }
     
     
@@ -86,16 +75,7 @@ class MM_Collection : MMCollection {
         var files = search(term: file.filename)
         for i in 0..<files.count{
             collection![files[i].collectionPos].metadata.append(metadata)
-            //metadata dic stuff
-            if(metaDic[metadata.value] != nil){
-                metaDic[metadata.value]!.append(collection![files[i].collectionPos])
-                
-            }else{
-                metaDic[metadata.value] = [collection![files[i].collectionPos]]
-                
-            }
-            
-            print("dictonary",metaDic)
+           
         }
     }
     
@@ -109,13 +89,6 @@ class MM_Collection : MMCollection {
         let files = search(item: metadata)
         for file in files{
             collection?.remove(at: file.collectionPos)
-            //removing file from dic
-            for i in 0...metaDic[metadata.value]!.count{
-                if metaDic[metadata.value]![i].filename == file.filename{
-                    metaDic[metadata.value]?.remove(at: i)
-                }
-            }
-            //will this work with mutiple files?????
         }
         
     }
@@ -135,13 +108,7 @@ class MM_Collection : MMCollection {
             collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
             
         }
-        //removes files from dic
-        for i in 0..<metaDic[metadata.value]!.count{
-            if metaDic[metadata.value]![i].filename == file.filename{
-                metaDic[metadata.value]?.remove(at: i)
-            }
-        }
-        print("dict", metaDic)
+        
     }
     
     
@@ -154,11 +121,6 @@ class MM_Collection : MMCollection {
                     possibly an empty list.
      */
     func search(term: String) -> [MMFile] {
-        if let r = metaDic[term]{
-            print("returned r:", r)
-            return r
-        }
-        
         if let coll = collection{
             var results: [MMFile] = []
             for file in coll{
@@ -202,18 +164,17 @@ class MM_Collection : MMCollection {
                     keyword, possibly an empty list.
      */
     func search(item: MMMetadata) -> [MMFile] {
-//        if let coll = collection{
-//            var results: [MMFile] = []
-//            for file in coll{
-//                if(file.searchMetadata(keyword: item.keyword) != -1){
-//                    results.append(file)
-//                }
-//            }
-//            return results
-//        }else{
-//            return []
-//        }
-        return metaDic[item.value]!
+        if let coll = collection{
+            var results: [MMFile] = []
+            for file in coll{
+                if(file.searchMetadata(keyword: item.keyword) != -1){
+                    results.append(file)
+                }
+            }
+            return results
+        }else{
+            return []
+        }
     }
     
     
