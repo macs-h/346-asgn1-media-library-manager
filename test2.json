@@ -1,14 +1,14 @@
 [
   {
-    "fullpath": "/path/to/foo.png",
+    "fullpath": "/path/to/baz.png",
     "type": "image",
     "metadata": {
         "key5": "value5",
-        "key6": "value6",
+        "key5": "value6",
     }
   },
   {
-    "fullpath": "/path/to/bar.mp4",
+    "fullpath": "/path/to/qux.mp4",
     "type": "video",
     "metadata": {
         "key7": "value7",
