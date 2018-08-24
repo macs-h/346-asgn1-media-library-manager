@@ -50,7 +50,7 @@ class MM_FileImport : MMFileImport {
         for attribute in jsonData {
             let f = MM_File()
             
-            f.path = attribute.fullpath
+            f.path = filepath
             f.fileType = attribute.type
             
             let path_reversed = String(f.path.reversed())
