@@ -220,20 +220,21 @@ class AddCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        if self.parts.count < 3 || !((self.parts.count - 1) % 2 == 0) {
+        guard self.parts.count >= 3 && (self.parts.count - 1) % 2 == 0 else {
             throw MMCliError.invalidParameters
-        } else if self.last.all().isEmpty {
+        }
+        guard !self.last.all().isEmpty else {
             throw MMCliError.missingResultSet
-        } else {
-            if let index = Int(self.parts.removeFirst()) {
-                for _ in 0..<(parts.count/2) {
-                    let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
-                    let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
-                    self.library.add(metadata: data.metadata, file: data.file)
-                }
-            } else {
-                throw MMCliError.invalidParameters
+        }
+        
+        if let index = Int(self.parts.removeFirst()) {
+            for _ in 0..<(parts.count/2) {
+                let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
+                let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
+                self.library.add(metadata: data.metadata, file: data.file)
             }
+        } else {
+            throw MMCliError.invalidParameters
         }
     }
 }
@@ -253,21 +254,22 @@ class SetCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        if self.parts.count < 3 || !((self.parts.count - 1) % 2 == 0) {
+        guard self.parts.count >= 3 && (self.parts.count - 1) % 2 == 0 else {
             throw MMCliError.invalidParameters
-        } else if self.last.all().isEmpty {
+        }
+        guard !self.last.all().isEmpty else {
             throw MMCliError.missingResultSet
-        } else {
-            if let index = Int(self.parts.removeFirst()) {
-                for _ in 0..<(parts.count/2) {
-                    let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
-                    let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
-                    self.library.remove(metadata: data.metadata, file: data.file)
-                    self.library.add(metadata: data.metadata, file: data.file)
-                }
-            } else {
-                throw MMCliError.invalidParameters
+        }
+        
+        if let index = Int(self.parts.removeFirst()) {
+            for _ in 0..<(parts.count/2) {
+                let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
+                let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
+                self.library.remove(metadata: data.metadata, file: data.file)
+                self.library.add(metadata: data.metadata, file: data.file)
             }
+        } else {
+            throw MMCliError.invalidParameters
         }
     }
 }
@@ -287,19 +289,20 @@ class DeleteCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        if self.parts.count < 2 {
+        guard self.parts.count >= 2 else {
             throw MMCliError.invalidParameters
-        } else if self.last.all().isEmpty {
+        }
+        guard !self.last.all().isEmpty else {
             throw MMCliError.missingResultSet
-        } else {
-            if let index = Int(self.parts.removeFirst()) {
-                for key in parts {
-                    let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: [key], last: last)
-                    self.library.remove(metadata: data.metadata, file: data.file)
-                }
-            } else {
-                throw MMCliError.invalidParameters
+        }
+            
+        if let index = Int(self.parts.removeFirst()) {
+            for key in parts {
+                let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: [key], last: last)
+                self.library.remove(metadata: data.metadata, file: data.file)
             }
+        } else {
+            throw MMCliError.invalidParameters
         }
     }
 }
@@ -327,19 +330,20 @@ class SaveCommand: CommandInitialiser, MMCommand {
     }
     
     func execute() throws {
-        if self.parts.count != 1 {
+        guard self.parts.count == 1 else {
             throw MMCliError.invalidParameters
-        } else if self.last.all().isEmpty && saveSearch {
+        }
+        if self.last.all().isEmpty && saveSearch {
             throw MMCliError.missingResultSet
+        }
+        
+        // Need to type check `index`
+        let filename = self.parts.removeFirst()
+        let file = MM_FileExport()
+        if saveSearch {
+            try file.write(filename: filename, items: self.last.all())
         } else {
-            // Need to type check `index`
-            let filename = self.parts.removeFirst()
-            let file = MM_FileExport()
-            if saveSearch {
-                try file.write(filename: filename, items: self.last.all())
-            } else {
-                try file.write(filename: filename, items: self.library.all())
-            }
+            try file.write(filename: filename, items: self.library.all())
         }
     }
 }
@@ -360,20 +364,20 @@ class LoadCommand: CommandInitialiser, MMCommand {
     var fileImport = MM_FileImport()
     
     func execute() throws {
-        if self.parts.count < 1 {
+        guard self.parts.count >= 1 else {
             throw MMCliError.invalidParameters
-        } else {
-            do {
-                // Can load as many consecutive files as need be.
-                for filename in parts {
-                    let files = try self.fileImport.read(filename: filename)
-                    for file in files {
-                        self.library.add(file: file)
-                    }
+        }
+
+        do {
+            // Can load as many consecutive files as need be.
+            for filename in parts {
+                let files = try self.fileImport.read(filename: filename)
+                for file in files {
+                    self.library.add(file: file)
                 }
-            } catch {
-                throw MMCliError.invalidFilepath
             }
+        } catch {
+            throw MMCliError.invalidFilepath
         }
     }
 }

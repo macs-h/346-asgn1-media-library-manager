@@ -1,17 +1,10 @@
 [
   {
     "type" : "image",
-    "fullpath" : "/path/to/foo.png",
+    "fullpath" : "/Users/mhuang/346/asgn1/test.json",
     "metadata" : {
-      "key5" : "value5"
-    }
-  },
-  {
-    "type" : "video",
-    "fullpath" : "/path/to/bar.mp4",
-    "metadata" : {
-      "key7" : "value7",
-      "key8" : "value8"
+      "key1" : "value1",
+      "key2" : "value2"
     }
   }
 ]
