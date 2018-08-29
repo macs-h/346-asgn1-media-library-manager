@@ -118,4 +118,16 @@ class MM_File: MMFile {
         return results
     }
     
+    
+    func details() -> String{
+        if metadata.count > 0 {
+            var results: [String] = []
+            for data in metadata{
+                results.append(data.description)
+            }
+            return "Name: \(filename)\nData {\n\t" + results.joined(separator: "\n\t")+"}"
+        }else{
+            return "Data{}"
+        }
+    }
 }
