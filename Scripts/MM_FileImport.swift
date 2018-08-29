@@ -23,18 +23,18 @@ class MM_FileImport : MMFileImport {
     func read(filename: String) throws -> [MMFile] {
         
         var files: [MM_File] = []
-        var filepath: String = ""
+        var json_filepath: String = ""
         
         if filename.contains("~") {
-            filepath = NSString(string: filename).expandingTildeInPath
+            json_filepath = NSString(string: filename).expandingTildeInPath
         } else if filename.contains("/") {
-            filepath = filename
+            json_filepath = filename
         } else {
             var path:[String] = #file.split(separator: "/").map({String($0)})
             path.removeLast(2)
-            filepath = "/" + path.joined(separator: "/") + "/" + filename
+            json_filepath = "/" + path.joined(separator: "/") + "/" + filename
         }
-        let url = URL(fileURLWithPath: filepath)
+        let url = URL(fileURLWithPath: json_filepath)
 
         let encodedJsonData = try Data(contentsOf: url)
         
@@ -50,10 +50,10 @@ class MM_FileImport : MMFileImport {
         for attribute in jsonData {
             let f = MM_File()
             
-            f.path = filepath
+            f.fullpath = attribute.fullpath
             f.fileType = attribute.type
             
-            let path_reversed = String(f.path.reversed())
+            let path_reversed = String(f.fullpath.reversed())
             
             let start = path_reversed.startIndex
             let end = path_reversed.index(path_reversed.startIndex, offsetBy: path_reversed._bridgeToObjectiveC().range(of: "/").location)

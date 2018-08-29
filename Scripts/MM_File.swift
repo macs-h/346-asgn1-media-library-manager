@@ -14,7 +14,7 @@ import Foundation
 class MM_File: MMFile {
     
     var filename: String = ""
-    var path: String = ""
+    var fullpath: String = ""
     var fileType: String = ""
     var description: String{
 //        if metadata.count > 0 {
@@ -67,7 +67,7 @@ class MM_File: MMFile {
     init(metadata: [MM_Metadata], filename: String, path: String) {
         self.metadata = metadata
         self.filename = filename
-        self.path = path
+        self.fullpath = path
     }
     
     
@@ -109,7 +109,7 @@ class MM_File: MMFile {
     func getAttributes() -> [String]{
         var results: [String] = []
         results.append(filename)
-        results.append(path)
+        results.append(fullpath)
         results.append(fileType)
         for data in metadata{
             results.append(data.keyword)

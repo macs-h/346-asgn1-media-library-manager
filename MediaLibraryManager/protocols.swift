@@ -33,7 +33,7 @@ import Foundation
 protocol MMFile: CustomStringConvertible{
     var metadata: [MMMetadata] {get set}
     var filename: String {get set}
-    var path: String {get set}
+    var fullpath: String {get set}
     var collectionPos: Int {get set}
     var fileType: String {get set}
     
