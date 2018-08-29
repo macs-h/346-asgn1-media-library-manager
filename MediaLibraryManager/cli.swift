@@ -409,9 +409,12 @@ class HelpCommand: MMCommand{
 \tload <filename> ...               - load file into the collection
 \tlist <term> ...                   - list all the files that have the term specified
 \tlist                              - list all the files in the collection
+\tdetail <number> ...               - show detailed description of file.
 \tadd <number> <key> <value> ...    - add some metadata to a file
 \tset <number> <key> <value> ...    - this is really a del followed by an add
 \tdel <number> <key> ...            - removes a metadata item from a file
+\tdel-file <filename> ...           - removes the specified file(s) from the collection
+\tdel-all                           - removes the whole collection
 \tsave-search <filename>            - saves the last list results to a file
 \tsave <filename>                   - saves the whole collection to a file
 \tquit                              - exit the program (without prompts)
