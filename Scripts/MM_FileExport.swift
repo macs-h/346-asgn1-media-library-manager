@@ -48,7 +48,7 @@ class MM_FileExport : MMFileExport {
             for data in item.metadata {
                 metadata[data.keyword] = data.value
             }
-            jsonArray.append(JSON(fullpath: item.path, type: item.fileType, metadata: metadata))
+            jsonArray.append(JSON(fullpath: item.fullpath, type: item.fileType, metadata: metadata))
         }
         
         let encoder = JSONEncoder()
