@@ -95,6 +95,9 @@ while let line = prompt("> "){
         case "quit":
             command = QuitCommand()
             break
+        case "test":
+            command = TestCommand(library, parts, last)
+            break
         default:
             throw MMCliError.unknownCommand
         }

@@ -448,3 +448,26 @@ class QuitCommand : MMCommand{
         exit(0)
     }
 }
+
+
+// -----------------------------------------------------------------------
+
+class TestCommand: CommandInitialiser, MMCommand {
+    var results: MMResultSet?
+    
+    func execute() throws {
+        guard self.parts.count == 1 else {
+            throw MMCliError.invalidParameters
+        }
+        guard !self.last.all().isEmpty else {
+            throw MMCliError.missingResultSet
+        }
+        
+        if let index = Int(self.parts.removeFirst()) {
+            // use index here.
+            
+        } else {
+            throw MMCliError.invalidParameters
+        }
+    }
+}
