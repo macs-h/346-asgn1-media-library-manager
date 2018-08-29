@@ -35,3 +35,17 @@ The library must support the following features:
 ### if you completed the assignment in a pair, you must explain the role taken by each member of your pair; and
 
 ### if you implemented any extensions, how many bonus marks (up to 3) you believe you should be awarded, and why. Note that the bonus marks can only be used to reach the maximum mark of 20.
+
+
+
+### Addtional functionality added:
+
+* [TBA] Check if the filepath has been added when loading a file - prevent duplicates.
+* [TBA] 
+
+
+### Assumptions made
+
+* If duplicate keys exist in a file when importing, the first occurrence of the key is stored and ignores any further metadata with the same key. 
+* When setting a new value for a duplicate key (for a file), there is no issue as to which one of the duplicate keys should be changed because the program works by first removing all instances of that key and then adding a new key/value pair with the original key and new value as the new key/value pair. This results in removing all duplicates for that key.
+* Exported metadata as JSON does not appear in the same order as when they were imported.
