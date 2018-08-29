@@ -17,7 +17,7 @@ class MM_Metadata: MMMetadata{
     var keyword: String
     var value: String
     var description: String{
-        return keyword + " = " + value
+        return keyword + ": " + value
     }
     
     

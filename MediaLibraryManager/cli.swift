@@ -465,6 +465,8 @@ class TestCommand: CommandInitialiser, MMCommand {
         
         if let index = Int(self.parts.removeFirst()) {
             // use index here.
+            let file = try last.get(index: index)
+            print(file.details())
             
         } else {
             throw MMCliError.invalidParameters

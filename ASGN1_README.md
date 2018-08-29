@@ -48,6 +48,7 @@ This method of role seperation worked well because we were able to work on diffe
 
 * [TBA] Check if the filepath has been added when loading a file - prevent duplicates.
 * [TBA] 
+Added a detailed list which shows the filename, type, metadata for a specified file/files by using an index after using list command. We choose to do this because we often wondered if the changes we made to a file (eg adding the deleting) did what was intended, before the only other way to see was to export to try search for the key or value and see if the results were what was intended, this is a much more convenant and sensible way to show the file contents. ##(could change this to "we thought the user would want a way to see what is in the file without exporting it, so we made this functionallty to do so")
 
 
 ### Assumptions made

@@ -125,7 +125,7 @@ class MM_File: MMFile {
             for data in metadata{
                 results.append(data.description)
             }
-            return "Name: \(filename)\nData {\n\t" + results.joined(separator: "\n\t")+"}"
+            return "Filename: \(filename)\nType: \(fileType)\nMetadata {\n\t" + results.joined(separator: "\n\t")+"\n}"
         }else{
             return "Data{}"
         }

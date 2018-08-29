@@ -54,6 +54,8 @@ protocol MMFile: CustomStringConvertible{
         - returns:  results - the array of string to `.contains` acted upon
      */
     func getAttributes() -> [String]
+    
+    func details() -> String
 }
 
 
