@@ -34,4 +34,10 @@ The library must support the following features:
 
 ### if you completed the assignment in a pair, you must explain the role taken by each member of your pair; and
 
+To decide the roles we both read the specifications and Sam had an idea on how to do the backend (collection class functions) so he started working on that while Max had an idea about working with JSON files so he started working on the "front end" stuff. We then worked together to incorperate our code and make it work with each of our systems.
+
+This method of role seperation worked well because we were able to work on different files and different aspects so we had no conficts when merging code. In terms of getting in each way or slowing the other down we never had any problems because Sam started and finished the backend almost before Mac started so Max was able to use his code straight away thus streamlining production.
+
+
+
 ### if you implemented any extensions, how many bonus marks (up to 3) you believe you should be awarded, and why. Note that the bonus marks can only be used to reach the maximum mark of 20.
