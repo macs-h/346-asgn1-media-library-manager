@@ -3,9 +3,7 @@
     "type" : "image",
     "fullpath" : "/path/to/foo.png",
     "metadata" : {
-      "key10" : "true",
-      "key1" : "value1",
-      "key2" : "value2"
+      "key5" : "value5"
     }
   },
   {

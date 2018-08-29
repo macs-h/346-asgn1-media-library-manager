@@ -110,6 +110,7 @@ class MM_File: MMFile {
         var results: [String] = []
         results.append(filename)
         results.append(path)
+        results.append(fileType)
         for data in metadata{
             results.append(data.keyword)
             results.append(data.value) // Waiting on clarification from Paul about search implementation.

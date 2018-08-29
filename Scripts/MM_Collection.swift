@@ -87,8 +87,9 @@ class MM_Collection : MMCollection {
      */
     func remove(metadata: MMMetadata) {
         let files = search(item: metadata)
-        for file in files{
-            collection?.remove(at: file.collectionPos)
+        for i in 0..<files.count{
+            collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
+
         }
         
     }
@@ -102,15 +103,33 @@ class MM_Collection : MMCollection {
             - file:     The file to remove the metadata from.
      */
     func remove(metadata: MMMetadata, file: MMFile) {
-        //need to check that key exists
-        let files = search(term: file.filename)
-        for i in 0..<files.count{
-            collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
-            
+        if collection != nil {
+            let metaIndex = file.searchMetadata(keyword: metadata.keyword)
+            if metaIndex != -1{
+                collection![file.collectionPos].metadata.remove(at: metaIndex)
+            }else{
+                print("\(metadata.keyword) not found in file \(file.filename)")
+            }
         }
-        
     }
     
+    /**
+     Removes a specific file from the collection
+     
+     - parameters:
+     - file:     The file to remove from the collection.
+     */
+    func remove(file: MMFile) {
+        collection?.remove(at: file.collectionPos)
+    }
+    
+    
+    /**
+     Removes all files from the collection
+     */
+    func removeAll() {
+        collection?.removeAll()
+    }
     
     /**
         Finds all the files associated with the keyword.
@@ -127,6 +146,7 @@ class MM_Collection : MMCollection {
                 //search each feild
                 if(file.getAttributes().contains(term)){
                     results.append(file)
+                    print("found: ", term, "in: ", file)
                 }
             }
             return results
@@ -176,6 +196,7 @@ class MM_Collection : MMCollection {
             return []
         }
     }
+    
     
     
 }
