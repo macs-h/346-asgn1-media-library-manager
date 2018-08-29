@@ -146,7 +146,6 @@ class MM_Collection : MMCollection {
                 //search each feild
                 if(file.getAttributes().contains(term)){
                     results.append(file)
-                    print("found: ", term, "in: ", file)
                 }
             }
             return results
