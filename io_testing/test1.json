@@ -1,0 +1,20 @@
+[
+    {
+        "fullpath": "/path/to/image1.png",
+        "type": "image",
+        "metadata": {
+            "key1": "value1",
+            "key2": "value2",
+        }
+    },
+    {
+        "fullpath": "/path/to/bar.mp4",
+        "type": "video",
+        "metadata": {
+            "key3": "value3",
+            "key4": "value4",
+        }
+    }
+]
+
+

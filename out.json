@@ -1,7 +1,7 @@
 [
   {
     "type" : "image",
-    "fullpath" : "/path/to/foo.png",
+    "fullpath" : "/Users/mhuang/346/asgn1/test.json",
     "metadata" : {
       "key5" : "value5"
     }
