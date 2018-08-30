@@ -65,10 +65,7 @@ while let line = prompt("> "){
         commandString = parts.removeFirst();
         
         switch(commandString){
-        case "list":
-            command = SearchCommand(library, parts, toList: true)
-            break
-        case "search":
+        case "list", "search":
             command = SearchCommand(library, parts)
             break
         case "add":
@@ -80,6 +77,11 @@ while let line = prompt("> "){
         case "del":
             command = DeleteCommand(library, parts, last)
             break
+        case "del-file":
+            command = DeleteCommand(library, parts, last, file: true)
+            break
+        case "del-all":
+            command = DeleteCommand(library, parts, last, all: true)
         case "save-search":
             command = SaveCommand(library, parts, last, saveSearch: true)
             break

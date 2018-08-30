@@ -117,10 +117,9 @@ class MM_Collection : MMCollection {
     }
     
     /**
-     Removes a specific file from the collection
-     
-     - parameters:
-     - file:     The file to remove from the collection.
+        Removes a specific file from the collection.
+
+        - parameter file:   The file to remove from the collection.
      */
     func remove(file: MMFile) {
         if(confirm()){
