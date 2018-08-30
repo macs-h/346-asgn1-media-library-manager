@@ -175,32 +175,20 @@ class CommandInitialiser {
  */
 class SearchCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
-    var toList: Bool
-    
-    init(_ library: MMCollection, _ parts: [String], toList: Bool = false) {
-        self.toList = toList
-        super.init(library, parts)
-    }
     
     func execute() throws {
-        if self.parts.isEmpty && toList {
+        if self.parts.isEmpty {
             self.results = MMResultSet(self.library.all())
-        } else if self.parts.count < 1 {
-            throw MMCliError.invalidParameters
         } else {
-//            var searchResults = [MMFile]()
-//            var usedKeywords = [String]()
-//            for keyword in parts {
-//                if !usedKeywords.contains(keyword) {
-//                    searchResults += self.library.search(term: keyword)
-//                    usedKeywords.append(keyword)
-//                }
-//            }
-//            self.results = MMResultSet(searchResults)
-            
-            // Sam's code.
-            let keyword = self.parts.removeFirst()
-            self.results = MMResultSet(self.library.search(term: keyword))
+            var searchResults = [MMFile]()
+            var usedKeywords = [String]()
+            for keyword in parts {
+                if !usedKeywords.contains(keyword) {
+                    searchResults += self.library.search(term: keyword)
+                    usedKeywords.append(keyword)
+                }
+            }
+            self.results = MMResultSet(searchResults)
         }
     }
 }
@@ -220,11 +208,11 @@ class AddCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        guard self.parts.count >= 3 && (self.parts.count - 1) % 2 == 0 else {
-            throw MMCliError.invalidParameters
-        }
         guard !self.last.all().isEmpty else {
             throw MMCliError.missingResultSet
+        }
+        guard self.parts.count >= 3 && (self.parts.count - 1) % 2 == 0 else {
+            throw MMCliError.invalidParameters
         }
         
         if let index = Int(self.parts.removeFirst()) {
@@ -254,11 +242,11 @@ class SetCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        guard self.parts.count >= 3 && (self.parts.count - 1) % 2 == 0 else {
-            throw MMCliError.invalidParameters
-        }
         guard !self.last.all().isEmpty else {
             throw MMCliError.missingResultSet
+        }
+        guard self.parts.count >= 3 && (self.parts.count - 1) % 2 == 0 else {
+            throw MMCliError.invalidParameters
         }
         
         if let index = Int(self.parts.removeFirst()) {
@@ -287,22 +275,42 @@ class SetCommand: CommandInitialiser, MMCommand {
  */
 class DeleteCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
+    var file: Bool
+    var all: Bool
+    
+    init(_ library: MMCollection, _ parts: [String], _ last: MMResultSet, file: Bool = false, all: Bool = false) {
+        self.file = file
+        self.all = all
+        super.init(library, parts, last)
+    }
     
     func execute() throws {
-        guard self.parts.count >= 2 else {
-            throw MMCliError.invalidParameters
-        }
-        guard !self.last.all().isEmpty else {
-            throw MMCliError.missingResultSet
-        }
+        
+        if self.all {
+            // Delete entire collection.
             
-        if let index = Int(self.parts.removeFirst()) {
-            for key in parts {
-                let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: [key], last: last)
-                self.library.remove(metadata: data.metadata, file: data.file)
+            guard self.parts.count == 0 else {
+                throw MMCliError.invalidParameters
             }
+            self.library.removeAll()
         } else {
-            throw MMCliError.invalidParameters
+            // Delete metadata from a file based on key.
+            
+            guard !self.last.all().isEmpty else {
+                throw MMCliError.missingResultSet
+            }
+            guard self.parts.count >= 2 else {
+                throw MMCliError.invalidParameters
+            }
+            
+            if let index = Int(self.parts.removeFirst()) {
+                for key in parts {
+                    let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: [key], last: last)
+                    self.library.remove(metadata: data.metadata, file: data.file)
+                }
+            } else {
+                throw MMCliError.invalidParameters
+            }
         }
     }
 }
@@ -413,7 +421,7 @@ class HelpCommand: MMCommand{
 \tadd <number> <key> <value> ...    - add some metadata to a file
 \tset <number> <key> <value> ...    - this is really a del followed by an add
 \tdel <number> <key> ...            - removes a metadata item from a file
-\tdel-file <filename> ...           - removes the specified file(s) from the collection
+\tdel-file <number> ...           - removes the specified file(s) from the collection
 \tdel-all                           - removes the whole collection
 \tsave-search <filename>            - saves the last list results to a file
 \tsave <filename>                   - saves the whole collection to a file
