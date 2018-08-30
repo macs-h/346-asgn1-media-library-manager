@@ -126,6 +126,7 @@ class MM_Collection : MMCollection {
         if(confirm()){
             collection?.remove(at: file.collectionPos)
         }
+        
     }
     
     

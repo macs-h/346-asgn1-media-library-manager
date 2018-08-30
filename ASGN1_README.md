@@ -30,7 +30,20 @@ The library must support the following features:
 
 ### the way in which object-oriented concepts were used in your design and implementation;
 
+When designing our program from the start we wanted to decouple the front and backend as much as possible, this would make it easier to work on seperatly as a pair but also allowed us to make changes to either front or backend without affecting the other side asmuch. Because the MM_collection class uses protocols for the functions the front end will always know that any calls to the backend will always be implemented.
+
+Another design we used was inheritence. when creating the command classes that the main class calls we quickly realised that we had to repeat alot of code in the variables and also in the "init()" functions, so we decided to use inheritence to reduce the amount of duplicate code by storing most the vairable in the parent class "CommandInitialiser" and using the parents "init()" function raither than basically the same "init()" function in each class.
+
+The last design principle we used is a singleton pattern. We realised that we were often making a tempory file and metadata and using it for the collection functions. The issue with just making just a function to do this work is that this function is called by multiple classes, so to make it available to every class in the file (fileprivate class) we used a singleton pattern ****(we could also put it in the parent class or make it a static a static function)
+
+
+
 ### how you tested your code;
+
+We implemented two types of testing: Unit tests and bash script testing. 
+We used Unit testing to test the individual backend components against what we expected them to do (eg test "add(file)", "add(metadata, file)"). Testing in this manner allowed us to make sure that the backend works as expected so if there are issues with the program as a whole we know it's to do with the front end.
+
+We used bash script testing to test the program as a whole to make sure the user expience is pleasent and the program does what is required and expected. We testing with a large range of inputs and commands in various orders so that we could deal with anything that the user could attempt. Because we tested the backend with unit tests we know if there are any porblems it is a an issue with the front end which made debugging so much easier.
 
 ### if you completed the assignment in a pair, you must explain the role taken by each member of your pair; and
 
