@@ -50,6 +50,8 @@ This method of role seperation worked well because we were able to work on diffe
 * [TBA] 
 Added a detailed list which shows the filename, type, metadata for a specified file/files by using an index after using list command. We choose to do this because we often wondered if the changes we made to a file (eg adding the deleting) did what was intended, before the only other way to see was to export to try search for the key or value and see if the results were what was intended, this is a much more convenant and sensible way to show the file contents. ##(could change this to "we thought the user would want a way to see what is in the file without exporting it, so we made this functionallty to do so")
 
+Added a user confirmation prompt when deleting a item from the collection. We choose to do this so it would be harder for the user to delete something unintentionally by having it set to "no" by default.
+
 
 ### Assumptions made
 

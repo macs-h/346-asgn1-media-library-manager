@@ -88,8 +88,9 @@ class MM_Collection : MMCollection {
     func remove(metadata: MMMetadata) {
         let files = search(item: metadata)
         for i in 0..<files.count{
-            collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
-
+            if(confirm()){
+                collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
+            }
         }
         
     }
@@ -106,7 +107,9 @@ class MM_Collection : MMCollection {
         if collection != nil {
             let metaIndex = file.searchMetadata(keyword: metadata.keyword)
             if metaIndex != -1{
-                collection![file.collectionPos].metadata.remove(at: metaIndex)
+                if(confirm()){
+                    collection![file.collectionPos].metadata.remove(at: metaIndex)
+                }
             }else{
                 print("\(metadata.keyword) not found in file \(file.filename)")
             }
@@ -120,7 +123,9 @@ class MM_Collection : MMCollection {
      - file:     The file to remove from the collection.
      */
     func remove(file: MMFile) {
-        collection?.remove(at: file.collectionPos)
+        if(confirm()){
+            collection?.remove(at: file.collectionPos)
+        }
     }
     
     
@@ -128,7 +133,9 @@ class MM_Collection : MMCollection {
      Removes all files from the collection
      */
     func removeAll() {
-        collection?.removeAll()
+        if(confirm()){
+            collection?.removeAll()
+        }
     }
     
     /**
@@ -196,6 +203,17 @@ class MM_Collection : MMCollection {
         }
     }
     
-    
-    
+    /**
+        Asks the user to confirm there action.
+     
+        - returns:  Whether or not the user has confirmed the action.
+    */
+    private func confirm() -> Bool{
+        print("Are you sure [y/N]?")
+        let input = readLine(strippingNewline: true)?.lowercased()
+        if(input == "y" || input == "yes"){
+            return true
+        }
+        return false
+    }
 }
