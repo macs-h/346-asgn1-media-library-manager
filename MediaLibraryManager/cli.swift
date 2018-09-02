@@ -181,7 +181,6 @@ class SearchCommand: CommandInitialiser, MMCommand {
             self.results = MMResultSet(self.library.all())
         } else {
             var searchResults = [MMFile]()
-            var uniqueResults = [MMFile]()
             var usedKeywords = [String]()
             for keyword in parts {
                 if !usedKeywords.contains(keyword) {
@@ -189,18 +188,23 @@ class SearchCommand: CommandInitialiser, MMCommand {
                     usedKeywords.append(keyword)
                 }
             }
-            for result in searchResults {
-                var duplicate = false
-                for uniqueResult in uniqueResults {
-                    if result.filename == uniqueResult.filename {
-                        duplicate = true
+            if self.parts.count > 1 {
+                var uniqueResults = [MMFile]()
+                for result in searchResults {
+                    var duplicate = false
+                    for uniqueResult in uniqueResults {
+                        if result.filename == uniqueResult.filename {
+                            duplicate = true
+                        }
+                    }
+                    if duplicate == false {
+                        uniqueResults.append(result)
                     }
                 }
-                if duplicate == false {
-                    uniqueResults.append(result)
-                }
+                self.results = MMResultSet(uniqueResults)
+            } else {
+                self.results = MMResultSet(searchResults)
             }
-            self.results = MMResultSet(uniqueResults)
         }
     }
 }

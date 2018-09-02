@@ -22,7 +22,8 @@ class MM_FileImport : MMFileImport {
      */
     func read(filename: String) throws -> [MMFile] {
         
-        var files: [MM_File] = []
+        var importedFiles = [MM_File]()
+        var filesToAdd = [MM_File]()
         var json_filepath: String = ""
         
         if filename.contains("~") {
@@ -64,10 +65,17 @@ class MM_FileImport : MMFileImport {
                 let data = MM_Metadata(keyword: metadata.key, value: metadata.value)
                 f.metadata.append(data)
             }
-            files.append(f)
+            importedFiles.append(f)
+        }
+        
+        // check for duplicates.
+        for file in importedFiles {
+            if library.search(term: file.filename).isEmpty {
+                filesToAdd.append(file)
+            }
         }
 
-        return files
+        return filesToAdd
     }
     
 }
