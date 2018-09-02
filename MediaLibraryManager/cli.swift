@@ -35,6 +35,13 @@ enum MMCliError: Error {
     // Thrown if the index number given is not within a valid range.
     case indexOutOfRange
     
+    // Thrown if an invalid extension is provided to import or export a JSON
+    // file.
+    case invalidJSONExtension
+    
+    // Thrown if there is no data to export to a json file.
+    case noDataInCollection
+    
     // feel free to add more errors as you need them
 }
 
@@ -422,6 +429,8 @@ class LoadCommand: CommandInitialiser, MMCommand {
                     self.library.add(file: file)
                 }
             }
+        } catch MMCliError.invalidJSONExtension {
+            throw MMCliError.invalidJSONExtension
         } catch {
             throw MMCliError.invalidFilepath
         }
