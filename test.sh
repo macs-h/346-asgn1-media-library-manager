@@ -23,7 +23,8 @@ then
     cat .runtime_output.txt
 else
     printf "No run time warnings or errors.\n"
-    printf "---------------------------------\n"
+    echo "---------------------------------"
+    echo ""
 fi
 
 printf "Diff on ACTUAL vs EXPECTED output...\n"

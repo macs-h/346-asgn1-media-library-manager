@@ -34,6 +34,7 @@ class MM_FileImport : MMFileImport {
             var path:[String] = #file.split(separator: "/").map({String($0)})
             path.removeLast(2)
             json_filepath = "/" + path.joined(separator: "/") + "/" + filename
+            print(json_filepath)
         }
         let url = URL(fileURLWithPath: json_filepath)
 
