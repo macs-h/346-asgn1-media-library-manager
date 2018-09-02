@@ -71,3 +71,4 @@ Added a user confirmation prompt when deleting a item from the collection. We ch
 * If duplicate keys exist in a file when importing, the first occurrence of the key is stored and ignores any further metadata with the same key. 
 * When setting a new value for a duplicate key (for a file), there is no issue as to which one of the duplicate keys should be changed because the program works by first removing all instances of that key and then adding a new key/value pair with the original key and new value as the new key/value pair. This results in removing all duplicates for that key.
 * Exported metadata as JSON does not appear in the same order as when they were imported.
+* When searching for multiple keywords, if a single file matches multiple times only one instance of that file is displayed as the result to the user.

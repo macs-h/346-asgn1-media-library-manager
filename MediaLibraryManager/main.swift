@@ -33,25 +33,9 @@ func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
 }
 
 
-// The while-loop below implements a basic command line interface. Some
-// examples of the (intended) commands are as follows:
-//
-// load foo.json bar.json
-//  from the current directory load both foo.json and bar.json and
-//  merge the results
-//
-// list foo bar baz
-//  results in a set of files with metadata containing foo OR bar OR baz
-//
-// add 3 foo bar
-//  using the results of the previous list, add foo=bar to the file
-//  at index 3 in the list
-//
-// add 3 foo bar baz qux
-//  using the results of the previous list, add foo=bar and baz=qux
-//  to the file at index 3 in the list
-//
-// Feel free to extend these commands/errors as you need to.
+/**
+    The while-loop below implements a basic command line interface.
+ */
 while let line = prompt("> "){
     var commandString : String = ""
     var parts = line.split(separator: " ").map({String($0)})
@@ -76,9 +60,6 @@ while let line = prompt("> "){
             break
         case "del":
             command = DeleteCommand(library, parts, last)
-            break
-        case "del-file":
-            command = DeleteCommand(library, parts, last, file: true)
             break
         case "del-all":
             command = DeleteCommand(library, parts, last, all: true)
@@ -123,5 +104,9 @@ while let line = prompt("> "){
         print("no previous results to work from... ")
     }catch MMCliError.invalidFilepath {
         print("invalid filepath provided. Please check and try again")
+    }catch MMCliError.invalidIndex {
+        print("invalid index given -- see \"help\" for list")
+    }catch MMCliError.indexOutOfRange {
+        print("index given is outside valid range. Please check and try again")
     }
 }
