@@ -21,6 +21,9 @@ class MM_FileImport : MMFileImport {
         - returns:  A list of all the files in the file.
      */
     func read(filename: String) throws -> [MMFile] {
+        guard filename.split(separator: ".").map({String($0)}).last?.lowercased() == "json" else {
+            throw MMCliError.invalidJSONExtension
+        }
         
         var importedFiles = [MM_File]()
         var filesToAdd = [MM_File]()
@@ -31,10 +34,7 @@ class MM_FileImport : MMFileImport {
         } else if filename.contains("/") {
             json_filepath = filename
         } else {
-            var path:[String] = #file.split(separator: "/").map({String($0)})
-            path.removeLast(2)
-            json_filepath = "/" + path.joined(separator: "/") + "/" + filename
-            print(json_filepath)
+            json_filepath = FileManager.default.currentDirectoryPath + "/" + filename
         }
         let url = URL(fileURLWithPath: json_filepath)
 

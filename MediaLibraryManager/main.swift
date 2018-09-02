@@ -108,5 +108,9 @@ while let line = prompt("> "){
         print("invalid index given -- see \"help\" for list")
     }catch MMCliError.indexOutOfRange {
         print("index given is outside valid range. Please check and try again")
+    }catch MMCliError.invalidJSONExtension {
+        print("file extension must be \".json\". Please check and try again")
+    }catch MMCliError.noDataInCollection {
+        print("there is no data to export - the collection is empty. Please check and try again")
     }
 }

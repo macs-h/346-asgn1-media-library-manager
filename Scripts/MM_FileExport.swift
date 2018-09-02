@@ -21,19 +21,20 @@ class MM_FileExport : MMFileExport {
             - items:    A list of all the files to be written.
      */
     func write(filename: String, items: [MMFile]) throws {
+        guard filename.split(separator: ".").map({String($0)}).last?.lowercased() == "json" else {
+            throw MMCliError.invalidJSONExtension
+        }
         
-        var filepath: String = ""
+        var json_filepath: String = ""
         
         if filename.contains("~") {
-            filepath = NSString(string: filename).expandingTildeInPath
+            json_filepath = NSString(string: filename).expandingTildeInPath
         } else if filename.contains("/") {
-            filepath = filename
+            json_filepath = filename
         } else {
-            var path:[String] = #file.split(separator: "/").map({String($0)})
-            path.removeLast(2)
-            filepath = "/" + path.joined(separator: "/") + "/" + filename
+            json_filepath = FileManager.default.currentDirectoryPath + "/" + filename
         }
-        let url = URL(fileURLWithPath: filepath)
+        let url = URL(fileURLWithPath: json_filepath)
         
         // the struct mirrors the JSON data
         struct JSON: Codable {
@@ -55,7 +56,10 @@ class MM_FileExport : MMFileExport {
         encoder.outputFormatting = .prettyPrinted
         let jsonData = try encoder.encode(jsonArray)
         if jsonData.isEmpty {
-            print( "empty")
+            print("EMPTY")
+        }
+        if items.isEmpty {
+            throw MMCliError.noDataInCollection
         }
         let jsonString = String(data: jsonData, encoding: .utf8)!.replacingOccurrences(of: "\\", with: "")
         
