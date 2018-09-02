@@ -11,7 +11,6 @@
 		60C9AE6121251363008F404A /* MM_Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C9AE6021251363008F404A /* MM_Collection.swift */; };
 		60C9AE63212515E8008F404A /* MM_FileImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C9AE62212515E8008F404A /* MM_FileImport.swift */; };
 		60C9AE6521251684008F404A /* MM_FileExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C9AE6421251684008F404A /* MM_FileExport.swift */; };
-		60D2AAB721329894008388F5 /* MLM_UnitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D2AAB621329894008388F5 /* MLM_UnitTesting.swift */; };
 		D3161D2420D748F800EC97E8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2320D748F800EC97E8 /* main.swift */; };
 		D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2C20D749BD00EC97E8 /* protocols.swift */; };
 		D3CB3A9D20DB264200AF519E /* cli.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CB3A9C20DB264200AF519E /* cli.swift */; };
@@ -45,7 +44,6 @@
 		60C9AE62212515E8008F404A /* MM_FileImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MM_FileImport.swift; sourceTree = "<group>"; };
 		60C9AE6421251684008F404A /* MM_FileExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MM_FileExport.swift; sourceTree = "<group>"; };
 		60D2AAB421329894008388F5 /* MLM_UnitTesting.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MLM_UnitTesting.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		60D2AAB621329894008388F5 /* MLM_UnitTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLM_UnitTesting.swift; sourceTree = "<group>"; };
 		60D2AAB821329894008388F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3161D2020D748F800EC97E8 /* MediaLibraryManager */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MediaLibraryManager; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3161D2320D748F800EC97E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -76,7 +74,6 @@
 		60D2AAB521329894008388F5 /* MLM_UnitTesting */ = {
 			isa = PBXGroup;
 			children = (
-				60D2AAB621329894008388F5 /* MLM_UnitTesting.swift */,
 				60D2AAB821329894008388F5 /* Info.plist */,
 				ED06747D2138B3E600C0BDAA /* CollectionTesting.swift */,
 			);
@@ -221,7 +218,6 @@
 				ED6058B5213B5FFE00D0613B /* main.swift in Sources */,
 				ED6058B6213B5FFE00D0613B /* cli.swift in Sources */,
 				ED06747E2138B3E600C0BDAA /* CollectionTesting.swift in Sources */,
-				60D2AAB721329894008388F5 /* MLM_UnitTesting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

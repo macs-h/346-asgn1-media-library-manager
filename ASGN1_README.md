@@ -41,15 +41,15 @@ The last design principle we used is a singleton pattern. We realised that we we
 ### how you tested your code;
 
 We implemented two types of testing: Unit tests and bash script testing. 
-We used Unit testing to test the individual backend components against what we expected them to do (eg test "add(file)", "add(metadata, file)"). Testing in this manner allowed us to make sure that the backend works as expected so if there are issues with the program as a whole we know it's to do with the front end.
+We used Unit testing in a file called "collectionTesting.swift" to test the individual backend components  (eg test "add(file)", "add(metadata, file)" functions itself). Testing in this manner allowed us to make sure that the backend works as expected given any valid input so if there are issues with the program as a whole we know it's to do with the front end. The only issue we had with unit testing is that some of a functions (speficially remove functions) require users to validate that the action taken is desired via stdin, we couldn't give the unit testing expected stdin so the user testing needs to manually type "y" to validate the actions which isn't ideal.
 
 We used bash script testing to test the program as a whole to make sure the user expience is pleasent and the program does what is required and expected. We testing with a large range of inputs and commands in various orders so that we could deal with anything that the user could attempt. Because we tested the backend with unit tests we know if there are any porblems it is a an issue with the front end which made debugging so much easier.
 
 ### if you completed the assignment in a pair, you must explain the role taken by each member of your pair; and
 
-To decide the roles we both read the specifications and Sam had an idea on how to do the backend (collection class functions) so he started working on that while Max had an idea about working with JSON files so he started working on the "front end" stuff. We then worked together to incorperate our code and make it work with each of our systems.
+To decide the roles we both read the specifications and Sam had an idea on how to do the backend (collection class functions) so he started working on that while Max had an idea about working with JSON files so he started working on the "front end" stuff. We then worked together to incorperate our code and make it work with each of our systems. Sam then did the Unit tests because he made the back end while max did bash testing because he worked on the "front end".
 
-This method of role seperation worked well because we were able to work on different files and different aspects so we had no conficts when merging code. In terms of getting in each way or slowing the other down we never had any problems because Sam started and finished the backend almost before Mac started so Max was able to use his code straight away thus streamlining production.
+This method of role seperation worked well because we were able to work on different files and different aspects so we had no conficts when merging code. In terms of getting in each way or slowing the other down we never had any problems because Sam started and finished the backend almost before Mac started so Max was able to use his code straight away thus streamlining production. Seperating the testing also worked well because we were testing our individual parts we were able to fix any issues quickly because we each wrote the code we were testing and thus could easly locate the problem.
 
 
 
@@ -59,11 +59,11 @@ This method of role seperation worked well because we were able to work on diffe
 
 ### Addtional functionality added:
 
-* [TBA] Check if the filepath has been added when loading a file - prevent duplicates.
-* [TBA] 
-Added a detailed list which shows the filename, type, metadata for a specified file/files by using an index after using list command. We choose to do this because we often wondered if the changes we made to a file (eg adding the deleting) did what was intended, before the only other way to see was to export to try search for the key or value and see if the results were what was intended, this is a much more convenant and sensible way to show the file contents. ##(could change this to "we thought the user would want a way to see what is in the file without exporting it, so we made this functionallty to do so")
+We believe we should be awarded 3 bounus marks because we added at least 3 elements of extra functionality. The first was we check to make sure that when a json file is imported it hasn't been imported already. This was a design decision because our system works fine if they do import a duplicate json file but we couldn't think of a cercomstance when a user would ever want to do this, so if this situation did occur it would be a mistake and could confuse the user leading an an unpleasent experinece. We want the user to have a pleasent experince so we have disabled this functionality so users get notified when trying to import a json file that has already been imported.  
 
-Added a user confirmation prompt when deleting a item from the collection. We choose to do this so it would be harder for the user to delete something unintentionally by having it set to "no" by default.
+The second thing we added is a detailed list which shows the filename, type, metadata for a specified file/files by using an index after using list command. We choose to do this because we often wondered if the changes we made to a file (eg adding the deleting) did what was intended and thought the user might wonder this aswell, so we added this functionality to see a detailed veiw of the file without having to export the file to a json in order to see changes or try search for the key/value and make assumptions that it has done what was expected .
+
+The last functionality we added is a user confirmation prompt when deleting a item from the collection. This is a simple addition but an important one none the less, as it can save the user alot of heart ach if they accdentently type the wrong key or command etc as by default the answer is set to "no".
 
 
 ### Assumptions made

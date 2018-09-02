@@ -12,6 +12,7 @@ import XCTest
 
 class CollectionTesting: XCTestCase{
     
+    /*tests adding a file to an empty collection*/
     func testAddFile(){
         let lib : MM_Collection = MM_Collection() //empty collection
         let file = MM_File()
