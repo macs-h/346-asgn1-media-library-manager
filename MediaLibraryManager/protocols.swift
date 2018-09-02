@@ -125,14 +125,6 @@ protocol MMCollection:CustomStringConvertible {
     
     
     /**
-        Removes a specific file from the collection.
-
-        - parameter file:  The file to remove from the collection.
-     */
-    func remove(file: MMFile)
-    
-    
-    /**
         Removes all files from the collection.
      */
     func removeAll()
