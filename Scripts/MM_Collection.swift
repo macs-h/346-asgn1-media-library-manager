@@ -79,6 +79,27 @@ class MM_Collection : MMCollection {
         }
     }
     
+    /**
+        Sets the metadata in file to new key and value
+
+        - parameters:
+            - metadata:     The item to remove from the collection.
+            - file:         The file to remove the metadata from.
+            - newMetadata:  The new metadata to add to the file.
+     
+     */
+    func set(metadata: MMMetadata, file: MMFile, newMetadata: MMMetadata){
+        if collection.count > 0 {
+            let metaIndex = file.searchMetadata(keyword: metadata.keyword)
+            if metaIndex != -1{
+                //file was found
+                collection[file.collectionPos].metadata.remove(at: metaIndex)
+                collection[file.collectionPos].metadata.append(metadata)
+            }else{
+                print("\(metadata.keyword) not found in file \(file.filename)")
+            }
+        }
+    }
     
     /**
         Removes a specific instance of a metadata from the collection.
