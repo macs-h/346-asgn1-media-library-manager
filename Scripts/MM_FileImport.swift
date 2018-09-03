@@ -72,6 +72,8 @@ class MM_FileImport : MMFileImport {
         for file in importedFiles {
             if library.search(term: file.fullpath).isEmpty {
                 filesToAdd.append(file)
+            } else {
+                print("\(file.filename) already in collection")
             }
         }
 

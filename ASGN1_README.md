@@ -10,12 +10,9 @@ Max Huang (4427762)
 
 ## Project Specifications
 
-To design, implement, test, and document a tool for managing a media library - building upon
-nothing more than the Foundation framework.
+To design, implement, test, and document a tool for managing a media library - building upon nothing more than the Foundation framework.
 
-The tool must be able handle a large collection of media of assorted types (images, video, music,
-text documents) as a library and manage it - including a set of metadata attached to each of these
-types of media.
+The tool must be able handle a large collection of media of assorted types (images, video, music, text documents) as a library and manage it - including a set of metadata attached to each of these types of media.
 
 The library must support the following features:
 
@@ -25,53 +22,44 @@ The library must support the following features:
 
 ***
 
-### Object Oriented Concepts in Design and Implementation
+## Object Oriented Concepts in Design and Implementation
 
+When planning and designing our program at the start, we wanted to decouple the front and back end as much as possible. This would make it easier and more efficient to work on as a pair while simultaneously allowing changes to be made to the front end without affecting the back end, and vice versa. The MM_collection class uses protocols for the functions, and thus the front end can be confident that any calls to the back end will always be implemented.
 
-### the way in which object-oriented concepts were used in your design and implementation;
+Another design principle we adopted was inheritance - when creating the command classes that the main class calls, we quickly realised that there was significant amount of repeated code in the variables and also in the `init()` functions. As such, we decided to use inheritance to reduce the amount of duplicate code by initialising and storing most the variables in the parent class `CommandParent` and using the parent's `init()` function rather than repeating the same `init()` function for each class. We also created a function in the parent class that the children can use to help them make temporary files and metadata since we have multiple children wanting to use this function so it made sense to create it in the parent class.
 
-When designing our program from the start we wanted to decouple the front and backend as much as possible, this would make it easier to work on separately as a pair but also allowed us to make changes to either front or backend without affecting the other side as much. Because the MM_collection class uses protocols for the functions the front end will always know that any calls to the backend will always be implemented.
+### Code testing
 
-Another design principle we used was inheritance. When creating the command classes that the main class calls we quickly realised that we had to repeat a lot of code in the variables and also in the "init()" functions, so we decided to use inheritance to reduce the amount of duplicate code by storing most the variable in the parent class "CommandParent" and using the parents "init()" function rather than basically the same "init()" function in each class. We also created a function in the parent class that the children can use to help them make temporary files and metadata, we have multiple children wanting to use this function so creating it in the parent made sense.
+We implemented two types of testing: unit tests and bash script testing.
+We used unit testing in a file called `collectionTesting.swift` to test the individual back end components (e.g. testing `add(file)` and `add(metadata, file)` functions). Testing in this manner allowed us to be confident that the back end is working as expected. It also meant that if there were any issues with the program as a whole, we know it is most likely in the front end. The only issue we encountered with unit testing was that some of a functions, specifically remove functions, required users to validate that the action taken is desired via `stdin` (using `y` or `yes`), we couldn't mock `stdin` for the unit tests so we had to test some of these as part of bash script testing, which is less than ideal, especially since it should be part of the unit tests.
 
+We used bash script testing to test the program as a whole to make sure the user experience is pleasant, and the program does what is required and expected. We are testing with a large range of inputs and commands in various orders so that we could deal with anything that the user could attempt. Due to unit testing for the back end, we know if there are any problems it is an issue with the front end which made debugging much easier. Bash script testing also allows us to test for edge cases and invalid inputs - being a manual user testing scheme, it is unlikely that we were able to think of all possible test cases, but we should have covered most cases.
 
+Based on our unit testing and bash script testing decision, we have not incorporated a testing functionality within the `main.swift` file. However, there is a line of code `if commandString.first == "#" { print(""); continue }` that is used to ignore our comments that we put into our bash testing script. The comments were used to separate out the different testing cases and for better readability.
 
+### Role separation as a pair
 
-### how you tested your code;
+To decide the roles, we both read the specifications and Sam had an idea on how to do the back end (collection class functions) so he started working on that while Max had an idea about working with JSON files, so he started working on the front end stuff. We then worked together to integrate our code. Sam then did the unit tests because he mainly worked on the back end while Max did bash script testing because he worked mainly on the front end.
 
-We implemented two types of testing: Unit tests and bash script testing. 
-We used Unit testing in a file called "collectionTesting.swift" to test the individual backend components (e.g. test "add(file)", "add(metadata, file)" functions itself). Testing in this manner allowed us to make sure that the backend works as expected given any valid input so if there are issues with the program as a whole we know it's to do with the front end. The only issue we had with unit testing is that some of a functions (specifically remove functions) require users to validate that the action taken is desired via stdin (using "y"), we couldn't give the unit testing expected stdin, so the user testing needs to manually type "y" to validate the actions which isn't ideal.
+This method of role separation worked well because we were able to work on different files and aspects, and thus we had hardly any conflicts when merging code. In terms of getting in each other's way or slowing the other down we never had any problems because Sam started and finished the back end almost before Max started so Max was able to use his code straight away thus streamlining production. Separating the testing also worked well because we were testing our individual parts so were able to fix any issues quickly because we each wrote the code we were testing and thus could easily locate the problem.
 
-We used bash script testing to test the program as a whole to make sure the user experience is pleasant, and the program does what is required and expected. We are testing with a large range of inputs and commands in various orders so that we could deal with anything that the user could attempt. Because we tested the backend with unit tests we know if there are any problems it is an issue with the front end which made debugging so much easier.
+Since there was clear role separation, if there was an issue, the person responsible for that part of the code would go and fix it, but we both have an overview of how each other's code works and thus a holistic view of our program.
 
-### if you completed the assignment in a pair, you must explain the role taken by each member of your pair; and
+### Additional functionality added
 
-To decide the roles, we both read the specifications and Sam had an idea on how to do the backend (collection class functions) so he started working on that while Max had an idea about working with JSON files, so he started working on the front end stuff. We then worked together to incorporate our code and make it work with each of our systems. Sam then did the Unit tests because he mainly worked on the back end while Max did bash testing because he worked mainly on the front end.
+We believe we should be awarded 3 bonus marks because we added at least 3 elements of extra functionality.
 
-This method of role separation worked well because we were able to work on different files and different aspects, so we had no conflicts when merging code. In terms of getting in each way or slowing the other down we never had any problems because Sam started and finished the backend almost before Max started so Max was able to use his code straight away thus streamlining production. Separating the testing also worked well because we were testing our individual parts so were able to fix any issues quickly because we each wrote the code we were testing and thus could easily locate the problem.
+The first being that we check to make sure that when a JSON file is imported, we don't add any duplicate files to the collection by checking the fullpath of the file, as contained in the JSON. This was a design decision because our system works fine if they do import a duplicate JSON file, but we couldn't think of a circumstance when a user would ever want to do this, so if this situation did occur it would be a mistake and could confuse the user leading to an unpleasant experience. We want the user to have a streamlined experience, so we have disabled this functionality so users get notified when trying to import a JSON file that has already been imported.
 
-
-
-### if you implemented any extensions, how many bonus marks (up to 3) you believe you should be awarded, and why. Note that the bonus marks can only be used to reach the maximum mark of 20.
-
-
-
-### Additional functionality added:
-
-We believe we should be awarded 3 bonus marks because we added at least 3 elements of extra functionality. The first was we check to make sure that when a json file is imported it hasn't been imported already. This was a design decision because our system works fine if they do import a duplicate json file, but we couldn't think of a circumstance when a user would ever want to do this, so if this situation did occur it would be a mistake and could confuse the user leading an unpleasant experience. We want the user to have a pleasant experience, so we have disabled this functionality so users get notified when trying to import a json file that has already been imported.  
-
-The second thing we added is a detailed list which shows the filename, type, metadata for a specified file/files by using an index after using list command. We choose to do this because we often wondered if the changes we made to a file (e.g. adding the deleting) did what was intended and thought the user might wonder this as well, so we added this functionality to see a detailed view of the file without having to export the file to a json in order to see changes or try search for the key/value and make assumptions that it has done what was expected.
+The second thing we added is a detailed list which shows the filename, type, and metadata for a specified file(s) by using an index after using a `list` or `search` command. We choose to do this because we often wondered if the changes we made to a file (e.g. adding and deleting) did what was intended and figured the user might wonder this as well. This functionality lets a user see a detailed view of the file without having to export the file to a JSON in order to see changes or try search for the key/value and make assumptions that it has done what was expected.
 
 We added a remove all function so that you could clear the whole collection easily without having to restart the program, this could be useful if an error was made in all the imported data or if the user just wants to remove all files.
 
-The last functionality we added is a user confirmation prompt when deleting an item from the collection. This is a simple addition but an important one none the less, as it can save the user a lot of heart ache if they accidentally type the wrong key or command etc. as by default the answer is set to "no".
-
+The last functionality we added is a user confirmation prompt when deleting an item from the collection. This is a simple addition but an important one nonetheless, as it can save the user a lot of heart ache if they accidentally type the wrong key or command etc. By default the response is set to `no`.
 
 ### Assumptions made
 
-* If duplicate keys exist in a file when importing, the first occurrence of the key is stored and ignores any further metadata with the same key. 
+* If duplicate keys exist in a file when importing, the first occurrence of the key is stored and ignores any further metadata with the same key.
 * When setting a new value for a duplicate key (for a file), there is no issue as to which one of the duplicate keys should be changed because the program works by first removing all instances of that key and then adding a new key/value pair with the original key and new value as the new key/value pair. This results in removing all duplicates for that key.
 * Exported metadata as JSON does not appear in the same order as when they were imported.
 * When searching for multiple keywords, if a single file matches multiple times only one instance of that file is displayed as the result to the user.
-
-
