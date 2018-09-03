@@ -23,7 +23,6 @@ var last = MMResultSet()
         - prompt:           The prompt to use
         - strippingNewline: Strip the newline from the end of the line of
                             input (true by default)
- 
     - returns:  The result of `readLine`.
     - seealso:  readLine
  */
@@ -112,5 +111,7 @@ while let line = prompt("> "){
         print("file extension must be \".json\". Please check and try again")
     }catch MMCliError.noDataInCollection {
         print("there is no data to export - the collection is empty. Please check and try again")
+    }catch MMCliError.exportFailed {
+        print("export failed. Please check and try again")
     }
 }

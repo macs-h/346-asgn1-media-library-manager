@@ -17,11 +17,10 @@ class MM_FileImport : MMFileImport {
         Imports the media collection from a file (by name).
      
         - parameter filename:   The name of the file to be imported.
-     
         - returns:  A list of all the files in the file.
      */
     func read(filename: String) throws -> [MMFile] {
-        guard filename.split(separator: ".").map({String($0)}).last?.lowercased() == "json" else {
+        if filename.split(separator: ".").map({String($0)}).last != "json" {
             throw MMCliError.invalidJSONExtension
         }
         
@@ -71,7 +70,7 @@ class MM_FileImport : MMFileImport {
         
         // check for duplicates.
         for file in importedFiles {
-            if library.search(term: file.filename).isEmpty {
+            if library.search(term: file.fullpath).isEmpty {
                 filesToAdd.append(file)
             }
         }
