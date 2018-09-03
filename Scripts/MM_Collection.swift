@@ -87,7 +87,7 @@ class MM_Collection : MMCollection {
             - file:         The file to remove the metadata from.
      */
     func set(metadata: MMMetadata, file: MMFile){
-        if collection.count > 0 {
+        if (collection.count > 0) {
             let metaIndex = file.searchMetadata(keyword: metadata.keyword)
             if metaIndex != -1{
                 //file was found
@@ -106,10 +106,14 @@ class MM_Collection : MMCollection {
      */
     func remove(metadata: MMMetadata) {
         let files = search(item: metadata)
-        for i in 0..<files.count{
-            if(confirm()){
-                collection[files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
+        if (files.count > 0){
+            for i in 0..<files.count{
+                if(confirm(item: metadata.keyword)){
+                    collection[files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
+                }
             }
+        }else{
+            print("\(metadata.keyword) not found")
         }
         
     }
@@ -126,7 +130,7 @@ class MM_Collection : MMCollection {
         if collection.count > 0 {
             let metaIndex = file.searchMetadata(keyword: metadata.keyword)
             if metaIndex != -1{
-                if(confirm()){
+                if(confirm(item: metadata.keyword)){
                     collection[file.collectionPos].metadata.remove(at: metaIndex)
                 }
             }else{
@@ -140,7 +144,7 @@ class MM_Collection : MMCollection {
      */
     func removeAll() {
         if(collection.count > 0){
-            if(confirm()){
+            if(confirm(item: "all")){
                 collection.removeAll()
             }
         }
@@ -216,8 +220,12 @@ class MM_Collection : MMCollection {
      
         - returns:  Whether or not the user has confirmed the action.
     */
-    private func confirm() -> Bool{
-        print("Are you sure [y/N]?")
+    private func confirm(item: String) -> Bool{
+        if(item == "all"){
+              print("Are you sure you want to remove all [y/N]?")
+        }else{
+            print("Are you sure you want to remove '\(item)' [y/N]?")
+        }
         let input = readLine(strippingNewline: true)?.lowercased()
         if(input == "y" || input == "yes"){
             return true
