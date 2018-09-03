@@ -11,7 +11,7 @@
 3: video2.mp4
 4: image3.png
 5: video3.mp4
-> Are you sure [y/N]?
+> Are you sure you want to remove all [y/N]?
 > 
 > 
 > > no previous results to work from...
@@ -24,7 +24,7 @@
 > 0: image1.png
 1: video1.mp4
 > > 0: video1.mp4
-> Are you sure [y/N]?
+> Are you sure you want to remove all [y/N]?
 > 
 > 
 > > 0: image1.png
@@ -38,7 +38,7 @@
 > > > > 0: image1.png
 > 0: image1.png
 > 1 not found in file image1.png
-> > Are you sure [y/N]?
+> > Are you sure you want to remove all [y/N]?
 > 
 > 
 > > invalid parameters for "search" -- see "help" for list
@@ -53,7 +53,7 @@
 > invalid parameters for "search" -- see "help" for list
 > 0: image1.png
 1: video1.mp4
-> Are you sure [y/N]?
+> Are you sure you want to remove all [y/N]?
 > 
 > 
 > invalid parameters for "del" -- see "help" for list
@@ -65,18 +65,18 @@
 > invalid parameters for "del" -- see "help" for list
 > invalid parameters for "del" -- see "help" for list
 > key1 not found in file image1.png
-> Are you sure [y/N]?
+> Are you sure you want to remove 'key11' [y/N]?
 > 0: image1.png
-> Are you sure [y/N]?
-> > Are you sure [y/N]?
+> Are you sure you want to remove 'key11' [y/N]?
+> > Are you sure you want to remove all [y/N]?
 > 
 > 
 > > > 0: image1.png
 1: video1.mp4
-> Are you sure [y/N]?
+> Are you sure you want to remove all [y/N]?
 > 0: image1.png
 1: video1.mp4
-> Are you sure [y/N]?
+> Are you sure you want to remove all [y/N]?
 > 
 > 
 > > invalid parameters for "save-search" -- see "help" for list
@@ -87,14 +87,14 @@
 > > 0: image1.png
 1: video1.mp4
 > invalid parameters for "save-search" -- see "help" for list
-> Are you sure [y/N]?
+> Are you sure you want to remove all [y/N]?
 > 
 > 
 > > invalid parameters for "save" -- see "help" for list
 > > invalid parameters for "save" -- see "help" for list
 > 0: image1.png
 1: video1.mp4
-> > Are you sure [y/N]?
+> > Are you sure you want to remove all [y/N]?
 > 
 > 
 > > invalid parameters for "detail" -- see "help" for list
@@ -120,5 +120,5 @@ Metadata {
 	key13: value13
 	key14: value14
 }
-> Are you sure [y/N]?
+> Are you sure you want to remove all [y/N]?
 > 
