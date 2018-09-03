@@ -13,7 +13,7 @@ import Foundation
  */
 class MM_Collection : MMCollection {
     
-    var collection: [MMFile]?
+    var collection: [MMFile]
     
     var description: String{
         let coll = self.all()
@@ -58,8 +58,8 @@ class MM_Collection : MMCollection {
      */
     func add(file: MMFile) {
         var tempFile = file
-        tempFile.collectionPos = (collection != nil) ? collection!.count : 0
-        self.collection?.append(tempFile)
+        tempFile.collectionPos = (collection.count > 0) ? collection.count : 0
+        self.collection.append(tempFile)
         
     }
     
@@ -74,7 +74,7 @@ class MM_Collection : MMCollection {
     func add(metadata: MMMetadata, file: MMFile) {
         var files = search(term: file.filename)
         for i in 0..<files.count{
-            collection![files[i].collectionPos].metadata.append(metadata)
+            collection[files[i].collectionPos].metadata.append(metadata)
            
         }
     }
@@ -89,7 +89,7 @@ class MM_Collection : MMCollection {
         let files = search(item: metadata)
         for i in 0..<files.count{
             if(confirm()){
-                collection![files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
+                collection[files[i].collectionPos].metadata.remove(at: files[i].searchMetadata(keyword: metadata.keyword))
             }
         }
         
@@ -104,11 +104,11 @@ class MM_Collection : MMCollection {
             - file:     The file to remove the metadata from.
      */
     func remove(metadata: MMMetadata, file: MMFile) {
-        if collection != nil {
+        if collection.count > 0 {
             let metaIndex = file.searchMetadata(keyword: metadata.keyword)
             if metaIndex != -1{
                 if(confirm()){
-                    collection![file.collectionPos].metadata.remove(at: metaIndex)
+                    collection[file.collectionPos].metadata.remove(at: metaIndex)
                 }
             }else{
                 print("\(metadata.keyword) not found in file \(file.filename)")
@@ -117,26 +117,12 @@ class MM_Collection : MMCollection {
     }
     
     /**
-        (dont use)
-        Removes a specific file from the collection.
-
-        - parameter file:   The file to remove from the collection.
-     */
-    func remove(file: MMFile) {
-        if(confirm()){
-            collection?.remove(at: file.collectionPos)
-        }
-        
-    }
-    
-    
-    /**
      Removes all files from the collection
      */
     func removeAll() {
-        if(collection != nil && collection!.count > 0){
+        if(collection.count > 0){
             if(confirm()){
-                collection?.removeAll()
+                collection.removeAll()
             }
         }
     }
@@ -150,9 +136,9 @@ class MM_Collection : MMCollection {
                     possibly an empty list.
      */
     func search(term: String) -> [MMFile] {
-        if let coll = collection{
+        if collection.count > 0{
             var results: [MMFile] = []
-            for file in coll{
+            for file in collection{
                 //search each feild
                 if(file.getAttributes().contains(term)){
                     results.append(file)
@@ -172,9 +158,9 @@ class MM_Collection : MMCollection {
         - returns:  A list of all the files in the index, possibly an empty list
      */
     func all() -> [MMFile] {
-        if let coll = collection{
+        if collection.count > 0{
             var results: [MMFile] = []
-            for file in coll{
+            for file in collection{
                 results.append(file)
             }
             return results
@@ -193,9 +179,9 @@ class MM_Collection : MMCollection {
                     keyword, possibly an empty list.
      */
     func search(item: MMMetadata) -> [MMFile] {
-        if let coll = collection{
+        if collection.count > 0{
             var results: [MMFile] = []
-            for file in coll{
+            for file in collection{
                 if(file.searchMetadata(keyword: item.keyword) != -1){
                     results.append(file)
                 }

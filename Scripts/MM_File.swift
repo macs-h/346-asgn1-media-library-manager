@@ -131,3 +131,15 @@ class MM_File: MMFile {
         }
     }
 }
+
+extension MMFile {
+    
+    // note the 'self' in here
+    static func == (lhs: Self, rhs: MMFile) -> Bool {
+        return lhs.fullpath == rhs.fullpath
+    }
+    
+    static func !=(lhs: Self, rhs: MMFile) -> Bool{
+        return !(lhs == rhs)
+    }
+}
