@@ -45,6 +45,44 @@ class CollectionTesting: XCTestCase{
         XCTAssertEqual(lib.collection[0].metadata.count,0)
         
     }
+    
+    /*tests setting metadata to new value*/
+    func testSet(){
+        let lib : MM_Collection = MM_Collection() //empty collection
+        let file = MM_File(metadata: [], filename: "testFile", path: "where im from")
+        lib.add(file: file)
+        let metadata = MM_Metadata(keyword: "key1", value: "value1")
+        lib.add(metadata: metadata, file: file)
+        let newMetadata = MM_Metadata(keyword: "key1", value: "newValue")
+        lib.set(metadata: newMetadata, file: file)
+        XCTAssertEqual(lib.collection[0].metadata[0].value, newMetadata.value)
+    }
+    
+    /*tests setting metadata that doesn't exist to new value*/
+    func testSetNoKey(){
+        let lib : MM_Collection = MM_Collection() //empty collection
+        let file = MM_File(metadata: [], filename: "testFile", path: "where im from")
+        lib.add(file: file)
+        let metadata = MM_Metadata(keyword: "key1", value: "value1")
+        lib.add(metadata: metadata, file: file)
+        let newMetadata = MM_Metadata(keyword: "key2", value: "newValue")
+        lib.set(metadata: newMetadata, file: file)
+        XCTAssertEqual(lib.collection[0].metadata[0].value, metadata.value)
+    }
+    
+    /*tests setting metadata to new value in file that doesn't exist*/
+    func testSetNoFile(){
+        let lib : MM_Collection = MM_Collection() //empty collection
+        let file = MM_File(metadata: [], filename: "testFile", path: "where im from")
+        let file2 = MM_File(metadata: [], filename: "testFile2", path: "where im from2")
+        lib.add(file: file)
+        let metadata = MM_Metadata(keyword: "key1", value: "value1")
+        lib.add(metadata: metadata, file: file)
+        let newMetadata = MM_Metadata(keyword: "key1", value: "newValue")
+        lib.set(metadata: newMetadata, file: file2)
+        XCTAssertEqual(lib.collection[0].metadata[0].value, metadata.value)
+    }
+    
     /*test removing instance of a metadata*/
     func testRemoveMetadata(){
         let lib : MM_Collection = MM_Collection() //empty collection
