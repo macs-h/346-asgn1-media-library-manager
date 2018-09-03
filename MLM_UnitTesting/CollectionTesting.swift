@@ -16,20 +16,20 @@ class CollectionTesting: XCTestCase{
     func testAddFile(){
         let lib : MM_Collection = MM_Collection() //empty collection
         let file = MM_File()
-        XCTAssertTrue(lib.collection!.count == 0)
+        XCTAssertTrue(lib.collection.count == 0)
         lib.add(file: file)
-        XCTAssertTrue(lib.collection!.count > 0)
+        XCTAssertTrue(lib.collection.count > 0)
     }
     
     func testAddDataToFile(){
         let lib : MM_Collection = MM_Collection() //empty collection
         let file = MM_File(metadata: [], filename: "testFile", path: "where im from")
         lib.add(file: file)
-        XCTAssertEqual(lib.collection![0].metadata.count,0)
+        XCTAssertEqual(lib.collection[0].metadata.count,0)
         let metadata = MM_Metadata(keyword: "key1", value: "value1")
         lib.add(metadata: metadata, file: file)
-        XCTAssertEqual(lib.collection![0].metadata.count,1)
-        XCTAssertEqual(lib.collection![0].metadata[0].keyword, metadata.keyword)
+        XCTAssertEqual(lib.collection[0].metadata.count,1)
+        XCTAssertEqual(lib.collection[0].metadata[0].keyword, metadata.keyword)
     }
     
     func testAddDataToFileThatdoesntExist(){
@@ -37,10 +37,10 @@ class CollectionTesting: XCTestCase{
         let file = MM_File(metadata: [], filename: "testFile", path: "where im from")
         let file2 = MM_File(metadata: [], filename: "testFile1", path: "where im from1")
         lib.add(file: file)
-        XCTAssertEqual(lib.collection![0].metadata.count,0)
+        XCTAssertEqual(lib.collection[0].metadata.count,0)
         let metadata = MM_Metadata(keyword: "key1", value: "value1")
         lib.add(metadata: metadata, file: file2)
-        XCTAssertEqual(lib.collection![0].metadata.count,0)
+        XCTAssertEqual(lib.collection[0].metadata.count,0)
         
     }
     
@@ -54,11 +54,11 @@ class CollectionTesting: XCTestCase{
         let metadata2 = MM_Metadata(keyword: "key2", value: "value2")
         lib.add(metadata: metadata, file: file)
         lib.add(metadata: metadata2, file: file2)
-        XCTAssertEqual(lib.collection![0].metadata.count,1)
+        XCTAssertEqual(lib.collection[0].metadata.count,1)
         lib.remove(metadata: metadata)
         //this action requires user input so wonder if there is another way????
-        XCTAssertEqual(lib.collection![0].metadata.count,0)
-        XCTAssertEqual(lib.collection![1].metadata.count,1)
+        XCTAssertEqual(lib.collection[0].metadata.count,0)
+        XCTAssertEqual(lib.collection[1].metadata.count,1)
         
     }
     
@@ -74,8 +74,8 @@ class CollectionTesting: XCTestCase{
         //lib.add(metadata: metadata2, file: file2)
         lib.remove(metadata: metadata2)
         //this action requires user input so wonder if there is another way????
-        XCTAssertEqual(lib.collection![0].metadata.count,1)
-        XCTAssertEqual(lib.collection![1].metadata.count,0)
+        XCTAssertEqual(lib.collection[0].metadata.count,1)
+        XCTAssertEqual(lib.collection[1].metadata.count,0)
         
     }
     
@@ -89,11 +89,11 @@ class CollectionTesting: XCTestCase{
         let metadata2 = MM_Metadata(keyword: "key2", value: "value2")
         lib.add(metadata: metadata, file: file)
         lib.add(metadata: metadata2, file: file2)
-        XCTAssertEqual(lib.collection![0].metadata.count,1)
+        XCTAssertEqual(lib.collection[0].metadata.count,1)
         lib.remove(metadata: metadata, file: file)
         //this action requires user input so wonder if there is another way????
-        XCTAssertEqual(lib.collection![0].metadata.count,0)
-        XCTAssertEqual(lib.collection![1].metadata.count,1)
+        XCTAssertEqual(lib.collection[0].metadata.count,0)
+        XCTAssertEqual(lib.collection[1].metadata.count,1)
     }
     
     func testRemoveMetadataFromFileThatDoesntExist(){
@@ -106,10 +106,10 @@ class CollectionTesting: XCTestCase{
         let metadata2 = MM_Metadata(keyword: "key2", value: "value2")
         lib.add(metadata: metadata, file: file)
         lib.add(metadata: metadata2, file: file)
-        XCTAssertEqual(lib.collection![0].metadata.count,2)
+        XCTAssertEqual(lib.collection[0].metadata.count,2)
         lib.remove(metadata: metadata, file: file2)
         //this action requires user input so wonder if there is another way????
-        XCTAssertEqual(lib.collection![0].metadata.count,2)
+        XCTAssertEqual(lib.collection[0].metadata.count,2)
     }
     
     func testRemoveMetadataThatDoesntExistFromFile(){
@@ -125,8 +125,8 @@ class CollectionTesting: XCTestCase{
         
         lib.remove(metadata: metadata2, file: file)
         //this action requires user input so wonder if there is another way????
-        XCTAssertEqual(lib.collection![0].metadata.count,1)
-        XCTAssertEqual(lib.collection![1].metadata.count,0)
+        XCTAssertEqual(lib.collection[0].metadata.count,1)
+        XCTAssertEqual(lib.collection[1].metadata.count,0)
     }
     
     func testRemoveAll(){
@@ -135,16 +135,16 @@ class CollectionTesting: XCTestCase{
             let file = MM_File()
             lib.add(file: file)
         }
-        XCTAssertEqual(lib.collection!.count,6)
+        XCTAssertEqual(lib.collection.count,6)
         lib.removeAll()
-        XCTAssertEqual(lib.collection!.count,0)
+        XCTAssertEqual(lib.collection.count,0)
     }
     
     func testRemoveAllFromEmptyCol(){
         let lib = MM_Collection()
-        XCTAssertEqual(lib.collection!.count,0)
+        XCTAssertEqual(lib.collection.count,0)
         lib.removeAll()
-        XCTAssertEqual(lib.collection!.count,0)
+        XCTAssertEqual(lib.collection.count,0)
     }
     
     func testSearchterm(){
@@ -159,7 +159,7 @@ class CollectionTesting: XCTestCase{
         lib.add(metadata: metadata2, file: file2)
         let searchResults = lib.search(term: "key1")
         XCTAssertEqual(searchResults.count,1)
-        XCTAssertEqual(searchResults[0].filename, file.filename)
+        XCTAssertTrue(searchResults[0].filename == file.filename)
         XCTAssertNotEqual(searchResults[0].filename, file2.filename)
     }
     
