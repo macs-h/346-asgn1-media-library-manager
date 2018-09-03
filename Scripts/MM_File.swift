@@ -17,18 +17,7 @@ class MM_File: MMFile {
     var fullpath: String = ""
     var fileType: String = ""
     var description: String{
-//        if metadata.count > 0 {
-//            var results: [String] = []
-//            for data in metadata{
-//                results.append(data.description)
-//            }
-//            return "Data {" + results.joined(separator: "} {")+"}"
-//        }else{
-//            return "Data{}"
-//        }
-        
         return filename
-        
     }
     var collectionPos = 0
     

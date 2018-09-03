@@ -116,45 +116,10 @@ protocol MMCommand{
 
 
 /**
-    A helper class which supports the creationg of a file and metadata
-    instance.
- */
-fileprivate class FileHelper {
-    
-    // Creating a singleton.
-    static let instance = FileHelper()
-    
-    /**
-        Creates a new file and metadata instance.
-
-        - parameters:
-            - parts:   The commandline arguments
-            - last:    The list of last listed items
-
-        - returns:  A tuple containing the metadata and file instance.
-            - metadata:    A new metadata instance
-            - file:        A new file instance
-     */
-    func makeMetadataAndFile(index: Int, let_parts: [String], last: MMResultSet)throws -> (metadata: MMMetadata, file: MMFile){
-        var parts = let_parts
-        let file = try last.get(index: index)
-        let keyword = parts.removeFirst()
-        var value = ""
-        if parts.count == 1{
-            //key value pair
-            value = parts.removeFirst()
-        }
-        let metadata = MM_Metadata(keyword: keyword, value: value)
-        return(metadata: metadata, file: file)
-    }
-}
-
-
-/**
     Initialises all the main commands using inheritance because each command
     requires the initialisation of the same variables each time.
  */
-class CommandInitialiser {
+class CommandParent {
     var library: MMCollection
     var parts: [String]
     var last: MMResultSet
@@ -172,6 +137,30 @@ class CommandInitialiser {
         self.parts = parts
         self.last = last
     }
+    
+    /**
+     Creates a new file and metadata instance.
+     
+     - parameters:
+     - parts:   The commandline arguments
+     - last:    The list of last listed items
+     
+     - returns:  A tuple containing the metadata and file instance.
+     - metadata:    A new metadata instance
+     - file:        A new file instance
+     */
+    func makeMetadataAndFile(index: Int, let_parts: [String], last: MMResultSet)throws -> (metadata: MMMetadata, file: MMFile){
+        var parts = let_parts
+        let file = try last.get(index: index)
+        let keyword = parts.removeFirst()
+        var value = ""
+        if parts.count == 1{
+            //key value pair
+            value = parts.removeFirst()
+        }
+        let metadata = MM_Metadata(keyword: keyword, value: value)
+        return(metadata: metadata, file: file)
+    }
 }
 
 
@@ -186,7 +175,7 @@ class CommandInitialiser {
     Example usage: `list foo bar baz`
         Lists the set of files with metadata containing `foo` OR `bar` OR `baz`
  */
-class SearchCommand: CommandInitialiser, MMCommand {
+class SearchCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
@@ -238,7 +227,7 @@ class SearchCommand: CommandInitialiser, MMCommand {
         Using the results of the previous list, adds `foo=bar` and `baz=qux` to
         the file at index `0`.
  */
-class AddCommand: CommandInitialiser, MMCommand {
+class AddCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
@@ -255,7 +244,7 @@ class AddCommand: CommandInitialiser, MMCommand {
             }
             for _ in 0..<(parts.count/2) {
                 let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
-                let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
+                let data = try makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
                 self.library.add(metadata: data.metadata, file: data.file)
             }
         } else {
@@ -275,7 +264,7 @@ class AddCommand: CommandInitialiser, MMCommand {
         Using the results of the previous list, sets `foo=bar` and `baz=qux` for
         the file at index `0`.
  */
-class SetCommand: CommandInitialiser, MMCommand {
+class SetCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
@@ -292,7 +281,7 @@ class SetCommand: CommandInitialiser, MMCommand {
             }
             for _ in 0..<(parts.count/2) {
                 let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
-                let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
+                let data = try makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
                 self.library.remove(metadata: data.metadata, file: data.file)
                 self.library.add(metadata: data.metadata, file: data.file)
             }
@@ -313,7 +302,7 @@ class SetCommand: CommandInitialiser, MMCommand {
         Using the results of the previous list, del metadata where the key is
         equal to `foo` OR `bar` from the file at index `0`.
  */
-class DeleteCommand: CommandInitialiser, MMCommand {
+class DeleteCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     var all: Bool
     
@@ -347,7 +336,7 @@ class DeleteCommand: CommandInitialiser, MMCommand {
                 }
                 
                 for key in parts {
-                    let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: [key], last: last)
+                    let data = try makeMetadataAndFile(index: index, let_parts: [key], last: last)
                     self.library.remove(metadata: data.metadata, file: data.file)
                 }
             } else {
@@ -375,7 +364,7 @@ class DeleteCommand: CommandInitialiser, MMCommand {
         of the previous `list` or `search` to `output.json` in the current
         directory, respectively.
  */
-class SaveCommand: CommandInitialiser, MMCommand {
+class SaveCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     var saveSearch: Bool
     
@@ -413,7 +402,7 @@ class SaveCommand: CommandInitialiser, MMCommand {
         From the current directory, load both `foo.json` and `bar.json` and
         merge the results.
  */
-class LoadCommand: CommandInitialiser, MMCommand {
+class LoadCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     var fileImport = MM_FileImport()
     
@@ -507,7 +496,7 @@ class QuitCommand : MMCommand{
 
 // -----------------------------------------------------------------------
 
-class TestCommand: CommandInitialiser, MMCommand {
+class TestCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {

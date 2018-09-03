@@ -32,9 +32,8 @@ The library must support the following features:
 
 When designing our program from the start we wanted to decouple the front and backend as much as possible, this would make it easier to work on seperatly as a pair but also allowed us to make changes to either front or backend without affecting the other side asmuch. Because the MM_collection class uses protocols for the functions the front end will always know that any calls to the backend will always be implemented.
 
-Another design we used was inheritence. when creating the command classes that the main class calls we quickly realised that we had to repeat alot of code in the variables and also in the "init()" functions, so we decided to use inheritence to reduce the amount of duplicate code by storing most the vairable in the parent class "CommandInitialiser" and using the parents "init()" function raither than basically the same "init()" function in each class.
+Another design principle we used was inheritence. When creating the command classes that the main class calls we quickly realised that we had to repeat alot of code in the variables and also in the "init()" functions, so we decided to use inheritence to reduce the amount of duplicate code by storing most the vairable in the parent class "CommandParent" and using the parents "init()" function raither than basically the same "init()" function in each class. We also created a function in the parent class that the children can use to help them make tempory files and metadata, we have multple chidren wanting to use this function so creating it in the parent made sense.
 
-The last design principle we used is a singleton pattern. We realised that we were often making a tempory file and metadata and using it for the collection functions. The issue with just making just a function to do this work is that this function is called by multiple classes, so to make it available to every class in the file (fileprivate class) we used a singleton pattern ****(we could also put it in the parent class or make it a static a static function)
 
 
 
