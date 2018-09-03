@@ -29,11 +29,12 @@ y
 #
 # Testing `set` command (start line 30)
 load io_testing/test1.json
-set 0 1 2
 list
 set 0
 set 0 1
 set 0 1 2 3
+list 1
+set 0 1 2
 list 1
 list
 set 0 key11 val22 key12 val33
@@ -46,7 +47,7 @@ list 1
 del-all
 y
 #
-# Testing `list` and `search` command (start line 45)
+# Testing `list` and `search` command (start line 44)
 list
 search
 load io_testing/test1.json
@@ -57,3 +58,68 @@ search key11 key12
 search key11 key13
 list key11 key12 key13
 search
+list
+del-all
+y
+#
+# Testing `del` command (start line 59)
+del
+del 0
+load io_testing/test1.json
+del
+del 0
+list
+del
+del 0
+del 0 key1
+del 0 key11
+n
+list key11
+del 0 key11
+y
+list key11
+del-all
+y
+#
+# Testing `del-all` command (start line 74)
+list
+load io_testing/test1.json
+list
+del-all
+n
+list
+del-all
+y
+#
+# Testing `save-search` command (start line 82)
+load io_testing/test1.json
+save-search
+save-search out.json
+list
+save-search
+save-search out.json
+list
+save-search out.json out1.json
+del-all
+y
+#
+# Testing `save` command
+load io_testing/test1.json
+save
+save out.json
+save out.json out1.json
+list
+save out.json
+del-all
+y
+#
+# Testing `detail` command (start line)
+load io_testing/test1.json
+detail
+detail 0
+list
+detail
+detail 0
+detail 0 1
+del-all
+y

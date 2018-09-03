@@ -111,10 +111,8 @@ protocol MMCollection:CustomStringConvertible {
         - parameters:
             - metadata:     The item to remove from the collection.
             - file:         The file to remove the metadata from.
-            - newMetadata:  The new metadata to add to the file.
-     
      */
-    func set(metadata: MMMetadata, file: MMFile, newMetadata: MMMetadata)
+    func set(metadata: MMMetadata, file: MMFile)
     
     /**
         Removes a specific instance of a metadata from the collection.

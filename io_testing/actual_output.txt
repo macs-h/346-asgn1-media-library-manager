@@ -27,21 +27,18 @@
 > Are you sure [y/N]?
 > 
 > 
-> > no previous results to work from...
-> 0: image1.png
-1: video1.mp4
-> invalid parameters for "set" -- see "help" for list
-> invalid parameters for "set" -- see "help" for list
-> invalid parameters for "set" -- see "help" for list
 > > 0: image1.png
 1: video1.mp4
-> Are you sure [y/N]?
-Are you sure [y/N]?
-> 0: image1.png
+> invalid parameters for "set" -- see "help" for list
+> invalid parameters for "set" -- see "help" for list
+> invalid parameters for "set" -- see "help" for list
+> > no previous results to work from...
+> > 0: image1.png
+1: video1.mp4
+> > > > 0: image1.png
 > 0: image1.png
 > 1 not found in file image1.png
-> 0: image1.png
-> Are you sure [y/N]?
+> > Are you sure [y/N]?
 > 
 > 
 > > invalid parameters for "search" -- see "help" for list
@@ -54,4 +51,74 @@ Are you sure [y/N]?
 > 0: image1.png
 1: video1.mp4
 > invalid parameters for "search" -- see "help" for list
+> 0: image1.png
+1: video1.mp4
+> Are you sure [y/N]?
+> 
+> 
+> invalid parameters for "del" -- see "help" for list
+> no previous results to work from...
+> > invalid parameters for "del" -- see "help" for list
+> no previous results to work from...
+> 0: image1.png
+1: video1.mp4
+> invalid parameters for "del" -- see "help" for list
+> invalid parameters for "del" -- see "help" for list
+> key1 not found in file image1.png
+> Are you sure [y/N]?
+> 0: image1.png
+> Are you sure [y/N]?
+> > Are you sure [y/N]?
+> 
+> 
+> > > 0: image1.png
+1: video1.mp4
+> Are you sure [y/N]?
+> 0: image1.png
+1: video1.mp4
+> Are you sure [y/N]?
+> 
+> 
+> > invalid parameters for "save-search" -- see "help" for list
+> no previous results to work from...
+> 0: image1.png
+1: video1.mp4
+> invalid parameters for "save-search" -- see "help" for list
+> > 0: image1.png
+1: video1.mp4
+> invalid parameters for "save-search" -- see "help" for list
+> Are you sure [y/N]?
+> 
+> 
+> > invalid parameters for "save" -- see "help" for list
+> > invalid parameters for "save" -- see "help" for list
+> 0: image1.png
+1: video1.mp4
+> > Are you sure [y/N]?
+> 
+> 
+> > invalid parameters for "detail" -- see "help" for list
+> no previous results to work from...
+> 0: image1.png
+1: video1.mp4
+> invalid parameters for "detail" -- see "help" for list
+> Filename: image1.png
+Type: image
+Metadata {
+	key12: value12
+	key11: value11
+}
+> Filename: image1.png
+Type: image
+Metadata {
+	key12: value12
+	key11: value11
+}
+Filename: video1.mp4
+Type: video
+Metadata {
+	key13: value13
+	key14: value14
+}
+> Are you sure [y/N]?
 > 

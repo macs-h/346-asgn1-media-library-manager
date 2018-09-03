@@ -196,7 +196,7 @@ class SearchCommand: CommandParent, MMCommand {
             // Search collection based on keyword(s).
             var searchResults = [MMFile]()
             var usedKeywords = [String]()
-            for keyword in parts {
+            for keyword in self.parts {
                 if !usedKeywords.contains(keyword) {
                     searchResults += self.library.search(term: keyword)
                     usedKeywords.append(keyword)
@@ -256,7 +256,7 @@ class AddCommand: CommandParent, MMCommand {
             if index < 0 || index >= self.last.all().count {
                 throw MMCliError.indexOutOfRange
             }
-            for _ in 0..<(parts.count/2) {
+            for _ in 0..<(self.parts.count/2) {
                 let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
                 let data = try makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
                 self.library.add(metadata: data.metadata, file: data.file)
@@ -293,16 +293,10 @@ class SetCommand: CommandParent, MMCommand {
             if index < 0 || index >= self.last.all().count {
                 throw MMCliError.indexOutOfRange
             }
-            for _ in 0..<(parts.count/2) {
+            for _ in 0..<(self.parts.count/2) {
                 let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
                 let data = try makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
-                self.library.remove(metadata: data.metadata, file: data.file)
-                
-                //
-                // NOT CHECKING FILE REMOVE BEFORE ADDING. DOES NOT SET PROPERLY.
-                //
-                
-                self.library.add(metadata: data.metadata, file: data.file)
+                self.library.set(metadata: data.metadata, file: data.file)
             }
         } else {
             throw MMCliError.invalidIndex
@@ -355,7 +349,7 @@ class DeleteCommand: CommandParent, MMCommand {
                     throw MMCliError.indexOutOfRange
                 }
                 
-                for key in parts {
+                for key in self.parts {
                     let data = try makeMetadataAndFile(index: index, let_parts: [key], last: last)
                     self.library.remove(metadata: data.metadata, file: data.file)
                 }
@@ -363,7 +357,7 @@ class DeleteCommand: CommandParent, MMCommand {
                 // If the first parameter is NOT a number, assume that it is
                 // deleting that keyword (and corresponding metadata) from the
                 // entire collection.
-                for key in parts {
+                for key in self.parts {
                     self.library.remove(metadata: MM_Metadata(keyword: key, value: ""))
                 }
             }
@@ -432,7 +426,7 @@ class LoadCommand: CommandParent, MMCommand {
         }
 
         do {
-            for filename in parts {
+            for filename in self.parts {
                 let files = try self.fileImport.read(filename: filename.lowercased())
                 for file in files {
                     self.library.add(file: file)
@@ -442,6 +436,36 @@ class LoadCommand: CommandParent, MMCommand {
             throw MMCliError.invalidJSONExtension
         } catch {
             throw MMCliError.invalidFilepath
+        }
+    }
+}
+
+
+/**
+    Handles the `detail` command.
+ 
+    Displays a detailed description of a previous `list` or `search` command
+    based on the index (or indices) given.
+ */
+class DetailCommand: CommandParent, MMCommand {
+    var results: MMResultSet?
+    
+    func execute() throws {
+        if self.parts.count < 1 {
+            throw MMCliError.invalidParameters
+        }
+        if self.last.all().isEmpty {
+            throw MMCliError.missingResultSet
+        }
+        
+        for _ in self.parts {
+            if let index = Int(self.parts.removeFirst()) {
+                let file = try last.get(index: index)
+                print(file.details())
+                
+            } else {
+                throw MMCliError.invalidParameters
+            }
         }
     }
 }
@@ -514,27 +538,3 @@ class QuitCommand : MMCommand{
     }
 }
 
-
-// -----------------------------------------------------------------------
-
-class TestCommand: CommandParent, MMCommand {
-    var results: MMResultSet?
-    
-    func execute() throws {
-        if self.parts.count != 1 {
-            throw MMCliError.invalidParameters
-        }
-        if self.last.all().isEmpty {
-            throw MMCliError.missingResultSet
-        }
-        
-        if let index = Int(self.parts.removeFirst()) {
-            // use index here.
-            let file = try last.get(index: index)
-            print(file.details())
-            
-        } else {
-            throw MMCliError.invalidParameters
-        }
-    }
-}

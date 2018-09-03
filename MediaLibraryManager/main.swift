@@ -77,14 +77,14 @@ while let line = prompt("> "){
         case "load":
             command = LoadCommand(library, parts)
             break
+        case "detail":
+            command = DetailCommand(library, parts, last)
+            break
         case "help":
             command = HelpCommand()
             break
         case "quit":
             command = QuitCommand()
-            break
-        case "test":
-            command = TestCommand(library, parts, last)
             break
         default:
             throw MMCliError.unknownCommand
