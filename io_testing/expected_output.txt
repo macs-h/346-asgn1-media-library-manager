@@ -1,1 +1,57 @@
-
+> 
+> command "lod" not found -- see "help" for list
+> invalid parameters for "load" -- see "help" for list
+> command "" not found -- see "help" for list
+> invalid filepath provided. Please check and try again
+> file extension must be ".json". Please check and try again
+> file extension must be ".json". Please check and try again
+> > > > 0: image1.png
+1: video1.mp4
+2: image2.png
+3: video2.mp4
+4: image3.png
+5: video3.mp4
+> Are you sure [y/N]?
+> 
+> 
+> > no previous results to work from...
+> 0: image1.png
+1: video1.mp4
+> invalid parameters for "add" -- see "help" for list
+> invalid parameters for "add" -- see "help" for list
+> invalid parameters for "add" -- see "help" for list
+> > 0: image1.png
+> 0: image1.png
+1: video1.mp4
+> > 0: video1.mp4
+> Are you sure [y/N]?
+> 
+> 
+> > no previous results to work from...
+> 0: image1.png
+1: video1.mp4
+> invalid parameters for "set" -- see "help" for list
+> invalid parameters for "set" -- see "help" for list
+> invalid parameters for "set" -- see "help" for list
+> > 0: image1.png
+1: video1.mp4
+> Are you sure [y/N]?
+Are you sure [y/N]?
+> 0: image1.png
+> 0: image1.png
+> 1 not found in file image1.png
+> 0: image1.png
+> Are you sure [y/N]?
+> 
+> 
+> > invalid parameters for "search" -- see "help" for list
+> > 0: image1.png
+1: video1.mp4
+> > 0: image1.png
+> 0: image1.png
+> 0: image1.png
+1: video1.mp4
+> 0: image1.png
+1: video1.mp4
+> invalid parameters for "search" -- see "help" for list
+> 

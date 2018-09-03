@@ -189,9 +189,17 @@ class CommandInitialiser {
  */
 class SearchCommand: CommandInitialiser, MMCommand {
     var results: MMResultSet?
+    var search: Bool
+    
+    init(_ library: MMCollection, _ parts: [String], search: Bool = false) {
+        self.search = search
+        super.init(library, parts)
+    }
     
     func execute() throws {
-        if self.parts.isEmpty {
+        if self.parts.isEmpty && search {
+            throw MMCliError.invalidParameters
+        } else if self.parts.isEmpty {
             // List everything in the collection.
             self.results = MMResultSet(self.library.all())
         } else {
@@ -299,6 +307,11 @@ class SetCommand: CommandInitialiser, MMCommand {
                 let keyVal: [String] = [self.parts.removeFirst(), self.parts.removeFirst()]
                 let data = try FileHelper.instance.makeMetadataAndFile(index: index, let_parts: keyVal, last: self.last)
                 self.library.remove(metadata: data.metadata, file: data.file)
+                
+                //
+                // NOT CHECKING FILE REMOVE BEFORE ADDING. DOES NOT SET PROPERLY.
+                //
+                
                 self.library.add(metadata: data.metadata, file: data.file)
             }
         } else {
@@ -334,6 +347,7 @@ class DeleteCommand: CommandInitialiser, MMCommand {
                 throw MMCliError.invalidParameters
             }
             self.library.removeAll()
+            last.results.removeAll()
         } else {
             if self.parts.count < 1 {
                 throw MMCliError.invalidParameters
@@ -469,6 +483,7 @@ class HelpCommand: MMCommand{
 \tload <filename> ...               - load file into the collection
 \tlist <term> ...                   - list all the files that have the term specified
 \tlist                              - list all the files in the collection
+\tsearch <term> ...                 - list all the files that have the term specified
 \tdetail <number> ...               - show detailed description of file.
 \tadd <number> <key> <value> ...    - add some metadata to a file
 \tset <number> <key> <value> ...    - this is really a del followed by an add

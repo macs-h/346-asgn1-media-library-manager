@@ -3,16 +3,16 @@
         "fullpath": "/path/to/image1.png",
         "type": "image",
         "metadata": {
-            "key1": "value1",
-            "key2": "value2",
+            "key11": "value11",
+            "key12": "value12",
         }
     },
     {
-        "fullpath": "/path/to/bar.mp4",
+        "fullpath": "/path/to/video1.mp4",
         "type": "video",
         "metadata": {
-            "key3": "value3",
-            "key4": "value4",
+            "key13": "value13",
+            "key14": "value14",
         }
     }
 ]
