@@ -47,9 +47,15 @@ while let line = prompt("> "){
         
         commandString = parts.removeFirst();
         
+        // Used to bash test. Ignores commenting in input.
+        if commandString.first == "#" { print(""); continue }
+        
         switch(commandString){
-        case "list", "search":
+        case "list":
             command = SearchCommand(library, parts)
+            break
+        case "search":
+            command = SearchCommand(library, parts, search: true)
             break
         case "add":
             command = AddCommand(library, parts, last)
@@ -71,14 +77,14 @@ while let line = prompt("> "){
         case "load":
             command = LoadCommand(library, parts)
             break
+        case "detail":
+            command = DetailCommand(library, parts, last)
+            break
         case "help":
             command = HelpCommand()
             break
         case "quit":
             command = QuitCommand()
-            break
-        case "test":
-            command = TestCommand(library, parts, last)
             break
         default:
             throw MMCliError.unknownCommand
@@ -100,7 +106,7 @@ while let line = prompt("> "){
     }catch MMCliError.unimplementedCommand {
         print("\"\(commandString)\" is unimplemented")
     }catch MMCliError.missingResultSet {
-        print("no previous results to work from... ")
+        print("no previous results to work from...")
     }catch MMCliError.invalidFilepath {
         print("invalid filepath provided. Please check and try again")
     }catch MMCliError.invalidIndex {

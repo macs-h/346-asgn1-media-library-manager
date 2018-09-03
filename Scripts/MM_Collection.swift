@@ -85,10 +85,8 @@ class MM_Collection : MMCollection {
         - parameters:
             - metadata:     The item to remove from the collection.
             - file:         The file to remove the metadata from.
-            - newMetadata:  The new metadata to add to the file.
-     
      */
-    func set(metadata: MMMetadata, file: MMFile, newMetadata: MMMetadata){
+    func set(metadata: MMMetadata, file: MMFile){
         if collection.count > 0 {
             let metaIndex = file.searchMetadata(keyword: metadata.keyword)
             if metaIndex != -1{

@@ -1,20 +1,18 @@
 [
   {
     "type" : "image",
-    "fullpath" : "/path/to/foo.png",
+    "fullpath" : "/path/to/image1.png",
     "metadata" : {
-      "3" : "4",
-      "1" : "2",
-      "key1" : "value1",
-      "key2" : "value2"
+      "key12" : "value12",
+      "key11" : "value11"
     }
   },
   {
     "type" : "video",
-    "fullpath" : "/path/to/bar.mp4",
+    "fullpath" : "/path/to/video1.mp4",
     "metadata" : {
-      "key4" : "value4",
-      "key3" : "value3"
+      "key13" : "value13",
+      "key14" : "value14"
     }
   }
 ]
