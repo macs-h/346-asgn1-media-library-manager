@@ -134,7 +134,6 @@ protocol MMCollection:CustomStringConvertible {
         Finds all the files associated with the keyword.
 
         - parameter term:   The keyword to search for.
-
         - returns:  A list of all the metadata associated with the keyword,
                     possibly an empty list.
      */
@@ -153,7 +152,6 @@ protocol MMCollection:CustomStringConvertible {
         Finds all the metadata associated with the keyword of the item.
 
         - parameter item:   The item's keyword to search for.
-
         - returns:  A list of all the metadata associated with the item's
                     keyword, possibly an empty list.
      */

@@ -42,7 +42,9 @@ enum MMCliError: Error {
     // Thrown if there is no data to export to a json file.
     case noDataInCollection
     
-    // feel free to add more errors as you need them
+    // Thrown if exporting JSON failed.
+    case exportFailed
+    
 }
 
 
@@ -200,6 +202,10 @@ class SearchCommand: CommandParent, MMCommand {
                 for result in searchResults {
                     var duplicate = false
                     for uniqueResult in uniqueResults {
+                        //
+                        // -------- REFACTOR ---------
+                        //
+                        // Should be checking against FILEPATH
                         if result.filename == uniqueResult.filename {
                             duplicate = true
                         }
@@ -231,15 +237,15 @@ class AddCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        guard !self.last.all().isEmpty else {
+        if self.last.all().isEmpty {
             throw MMCliError.missingResultSet
         }
-        guard self.parts.count >= 3 && (self.parts.count - 1) % 2 == 0 else {
+        if self.parts.count < 3 || (self.parts.count - 1) % 2 != 0 {
             throw MMCliError.invalidParameters
         }
         
         if let index = Int(self.parts.removeFirst()) {
-            guard index >= 0 && index < self.last.all().count else {
+            if index < 0 || index >= self.last.all().count {
                 throw MMCliError.indexOutOfRange
             }
             for _ in 0..<(parts.count/2) {
@@ -268,15 +274,15 @@ class SetCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        guard !self.last.all().isEmpty else {
+        if self.last.all().isEmpty {
             throw MMCliError.missingResultSet
         }
-        guard self.parts.count >= 3 && (self.parts.count - 1) % 2 == 0 else {
+        if self.parts.count < 3 || (self.parts.count - 1) % 2 != 0 {
             throw MMCliError.invalidParameters
         }
         
         if let index = Int(self.parts.removeFirst()) {
-            guard index >= 0 && index < self.last.all().count else {
+            if index < 0 || index >= self.last.all().count {
                 throw MMCliError.indexOutOfRange
             }
             for _ in 0..<(parts.count/2) {
@@ -314,24 +320,24 @@ class DeleteCommand: CommandParent, MMCommand {
     func execute() throws {
         if self.all {
             // Delete entire collection.
-            guard self.parts.count == 0 else {
+            if self.parts.count != 0 {
                 throw MMCliError.invalidParameters
             }
             self.library.removeAll()
         } else {
-            guard self.parts.count >= 1 else {
+            if self.parts.count < 1 {
                 throw MMCliError.invalidParameters
             }
             
             if let index = Int(self.parts.first!) {
                 self.parts.removeFirst()
-                guard !self.last.all().isEmpty else {
+                if self.last.all().isEmpty {
                     throw MMCliError.missingResultSet
                 }
-                guard self.parts.count >= 1 else {
+                if self.parts.count < 1 {
                     throw MMCliError.invalidParameters
                 }
-                guard index >= 0 && index < self.last.all().count else {
+                if index < 0 || index >= self.last.all().count {
                     throw MMCliError.indexOutOfRange
                 }
                 
@@ -374,14 +380,14 @@ class SaveCommand: CommandParent, MMCommand {
     }
     
     func execute() throws {
-        guard self.parts.count == 1 else {
+        if self.parts.count != 1 {
             throw MMCliError.invalidParameters
         }
         if self.last.all().isEmpty && saveSearch {
             throw MMCliError.missingResultSet
         }
         
-        let filename = self.parts.removeFirst()
+        let filename = self.parts.removeFirst().lowercased()
         let file = MM_FileExport()
         if saveSearch {
             try file.write(filename: filename, items: self.last.all())
@@ -407,13 +413,13 @@ class LoadCommand: CommandParent, MMCommand {
     var fileImport = MM_FileImport()
     
     func execute() throws {
-        guard self.parts.count >= 1 else {
+        if self.parts.count < 1 {
             throw MMCliError.invalidParameters
         }
 
         do {
             for filename in parts {
-                let files = try self.fileImport.read(filename: filename)
+                let files = try self.fileImport.read(filename: filename.lowercased())
                 for file in files {
                     self.library.add(file: file)
                 }
@@ -500,10 +506,10 @@ class TestCommand: CommandParent, MMCommand {
     var results: MMResultSet?
     
     func execute() throws {
-        guard self.parts.count == 1 else {
+        if self.parts.count != 1 {
             throw MMCliError.invalidParameters
         }
-        guard !self.last.all().isEmpty else {
+        if self.last.all().isEmpty {
             throw MMCliError.missingResultSet
         }
         

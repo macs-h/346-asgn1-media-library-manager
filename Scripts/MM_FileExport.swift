@@ -21,7 +21,7 @@ class MM_FileExport : MMFileExport {
             - items:    A list of all the files to be written.
      */
     func write(filename: String, items: [MMFile]) throws {
-        guard filename.split(separator: ".").map({String($0)}).last?.lowercased() == "json" else {
+        if filename.split(separator: ".").map({String($0)}).last != "json" {
             throw MMCliError.invalidJSONExtension
         }
         
@@ -55,9 +55,7 @@ class MM_FileExport : MMFileExport {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         let jsonData = try encoder.encode(jsonArray)
-        if jsonData.isEmpty {
-            print("EMPTY")
-        }
+        
         if items.isEmpty {
             throw MMCliError.noDataInCollection
         }
@@ -66,7 +64,7 @@ class MM_FileExport : MMFileExport {
         do {
             try jsonString.write(to: url, atomically: true, encoding: .utf8)
         } catch {
-            print("Catch")
+            throw MMCliError.exportFailed
         }
     }
     

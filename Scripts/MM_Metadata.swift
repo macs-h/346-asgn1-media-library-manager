@@ -25,8 +25,8 @@ class MM_Metadata: MMMetadata{
         Default initialiser
      
         - Parameters:
-            - keyword:      The keyword for the metadata
-            - value:        The value the metadata should be initialised to
+            - keyword:  The keyword for the metadata
+            - value:    The value the metadata should be initialised to
      */
     init(keyword: String, value: String) {
         self.keyword = keyword
